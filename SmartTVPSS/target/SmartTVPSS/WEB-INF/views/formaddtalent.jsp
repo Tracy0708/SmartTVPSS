@@ -142,18 +142,20 @@
             box-shadow: 0 0 8px rgba(0, 61, 115, 0.3);
         }
 
-        .form-container input[type="submit"] {
-            background-color: #ff5252;
-            color: white;
-            border: none;
-            cursor: pointer;
-            padding: 12px 18px;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: all 0.3s;
-        }
+        .form-container button[type="submit"] {
+    display: block;
+    margin: 0 auto; /* Centers the button horizontally */
+    background-color: #ff5252;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s;
+}
 
-        .form-container input[type="submit"]:hover {
+        .form-container button[type="submit"]:hover {
             background-color: #ff7373;
             transform: translateY(-2px);
             box-shadow: 0 4px 10px rgba(255, 82, 82, 0.4);

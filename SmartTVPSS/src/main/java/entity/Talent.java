@@ -6,6 +6,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import java.util.Date;
 
 @Entity
 @Table(name = "talent")
@@ -28,6 +31,19 @@ public class Talent {
 	private String email;
 	@Column(name = "reason")
 	private String reason;
+
+	@Column(name = "interviewDate")
+	@Temporal(TemporalType.DATE)
+	private Date interviewDate;
+
+	@Column(name = "interviewTime")
+	private String interviewTime;
+
+	@Column(name = "interviewResult")
+	private String interviewResult;
+
+	@Column(name = "applicationStatus")
+	private String applicationStatus = "PENDING";
 
 	// Default constructor
 	public Talent() {
@@ -110,10 +126,45 @@ public class Talent {
 		this.reason = reason;
 	}
 
+	public Date getInterviewDate() {
+		return interviewDate;
+	}
+
+	public void setInterviewDate(Date interviewDate) {
+		this.interviewDate = interviewDate;
+	}
+
+	public String getInterviewTime() {
+		return interviewTime;
+	}
+
+	public void setInterviewTime(String interviewTime) {
+		this.interviewTime = interviewTime;
+	}
+
+	public String getInterviewResult() {
+		return interviewResult;
+	}
+
+	public void setInterviewResult(String interviewResult) {
+		this.interviewResult = interviewResult;
+	}
+
+	public String getApplicationStatus() {
+		return applicationStatus;
+	}
+
+	public void setApplicationStatus(String applicationStatus) {
+		this.applicationStatus = applicationStatus;
+	}
+
+	// Update toString() method to include new fields
 	@Override
 	public String toString() {
 		return "Talent [id=" + id + ", schoolCode=" + schoolCode + ", schoolName=" + schoolName + ", name=" + name
-				+ ", gender=" + gender + ", contact=" + contact + ", email=" + email + ", reason=" + reason + "]";
+				+ ", gender=" + gender + ", contact=" + contact + ", email=" + email + ", reason=" + reason
+				+ ", interviewDate=" + interviewDate + ", interviewTime=" + interviewTime + ", interviewResult="
+				+ interviewResult + ", applicationStatus=" + applicationStatus + "]";
 	}
 
 }

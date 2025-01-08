@@ -1,5 +1,5 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page isELIgnored="false" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page isELIgnored="false"%>
 
 <html>
 <head>
@@ -89,50 +89,42 @@ table tr:hover {
 </style>
 </head>
 <body>
-	<%@ include file="studentnavbar.jsp" %>
+	<%@ include file="studentnavbar.jsp"%>
 
-		<div class="main-content">
-			<div class="table-container">
-				<h2>Application Status</h2>
-				<table>
-					<thead>
+	<div class="main-content">
+		<div class="table-container">
+			<h2>Application Status</h2>
+			<table>
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>School Code</th>
+						<th>School Name</th>
+						<th>Student Name</th>
+						<th>Gender</th>
+						<th>Contact Number</th>
+						<th>Email</th>
+						<th>Reason</th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:forEach var="talent" items="${talentList}">
 						<tr>
-							<th>ID</th>
-							<th>School Code</th>
-							<th>School Name</th>
-							<th>Student Name</th>
-							<th>Gender</th>
-							<th>Contact Number</th>
-							<th>Email</th>
-							<th>Reason</th>
+							<td>${talent.id}</td>
+							<td>${talent.schoolCode}</td>
+							<td>${talent.schoolName}</td>
+							<td>${talent.name}</td>
+							<td>${talent.gender}</td>
+							<td>${talent.contact}</td>
+							<td>${talent.email}</td>
+							<td>${talent.reason}</td>
 						</tr>
-					</thead>
-					<tbody>
-						<c:forEach var="talent" items="${talentList}">
-							<tr>
-								<td>${talent.id}</td>
-								<td>${talent.schoolCode}</td>
-								<td>${talent.schoolName}</td>
-								<td>${talent.name}</td>
-								<td>${talent.gender}</td>
-								<td>${talent.contact}</td>
-								<td>${talent.email}</td>
-								<td>${talent.reason}</td>
-							</tr>
-						</c:forEach>
-					</tbody>
-				</table>
-			</div>
+					</c:forEach>
+				</tbody>
+			</table>
 		</div>
 	</div>
+	</div>
 
-	<script>
-		// JavaScript for toggling the Talent Application submenu
-		document.querySelector('.toggle > a').addEventListener('click',
-				function() {
-					const parentLi = this.parentNode;
-					parentLi.classList.toggle('active');
-				});
-	</script>
 </body>
 </html>

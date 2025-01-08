@@ -184,14 +184,5 @@ to {
 		</div>
 	</div>
 	</div>
-
-	<script>
-		// JavaScript for toggling the Talent Application submenu
-		document.querySelector('.toggle > a').addEventListener('click',
-				function() {
-					const parentLi = this.parentNode;
-					parentLi.classList.toggle('active');
-				});
-	</script>
 </body>
 </html>

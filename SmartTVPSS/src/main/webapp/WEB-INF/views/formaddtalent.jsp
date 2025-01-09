@@ -171,7 +171,9 @@ to {
 					<option value="Female">Female</option>
 				</select> <label for="contact">Contact No.:</label> <input type="text"
 					id="contact" name="contact" placeholder="Enter your contact number"
-					pattern="[0-9]" title="Enter a numeric contact number" required>
+					pattern="[0-9]{10,15}"
+					title="Enter a numeric contact number (10 to 15 digits)" required>
+
 				<label for="email">Email:</label> <input type="email" id="email"
 					name="email" placeholder="Enter your email" required> <label
 					for="reason">Why do you wish to join as part of TVPSS

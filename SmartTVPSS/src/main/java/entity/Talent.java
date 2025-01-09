@@ -50,8 +50,10 @@ public class Talent {
 	}
 
 	// Parameterized constructor
-	public Talent(String schoolCode, String schoolName, String name, String gender, String contact, String email,
-			String reason) {
+	public Talent(int id, String schoolCode, String schoolName, String name, String gender, String contact,
+			String email, String reason, Date interviewDate, String interviewTime, String interviewResult,
+			String applicationStatus) {
+		this.id = id;
 		this.schoolCode = schoolCode;
 		this.schoolName = schoolName;
 		this.name = name;
@@ -59,6 +61,10 @@ public class Talent {
 		this.contact = contact;
 		this.email = email;
 		this.reason = reason;
+		this.interviewDate = interviewDate;
+		this.interviewTime = interviewTime;
+		this.interviewResult = interviewResult;
+		this.applicationStatus = applicationStatus;
 	}
 
 	// Getters and setters

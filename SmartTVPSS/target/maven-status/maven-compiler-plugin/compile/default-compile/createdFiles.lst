@@ -1,5 +1,0 @@
-config\HibernateConfig.class
-controller\TalentController.class
-service\TalentDao_usingHibernate.class
-controller\HomeController.class
-entity\Talent.class

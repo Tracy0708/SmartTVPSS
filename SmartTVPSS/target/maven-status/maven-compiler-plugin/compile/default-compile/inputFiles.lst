@@ -1,5 +1,8 @@
-C:\Users\tracy\git\SmartTVPSS\SmartTVPSS\src\main\java\controller\HomeController.java
-C:\Users\tracy\git\SmartTVPSS\SmartTVPSS\src\main\java\config\HibernateConfig.java
-C:\Users\tracy\git\SmartTVPSS\SmartTVPSS\src\main\java\controller\TalentController.java
-C:\Users\tracy\git\SmartTVPSS\SmartTVPSS\src\main\java\entity\Talent.java
-C:\Users\tracy\git\SmartTVPSS\SmartTVPSS\src\main\java\service\TalentDao_usingHibernate.java
+C:\Users\yee\git\SmartTVPSS\SmartTVPSS\src\main\java\controller\HomeController.java
+C:\Users\yee\git\SmartTVPSS\SmartTVPSS\src\main\java\entity\Activity.java
+C:\Users\yee\git\SmartTVPSS\SmartTVPSS\src\main\java\config\HibernateConfig.java
+C:\Users\yee\git\SmartTVPSS\SmartTVPSS\src\main\java\controller\TalentController.java
+C:\Users\yee\git\SmartTVPSS\SmartTVPSS\src\main\java\entity\Talent.java
+C:\Users\yee\git\SmartTVPSS\SmartTVPSS\src\main\java\service\TalentDao_usingHibernate.java
+C:\Users\yee\git\SmartTVPSS\SmartTVPSS\src\main\java\service\ActivityDao_usingHibernate.java
+C:\Users\yee\git\SmartTVPSS\SmartTVPSS\src\main\java\controller\ActivityController.java

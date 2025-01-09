@@ -22,12 +22,14 @@ public class TalentController {
 	@Autowired // spring dependency injection
 	private TalentDao_usingHibernate tDao_usingHibernate;
 
-	@RequestMapping("/talentList")
-	public String getAllCustomers(Model model) {
+	@RequestMapping("/admin/talentList")
+	public String getAllTalent(Model model) {
 		List<Talent> talentList = tDao_usingHibernate.findAll();
 		model.addAttribute("talentList", talentList);
 		return "talentList";
 	}
+	
+
 
 	@RequestMapping("/add1")
 	@ResponseBody()

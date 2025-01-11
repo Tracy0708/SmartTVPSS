@@ -278,6 +278,11 @@ table tr:hover {
         const modal = document.getElementById('interviewModal');
         
         function openInterviewModal(id, name, school, email, contact) {
+            if (!id || !name || !school || !email || !contact) {
+                alert('Missing required information for scheduling interview');
+                return;
+            }
+            
             document.getElementById('studentId').value = id;
             document.getElementById('modal-name').textContent = name;
             document.getElementById('modal-school').textContent = school;
@@ -285,7 +290,12 @@ table tr:hover {
             document.getElementById('modal-contact').textContent = contact;
             
             const today = new Date().toISOString().split('T')[0];
-            document.getElementById('interviewDate').min = today;
+            const dateInput = document.getElementById('interviewDate');
+            dateInput.min = today;
+            
+            // Clear previous values
+            dateInput.value = '';
+            document.getElementById('interviewTime').value = '';
             
             modal.style.display = 'block';
         }
@@ -298,33 +308,39 @@ table tr:hover {
             event.preventDefault();
             
             const interviewData = {
-                studentId: document.getElementById('studentId').value,
+                id: parseInt(document.getElementById('studentId').value),
                 interviewDate: document.getElementById('interviewDate').value,
                 interviewTime: document.getElementById('interviewTime').value
             };
             
-            fetch('${pageContext.request.contextPath}/talent/talentList', {
+            fetch('${pageContext.request.contextPath}/admin/talentList', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(interviewData)
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(data => {
                 if (data.success) {
                     alert('Interview scheduled successfully!');
                     window.location.reload();
                 } else {
-                    alert('Failed to schedule interview. Please try again.');
+                    alert(data.message || 'Failed to schedule interview. Please try again.');
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
                 alert('An error occurred while scheduling the interview.');
+            })
+            .finally(() => {
+                closeModal();
             });
-            
-            closeModal();
         }
         
         window.onclick = function(event) {

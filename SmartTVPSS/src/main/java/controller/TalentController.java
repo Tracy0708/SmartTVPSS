@@ -1,16 +1,23 @@
 package controller;
 
+import java.security.Principal;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import entity.Talent;
@@ -29,14 +36,61 @@ public class TalentController {
 		return "talentList";
 	}
 	
+	@PostMapping("/admin/talentList")
+    @ResponseBody
+    public ResponseEntity<?> scheduleInterview(@RequestBody Map<String, Object> interviewData) {
+        try {
+            // Safe type conversion
+            Integer id = null;
+            if (interviewData.get("id") instanceof Number) {
+                id = ((Number) interviewData.get("id")).intValue();
+            } else if (interviewData.get("id") instanceof String) {
+                id = Integer.parseInt((String) interviewData.get("id"));
+            }
 
+            String interviewDate = (String) interviewData.get("interviewDate");
+            String interviewTime = (String) interviewData.get("interviewTime");
 
-	@RequestMapping("/add1")
-	@ResponseBody()
-	public String add1(@ModelAttribute("talent") Talent talent) {
-		tDao_usingHibernate.save(talent);
-		return "adding .. " + talent.toString();
-	}
+            // Validate input
+            if (id == null || id <= 0 || interviewDate == null || interviewTime == null) {
+                return ResponseEntity.badRequest()
+                    .body(Map.of("success", false, 
+                                "message", "Invalid input data. Please check all fields."));
+            }
+
+            // Retrieve the Talent record
+            Talent talent = tDao_usingHibernate.findById(id);
+            if (talent == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("success", false, 
+                                "message", "Talent record not found"));
+            }
+
+            // Update interview details
+            try {
+                talent.setInterviewDate(new SimpleDateFormat("dd-MM-yyyy").parse(interviewDate));
+                talent.setInterviewTime(interviewTime);
+                talent.setApplicationStatus("SCHEDULED"); // Update status
+                tDao_usingHibernate.save(talent);
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("success", false, 
+                                "message", "Invalid date format"));
+            }
+
+            return ResponseEntity.ok(Map.of(
+                "success", true,
+                "message", "Interview scheduled successfully"
+            ));
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of("success", false, 
+                            "message", "Server error while scheduling interview"));
+        }
+    }
+
 
 	@GetMapping("/add")
 	public String add() {
@@ -49,6 +103,38 @@ public class TalentController {
 		model.addAttribute("talent", talent);
 		return "confirmaddedtalent";
 	}
+	
+	@GetMapping("/edit")
+	public String editApplication(@RequestParam("email") String email, Model model) {
+	    // Fetch Talent by email (no need to use id)
+	    Talent talent = tDao_usingHibernate.findByEmail(email); 
+	    model.addAttribute("talent", talent); // Add Talent object to the model
+	    return "formedittalent"; // Redirect to the edit form page
+	}
+	
+	@PostMapping("/save")
+	public String saveApplication(@ModelAttribute("talent") Talent talent) {
+	    // Retrieve the existing Talent from the database by email
+	    Talent existingTalent = tDao_usingHibernate.findByEmail(talent.getEmail());
+	    
+	    if (existingTalent != null) {
+	        // Update the existing Talent's details with the new data
+	        existingTalent.setSchoolCode(talent.getSchoolCode());
+	        existingTalent.setSchoolName(talent.getSchoolName());
+	        existingTalent.setName(talent.getName());
+	        existingTalent.setGender(talent.getGender());
+	        existingTalent.setContact(talent.getContact());
+	        existingTalent.setReason(talent.getReason());
+	        // Add other fields if needed
+	        
+	        // Save the updated Talent object in the database
+	        tDao_usingHibernate.update(existingTalent);
+	    }
+	    
+	    // Redirect to the viewStatus page to display updated application
+	    return "confirmedittalent";
+	}
+
 
 	@GetMapping("/delete")
 	public String delete() {
@@ -64,7 +150,36 @@ public class TalentController {
 	}
 	
 	@GetMapping("/viewStatus")
-	public String viewStatus() {
-		return "viewapplicationstatus";
+    public String viewStatusForm() {
+        return "viewStatus";  // Show the search form initially
+    }
+    
+	@PostMapping("/viewStatus")
+	public String viewStatus(@RequestParam(name = "email", required = true) String email, Model model) {
+	    try {
+	        if (email == null || email.trim().isEmpty()) {
+	            model.addAttribute("error", "Please enter your email address");
+	            return "viewStatus";
+	        }
+	        
+	        // Find talent record by email
+	        Talent talent = tDao_usingHibernate.findByEmail(email.trim());
+	        
+	        if (talent != null) {
+	            model.addAttribute("talent", talent);
+	            model.addAttribute("searched", true);
+	        } else {
+	            model.addAttribute("error", "No application found for this email address");
+	            model.addAttribute("searched", true);
+	        }
+	        
+	        return "viewStatus";
+	        
+	    } catch (Exception e) {
+	        model.addAttribute("error", "An error occurred while retrieving the application status");
+	        e.printStackTrace();
+	        return "viewStatus";
+	    }
 	}
+
 }

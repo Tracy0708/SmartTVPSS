@@ -288,6 +288,37 @@
 			transition: background-color 0.3s, color 0.3s; /* Smooth transition */
 		}
 		
+		/* pop up details*/
+		.popup {
+		    position: fixed;
+		    top: 50%;
+		    left: 50%;
+		    transform: translate(-50%, -50%);
+		    background-color: white;
+		    padding: 20px;
+		    border-radius: 10px;
+		    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		    z-index: 1000;
+		}
+		
+		.popup.hide {
+		    display: none;
+		}
+		
+		.popup-content h3 {
+		    margin-bottom: 20px;
+		}
+		
+		#close-popup {
+		    margin-top: 10px;
+		    padding: 5px 10px;
+		    background-color: red;
+		    color: white;
+		    border: none;
+		    cursor: pointer;
+		    border-radius: 5px;
+		}
+		
 		/* Hover effect for sub-menu items */
 		.sub-menu li a:hover {
 			background-color: #FBAF3C; /* Highlight color */
@@ -313,16 +344,16 @@
 		        
 		        <select style="width: 17%;" name="type">
 			        <option value="" disabled selected>Type</option>
-			        <option value="competition" ${type == 'competition' ? 'selected' : ''}>Competition</option>
-			        <option value="award" ${type == 'award' ? 'selected' : ''}>Award</option>
-			        <option value="talk" ${type == 'talk' ? 'selected' : ''}>Talk</option>
+			        <option value="Competition" ${type == 'competition' ? 'selected' : ''}>Competition</option>
+			        <option value="Award" ${type == 'award' ? 'selected' : ''}>Award</option>
+			        <option value="Talk" ${type == 'talk' ? 'selected' : ''}>Talk</option>
 			    </select>
 		        
-		        <select style="width: 15%;" name="level">
+		        <select style="width: 17%;" name="level">
 			        <option value="" disabled selected>Level</option>
-			        <option value="state" ${level == 'state' ? 'selected' : ''}>State</option>
-			        <option value="school" ${level == 'school' ? 'selected' : ''}>School</option>
-			        <option value="district" ${level == 'school' ? 'selected' : ''}>District</option>
+			        <option value="State" ${level == 'state' ? 'selected' : ''}>State</option>
+			        <option value="School" ${level == 'school' ? 'selected' : ''}>School</option>
+			        <option value="District" ${level == 'school' ? 'selected' : ''}>District</option>
 			    </select>
 			    
 		        <button type="submit" class="filter-button" style="width: 16%;">Filter</button>
@@ -344,9 +375,9 @@
 			
 			    <c:forEach begin="1" end="${totalPages}" var="pageNo">
 			        <a href="activityList?page=${pageNo}&search=${param.search}&type=${param.type}&level=${param.level}" 
-			           style="${pageNo == currentPage ? 'font-weight: bold; color: red;' : ''}">
-			           ${pageNo}
-			        </a>
+					   style="${pageNo == currentPage ? 'font-weight: bold; color: red;' : ''}">
+					   ${pageNo}
+					</a>
 			    </c:forEach>
 			
 			    <c:if test="${currentPage < totalPages}">
@@ -379,9 +410,9 @@
 	                        <td>${activity.activityType}</td>
 	                        <td>${activity.activityLevel}</td>
 	                        <td>
-	                        	<a href='${pageContext.request.contextPath}/activity/edit?id=${activity.id}' class='btn btn-success btn-sm me-2 view-data'>View</a>
-	                            <a href='${pageContext.request.contextPath}/activity/edit?id=${activity.id}' class='btn btn-primary btn-sm me-2'>Edit</a>
-	                            <a href="#" onclick="confirmDelete(${activity.id})" class='btn btn-danger btn-sm'>Delete</a>
+	                        	<a href="${pageContext.request.contextPath}/activity/view?id=${activity.id}" class="btn btn-success btn-sm me-2 view-data" data-activity-id="${activity.id}">View</a>
+								<a href='${pageContext.request.contextPath}/activity/edit?id=${activity.id}' class='btn btn-primary btn-sm me-2'>Edit</a>
+								<a href="#" onclick="confirmDelete(${activity.id})" class='btn btn-danger btn-sm'>Delete</a>
 	                        </td>
 	                    </tr>
 	                    
@@ -402,25 +433,23 @@
 	    </div>
 	</div>
 	
-	<script>
-        function confirmDelete(activityId) {
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = 'delete?id=' + activityId;
-                }
-            });
-        }
-    </script>
-	
-    	    
+	<script>	
+	    function confirmDelete(activityId) {
+	        Swal.fire({
+	            title: 'Are you sure?',
+	            text: "You won't be able to revert this!",
+	            icon: 'warning',
+	            showCancelButton: true,
+	            confirmButtonColor: '#3085d6',
+	            cancelButtonColor: '#d33',
+	            confirmButtonText: 'Yes, delete it!'
+	        }).then((result) => {
+	            if (result.isConfirmed) {
+	                window.location.href = 'delete?id=' + activityId;
+	            }
+	        });
+	    }
+	</script>    
 </body>
 
 </html>

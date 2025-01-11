@@ -16,41 +16,6 @@
             min-height: 100vh;
         }
 
-        nav {
-            background-color: #0C3182;
-            box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
-            padding-right: 2rem;
-        }
-
-        nav ul {
-            width: 100%;
-            list-style: none;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        nav li {
-            height: 70px;
-        }
-
-        nav a {
-            height: 100%;
-            padding: 0 30px;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            color: white;
-        }
-
-        nav a:hover {
-            background-color: #f0f0f0;
-        }
-
-        nav li:first-child {
-            margin-right: auto;
-        }
-
         .sidebar {
             width: 15vw;
             background-color: #f4f4f4;
@@ -219,17 +184,17 @@
                     <label for="activityType">Activity Type:</label>
                     <select id="activityType" name="activityType" required>
                         <option value="" disabled selected>Select a type</option>
-                        <option value="award">Award</option>
-                        <option value="competition">Competition</option>
-                        <option value="talk">Talk</option>
+                        <option value="Award">Award</option>
+                        <option value="Competition">Competition</option>
+                        <option value="Talk">Talk</option>
                     </select>
 
                     <label for="activityLevel">Activity Level:</label>
                     <select id="activityLevel" name="activityLevel" required>
                         <option value="" disabled selected>Select level</option>
-                        <option value="school">School</option>
-                        <option value="state">State</option>
-                        <option value="district">District</option>
+                        <option value="School">School</option>
+                        <option value="State">State</option>
+                        <option value="District">District</option>
                     </select>
 
                     <label for="limitation">Limitations:</label>

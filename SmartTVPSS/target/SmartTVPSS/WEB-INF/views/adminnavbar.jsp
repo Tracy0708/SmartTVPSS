@@ -93,19 +93,17 @@ body {
 
 	<div class="container">
 		<div class="sidebar">
-			<h3>TVPSS Team</h3>
+			<h3>Student</h3>
 			<ul>
-				<li><a href="TVPSSDashboard.jsp">Dashboard</a></li>
+				<li><a href="studentDashboard.jsp">Dashboard</a></li>
 				<li class="toggle"><a href="javascript:void(0);">Activity</a>
 					<ul class="sub-menu">
-						<li><a href="../activityList.jsp">Manage Activity</a></li>
-						<li><a href="#">View Participant</a></li>
+						<li><a href="ApplyAsCandidate.jsp">Manage activity</a></li>
+						<li><a href="viewApplicationStatus.jsp">View Participant</a></li>
 					</ul></li>
-				<li><a href="#">Program status</a></li>
-				<li><a href="#">User</a></li>
-				
+				<li><a href="viewActivity.jsp">Program Status</a></li>
+				<li><a href="viewActivity.jsp">User List</a></li>
 			</ul>
-		 </div>
 		</div>
 
 		<script>

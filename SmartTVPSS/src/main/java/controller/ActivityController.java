@@ -72,20 +72,38 @@ public class ActivityController {
 	}
 	
 	@GetMapping("/edit")
-    public String showEditForm(@RequestParam("id") int id, Model model) {
-        Activity activity = aDao_usingHibernate.findById(id);
-        model.addAttribute("startDateFormatted", new SimpleDateFormat("yyyy-MM-dd").format(activity.getStartDate()));
-		model.addAttribute("endDateFormatted", new SimpleDateFormat("yyyy-MM-dd").format(activity.getEndDate()));
-        model.addAttribute("activity", activity);
-        return "editActivityForm";
-    }
+	public String showEditForm(@RequestParam("id") Integer id, Model model, RedirectAttributes redirectAttributes) {
+	    Activity activity = aDao_usingHibernate.findById(id);
+	    if (activity == null) {
+	        redirectAttributes.addFlashAttribute("error", "Activity not found!");
+	        return "redirect:/activity/activityList";
+	    }
+	    model.addAttribute("startDateFormatted", new SimpleDateFormat("yyyy-MM-dd").format(activity.getStartDate()));
+	    model.addAttribute("endDateFormatted", new SimpleDateFormat("yyyy-MM-dd").format(activity.getEndDate()));
+	    model.addAttribute("activity", activity);
+	    return "editActivityForm";
+	}
+	
+	@GetMapping("/view")
+	public String viewDetails(@RequestParam("id") Integer id, Model model, RedirectAttributes redirectAttributes) {
+	    Activity activity = aDao_usingHibernate.findById(id);
+	    if (activity == null) {
+	        redirectAttributes.addFlashAttribute("error", "Activity not found!");
+	        return "redirect:/activity/activityList";
+	    }
+	    model.addAttribute("startDateFormatted", new SimpleDateFormat("yyyy-MM-dd").format(activity.getStartDate()));
+	    model.addAttribute("endDateFormatted", new SimpleDateFormat("yyyy-MM-dd").format(activity.getEndDate()));
+	    model.addAttribute("activity", activity);
+	    return "viewDetails";
+	}
+
 	
 	// Save or update the activity
 	@PostMapping("/save")
 	public String saveActivity(@ModelAttribute("activity") Activity activity, RedirectAttributes redirectAttributes) {
-	    if (activity.getId() != null) {
+	    if (activity.getid() != null) {
 	        // Update existing record
-	    	aDao_usingHibernate.update(activity.getId(), activity);
+	    	aDao_usingHibernate.update(activity.getid(), activity);
 	    	redirectAttributes.addFlashAttribute("message", "Activity updated successfully!");
 	    } else {
 	        // Add new record
@@ -96,9 +114,13 @@ public class ActivityController {
 
 	@GetMapping("/delete")
 	public String deleteActivity(@RequestParam("id") Integer id, RedirectAttributes redirectAttributes) {
-		aDao_usingHibernate.delete(id);
-		redirectAttributes.addFlashAttribute("message", "Activity deleted successfully!");
-        return "redirect:/activity/activityList";
-    }
+	    if (aDao_usingHibernate.findById(id) == null) {
+	        redirectAttributes.addFlashAttribute("error", "Activity not found!");
+	    } else {
+	        aDao_usingHibernate.delete(id);
+	        redirectAttributes.addFlashAttribute("message", "Activity deleted successfully!");
+	    }
+	    return "redirect:/activity/activityList";
+	}
 
 }

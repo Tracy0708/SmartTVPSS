@@ -222,17 +222,17 @@
                     <label for="activityType">Activity Type:</label>
                     <select id="activityType" name="activityType" required>
                         <option value="" disabled>Select a type</option>
-                        <option value="award" ${activity.activityType == 'award' ? 'selected' : ''}>Award</option>
-                        <option value="competition" ${activity.activityType == 'competition' ? 'selected' : ''}>Competition</option>
-                        <option value="talk" ${activity.activityType == 'talk' ? 'selected' : ''}>Talk</option>
+                        <option value="award" ${activity.activityType == 'Award' ? 'selected' : ''}>Award</option>
+                        <option value="competition" ${activity.activityType == 'Competition' ? 'selected' : ''}>Competition</option>
+                        <option value="talk" ${activity.activityType == 'Talk' ? 'selected' : ''}>Talk</option>
                     </select>
 
                     <label for="activityLevel">Activity Level:</label>
                     <select id="activityLevel" name="activityLevel" required>
                         <option value="" disabled>Select level</option>
-                        <option value="school" ${activity.activityLevel == 'school' ? 'selected' : ''}>School</option>
-                        <option value="state" ${activity.activityLevel == 'state' ? 'selected' : ''}>State</option>
-                        <option value="district" ${activity.activityLevel == 'district' ? 'selected' : ''}>District</option>
+                        <option value="school" ${activity.activityLevel == 'School' ? 'selected' : ''}>School</option>
+                        <option value="state" ${activity.activityLevel == 'State' ? 'selected' : ''}>State</option>
+                        <option value="district" ${activity.activityLevel == 'District' ? 'selected' : ''}>District</option>
                     </select>
 
                     <label for="limitation">Limitations:</label>

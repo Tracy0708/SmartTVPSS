@@ -7,6 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Activity Management</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
         * {
@@ -205,80 +206,250 @@
             background-color: #fafafa;
             /* Alternate row colors */
         }
-
-        .edit:hover svg{
-            fill: green;
+        
+        /* Button */
+        .btn {
+		    display: inline-block;
+		    text-decoration:none;
+		    font-weight: 400;
+		    text-align: center;
+		    white-space: nowrap;
+		    vertical-align: middle;
+		    -webkit-user-select: none;
+		    -moz-user-select: none;
+		    -ms-user-select: none;
+		    user-select: none;
+		    border: 1px solid transparent;
+		    padding: .375rem .75rem;
+		    font-size: 1rem;
+		    line-height: 1.5;
+		    border-radius: .25rem;
+		    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+		}
+		
+		.btn-group-sm>.btn, .btn-sm{
+		    padding: .25rem .5rem;
+		    font-size: .875rem;
+		    line-height: 1.5;
+		    border-radius: .2rem;
+		 }
+		 
+		 .btn:not(:disabled):not(.disabled){
+		     cursor: pointer;
+		 }
+		 
+		 .btn-primary {
+		    color: #fff;
+		    background-color: #007bff;
+		    border-color: #007bff;
+		 }
+		 
+		 .btn-success {
+		    color: #fff;
+		    background-color: #28a745;
+		    border-color: #28a745;
+		 }
+		 
+		 .btn-danger {
+		    color: #fff;
+		    background-color: #dc3545;
+		    border-color: #dc3545;
+		}
+        
+        /* Pagination style */
+        .pagination{
+        	display:flex;
+        	margin-bottom:5px;
         }
-
-        .delete:hover svg{
-            fill: red;
+        
+        .pagination a{
+	        display:flex;
+	        flex-direction:column;
+	        text-decoration:none;
+		    border-radius: 5px;
+		    padding: 5px;
+		    margin: 2px;
+		    background-color:#e0e0e0;
+		    color: #0C3182;
         }
+        
+        /* Sub-menu Style */
+		.sub-menu {
+			display: none;
+			list-style-type: none;
+			padding-left: 20px;
+		}
+		
+		.sub-menu li a {
+			text-decoration: none;
+			font-weight: normal !important; /* Regular font weight */
+			padding: 5px 10px; /* Add padding for spacing */
+			border-radius: 5px; /* Optional: Rounded edges */
+			transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+		}
+		
+		/* pop up details*/
+		.popup {
+		    position: fixed;
+		    top: 50%;
+		    left: 50%;
+		    transform: translate(-50%, -50%);
+		    background-color: white;
+		    padding: 20px;
+		    border-radius: 10px;
+		    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		    z-index: 1000;
+		}
+		
+		.popup.hide {
+		    display: none;
+		}
+		
+		.popup-content h3 {
+		    margin-bottom: 20px;
+		}
+		
+		#close-popup {
+		    margin-top: 10px;
+		    padding: 5px 10px;
+		    background-color: red;
+		    color: white;
+		    border: none;
+		    cursor: pointer;
+		    border-radius: 5px;
+		}
+		
+		/* Hover effect for sub-menu items */
+		.sub-menu li a:hover {
+			background-color: #FBAF3C; /* Highlight color */
+			color: white; /* Change text color when hovered */
+		}
+		
+		/* When the parent item has the 'active' class, show the sub-menu */
+		.active .sub-menu {
+			display: block;
+		}
     </style>
 </head>
 
 <body>
-    	<%@ include file="adminnavbar.jsp"%>
+    <%@ include file="adminnavbar.jsp"%>
 
-        <div class="content">
-            <h2>Activity List</h2>
-            <div class="search-filter">
-                <input style="width: 50%;" type="text" placeholder="Search">
-                <select style="width: 15%;">
-                    <option value="">Type</option>
-                </select>
-                <select style="width: 15%;">
-                    <option value="">Level</option>
-                </select>
-                <button class="filter-button" style="width: 15%;">Filter</button>
-            </div>
-            <div class="addUser">
-                <button class="add-button" style="width: 15%;"><a href="addActivity.html">Add Activity</a></button>
-            </div>
+	<div class="content">	
+	    <h2>Activity List</h2>
+	    
+	    <form method="GET" action="activityList">
+		    <div class="search-filter">
+		        <input style="width: 50%;" type="text" name="search" placeholder="Search" value="${search}">
+		        
+		        <select style="width: 17%;" name="type">
+			        <option value="" disabled selected>Type</option>
+			        <option value="Competition" ${type == 'competition' ? 'selected' : ''}>Competition</option>
+			        <option value="Award" ${type == 'award' ? 'selected' : ''}>Award</option>
+			        <option value="Talk" ${type == 'talk' ? 'selected' : ''}>Talk</option>
+			    </select>
+		        
+		        <select style="width: 17%;" name="level">
+			        <option value="" disabled selected>Level</option>
+			        <option value="State" ${level == 'state' ? 'selected' : ''}>State</option>
+			        <option value="School" ${level == 'school' ? 'selected' : ''}>School</option>
+			        <option value="District" ${level == 'school' ? 'selected' : ''}>District</option>
+			    </select>
+			    
+		        <button type="submit" class="filter-button" style="width: 16%;">Filter</button>
+		    </div>
+		</form>
+	    
+	    <div class="addUser">
+	        <button class="add-button" style="width: 15%;"><a href="${pageContext.request.contextPath}/activity/add">Add Activity</a></button>
+	    </div>
+	
+	    <div class="table-container">
+	        <table>
+	        
+	        <!-- Pagination Controls -->
+			<div class="pagination">
+			    <c:if test="${currentPage > 1}">
+			        <a href="activityList?page=${currentPage - 1}&search=${param.search}&type=${param.type}&level=${param.level}">Previous</a>
+			    </c:if>
+			
+			    <c:forEach begin="1" end="${totalPages}" var="pageNo">
+			        <a href="activityList?page=${pageNo}&search=${param.search}&type=${param.type}&level=${param.level}" 
+					   style="${pageNo == currentPage ? 'font-weight: bold; color: red;' : ''}">
+					   ${pageNo}
+					</a>
+			    </c:forEach>
+			
+			    <c:if test="${currentPage < totalPages}">
+			        <a href="activityList?page=${currentPage + 1}&search=${param.search}&type=${param.type}&level=${param.level}">Next</a>
+			    </c:if>
+			</div>
 
-            <div class="table-container">
-	            <table>
-		            <thead>
-		                <tr>
-		                    <th>No</th>
-		                    <th>Activity</th>
-		                    <th>Organizer</th>
-		                    <th>Type</th>
-		                    <th>Level</th>
-		                    <th>Action</th>
-		                </tr>
-		            </thead>
-		            <tbody>
-		                <c:if test="${empty activityList}">
-		                    <tr>
-		                        <td colspan="6" style="text-align: center;">No data available</td>
-		                    </tr>
-		                </c:if>
-		                <c:forEach var="activity" items="${activityList}">
-		                    <tr>
-		                        <td>${activity.id}</td>
-		                        <td>${activity.activityName}</td>
-		                        <td>${activity.organizer}</td>
-		                        <td>${activity.activityType}</td>
-		                        <td>${activity.activityLevel}</td>
-		                        <td>
-		                            <a href='#' class='edit'><svg xmlns="http://www.w3.org/2000/svg"
-		                                    height="24px" viewBox="0 -960 960 960" width="24px" fill="grey">
-		                                    <path
-		                                        d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z" />
-		                                </svg></a>
-		                            <a href='#' class='delete'><svg xmlns="http://www.w3.org/2000/svg"
-		                                    height="24px" viewBox="0 -960 960 960" width="24px" fill="grey">
-		                                    <path
-		                                        d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z" />
-		                                </svg></a>
-		                        </td>
-		                    </tr>
-		                	</c:forEach>
-			        	</tbody>
-			    </table>
-                        
-            </div>
-        </div>
+	            <thead>
+	                <tr>
+	                    <th>No</th>
+	                    <th>Activity</th>
+	                    <th>Organizer</th>
+	                    <th>Type</th>
+	                    <th>Level</th>
+	                    <th>Action</th>
+	                </tr>
+	            </thead>
+	            <tbody>
+	                <c:if test="${empty activities}">
+	                    <tr>
+	                        <td colspan="6" style="text-align: center;">No data available</td>
+	                    </tr>
+	                </c:if>
+        
+	                <c:forEach var="activity" items="${activities}" varStatus="status">
+	                    <tr>
+	                        <td>${(currentPage - 1) * 5 + status.index + 1}</td>
+	                        <td>${activity.activityName}</td>
+	                        <td>${activity.organizer}</td>
+	                        <td>${activity.activityType}</td>
+	                        <td>${activity.activityLevel}</td>
+	                        <td>
+	                        	<a href="${pageContext.request.contextPath}/activity/view?id=${activity.id}" class="btn btn-success btn-sm me-2 view-data" data-activity-id="${activity.id}">View</a>
+								<a href='${pageContext.request.contextPath}/activity/edit?id=${activity.id}' class='btn btn-primary btn-sm me-2'>Edit</a>
+								<a href="#" onclick="confirmDelete(${activity.id})" class='btn btn-danger btn-sm'>Delete</a>
+	                        </td>
+	                    </tr>
+	                    
+	                </c:forEach>
+	                
+	                 <c:if test="${not empty message}">
+					    <script>
+					        Swal.fire({
+					            title: 'Success!',
+					            text: '${message}',
+					            icon: 'success',
+					            confirmButtonText: 'OK'
+					        });
+					    </script>
+					</c:if>
+	            </tbody>
+	        </table>
+	    </div>
+	</div>
+	
+	<script>	
+	    function confirmDelete(activityId) {
+	        Swal.fire({
+	            title: 'Are you sure?',
+	            text: "You won't be able to revert this!",
+	            icon: 'warning',
+	            showCancelButton: true,
+	            confirmButtonColor: '#3085d6',
+	            cancelButtonColor: '#d33',
+	            confirmButtonText: 'Yes, delete it!'
+	        }).then((result) => {
+	            if (result.isConfirmed) {
+	                window.location.href = 'delete?id=' + activityId;
+	            }
+	        });
+	    }
+	</script>    
 </body>
 
 </html>

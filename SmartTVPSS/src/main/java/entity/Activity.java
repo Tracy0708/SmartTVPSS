@@ -64,12 +64,14 @@ public class Activity {
 		this.activityLevel = activityLevel;
 		this.limitation = limitation;
 	}
+	
+	
 
-	public Integer getId() {
+	public Integer getid() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setid(Integer id) {
 		this.id = id;
 	}
 

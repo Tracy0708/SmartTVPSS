@@ -15,9 +15,9 @@ public class ActivityDao_usingHibernate {
 	private SessionFactory sessionFactory;
 
 	@Transactional
-	public Activity findById(Integer id) {
+	public Activity findById(Integer activity_id) {
 		Session currentSession = sessionFactory.getCurrentSession();
-		return currentSession.get(Activity.class, id);
+		return currentSession.get(Activity.class, activity_id);
 	}
 
 	@Transactional
@@ -33,10 +33,10 @@ public class ActivityDao_usingHibernate {
 	}
 
 	@Transactional
-	public void update(Integer id, Activity activity) {
+	public void update(Integer activity_id, Activity activity) {
 		Session currentSession = sessionFactory.getCurrentSession();
 		// Retrieve the persistent activity from the database using the provided id
-		Activity existingActivity = currentSession.get(Activity.class, id);
+		Activity existingActivity = currentSession.get(Activity.class, activity_id);
 		// Check if the activity exists before updating
 		if (existingActivity != null) {
 			// Update the properties of the existing activity with the new values
@@ -58,11 +58,11 @@ public class ActivityDao_usingHibernate {
 	}
 
 	@Transactional
-	public void delete(Integer id) {
+	public void delete(Integer activity_id) {
 		Session currentSession = sessionFactory.getCurrentSession();
 
 		// Retrieve the persistent activity from the database using the provided id
-		Activity activityToDelete = currentSession.get(Activity.class, id);
+		Activity activityToDelete = currentSession.get(Activity.class, activity_id);
 
 		// Check if the activity exists before deleting
 		if (activityToDelete != null) {

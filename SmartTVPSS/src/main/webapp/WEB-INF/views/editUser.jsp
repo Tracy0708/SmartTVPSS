@@ -4,13 +4,18 @@
 <head>
     <title>Edit User</title>
     <link rel="stylesheet" href="styles.css">
+    <script>
+        function confirmSubmit() {
+            return confirm("Are you sure you want to update this user?");
+        }
+    </script>
 </head>
 <body>
     <%@ include file="menu.jsp" %>
 
     <div class="container">
         <h1>Edit User</h1>
-        <form action="updateUser" method="post">
+        <form action="updateUser" method="post" onsubmit="return confirmSubmit();">
             <%-- Get the user details from the server-side --%>
             <%
                 User user = (User) request.getAttribute("user");

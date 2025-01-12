@@ -288,37 +288,6 @@
 			transition: background-color 0.3s, color 0.3s; /* Smooth transition */
 		}
 		
-		/* pop up details*/
-		.popup {
-		    position: fixed;
-		    top: 50%;
-		    left: 50%;
-		    transform: translate(-50%, -50%);
-		    background-color: white;
-		    padding: 20px;
-		    border-radius: 10px;
-		    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-		    z-index: 1000;
-		}
-		
-		.popup.hide {
-		    display: none;
-		}
-		
-		.popup-content h3 {
-		    margin-bottom: 20px;
-		}
-		
-		#close-popup {
-		    margin-top: 10px;
-		    padding: 5px 10px;
-		    background-color: red;
-		    color: white;
-		    border: none;
-		    cursor: pointer;
-		    border-radius: 5px;
-		}
-		
 		/* Hover effect for sub-menu items */
 		.sub-menu li a:hover {
 			background-color: #FBAF3C; /* Highlight color */
@@ -361,7 +330,7 @@
 		</form>
 	    
 	    <div class="addUser">
-	        <button class="add-button" style="width: 15%;"><a href="${pageContext.request.contextPath}/activity/add">Add Activity</a></button>
+	        <button class="add-button" style="width: 15%;"><a href="${pageContext.request.contextPath}/TVPSS/activity/add">Add Activity</a></button>
 	    </div>
 	
 	    <div class="table-container">
@@ -410,8 +379,8 @@
 	                        <td>${activity.activityType}</td>
 	                        <td>${activity.activityLevel}</td>
 	                        <td>
-	                        	<a href="${pageContext.request.contextPath}/activity/view?id=${activity.id}" class="btn btn-success btn-sm me-2 view-data" data-activity-id="${activity.id}">View</a>
-								<a href='${pageContext.request.contextPath}/activity/edit?id=${activity.id}' class='btn btn-primary btn-sm me-2'>Edit</a>
+	                        	<a href="${pageContext.request.contextPath}/TVPSS/activity/view?id=${activity.id}" class="btn btn-success btn-sm me-2 view-data" data-activity-id="${activity.id}">View</a>
+								<a href='${pageContext.request.contextPath}/TVPSS/activity/edit?id=${activity.id}' class='btn btn-primary btn-sm me-2'>Edit</a>
 								<a href="#" onclick="confirmDelete(${activity.id})" class='btn btn-danger btn-sm'>Delete</a>
 	                        </td>
 	                    </tr>

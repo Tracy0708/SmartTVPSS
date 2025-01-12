@@ -241,8 +241,8 @@
 		 
 		 .btn-primary {
 		    color: #fff;
-		    background-color: #007bff;
-		    border-color: #007bff;
+		    background-color: #FBAF3C;
+		    border-color: #FBAF3C;
 		 }
 		 
 		 .btn-success {
@@ -274,6 +274,70 @@
 		    color: #0C3182;
         }
         
+        .modal {
+		    position: fixed;
+		    z-index: 1;
+		    left: 0;
+		    top: 0;
+		    width: 100%;
+		    height: 100%;
+		    overflow: auto;
+		    background-color: rgba(0, 0, 0, 0.5);
+		}
+		
+		.modal-content {
+		    background-color: #f5c687;
+		    margin: 10% auto;
+		    padding: 30px;
+		    border: 1px solid #888;
+		    width: 50%;
+		    border-radius: 10px;
+		}
+        
+        .modal-content h2{
+        	padding-bottom: 20px;
+        	display:flex;
+        }
+        
+        .details-grid {
+            display: flex;
+            flex-direction:column;
+            gap: 15px;
+        }
+
+        .label {
+            font-weight: bold;
+            min-width: 160px;
+        }
+
+        .colon {
+            margin-right: 8px;
+        }
+
+        .description {
+            margin-top: 5px;
+            line-height: 1.5;
+        }
+        
+        .modal-content .information{
+        	display:flex;
+        	margin-bottom:10px;
+        }
+		
+		.close-btn {
+		    color: #aaa;
+		    float: right;
+		    font-size: 28px;
+		    font-weight: bold;
+		    cursor: pointer;
+		}
+		
+		.close-btn:hover,
+		.close-btn:focus {
+		    color: black;
+		    text-decoration: none;
+		}
+		          
         /* Sub-menu Style */
 		.sub-menu {
 			display: none;
@@ -287,37 +351,6 @@
 			padding: 5px 10px; /* Add padding for spacing */
 			border-radius: 5px; /* Optional: Rounded edges */
 			transition: background-color 0.3s, color 0.3s; /* Smooth transition */
-		}
-		
-		/* pop up details*/
-		.popup {
-		    position: fixed;
-		    top: 50%;
-		    left: 50%;
-		    transform: translate(-50%, -50%);
-		    background-color: white;
-		    padding: 20px;
-		    border-radius: 10px;
-		    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-		    z-index: 1000;
-		}
-		
-		.popup.hide {
-		    display: none;
-		}
-		
-		.popup-content h3 {
-		    margin-bottom: 20px;
-		}
-		
-		#close-popup {
-		    margin-top: 10px;
-		    padding: 5px 10px;
-		    background-color: red;
-		    color: white;
-		    border: none;
-		    cursor: pointer;
-		    border-radius: 5px;
 		}
 		
 		/* Hover effect for sub-menu items */
@@ -361,10 +394,6 @@
 		    </div>
 		</form>
 	    
-	    <div class="addUser">
-	        <button class="add-button" style="width: 15%;"><a href="${pageContext.request.contextPath}/activity/add">Add Activity</a></button>
-	    </div>
-	
 	    <div class="table-container">
 	        <table>
 	        
@@ -375,12 +404,12 @@
 			    </c:if>
 			
 			    <c:forEach begin="1" end="${totalPages}" var="pageNo">
-			        <a href="activityList?page=${pageNo}&search=${param.search}&type=${param.type}&level=${param.level}" 
-					   style="${pageNo == currentPage ? 'font-weight: bold; color: red;' : ''}">
-					   ${pageNo}
-					</a>
-			    </c:forEach>
-			
+				    <a href="activityList?page=${pageNo}&search=${param.search}&type=${param.type}&level=${param.level}" 
+				       style="${pageNo == currentPage ? 'font-weight: bold; color: red;' : ''}">
+				       ${pageNo}
+				    </a>
+				</c:forEach>
+
 			    <c:if test="${currentPage < totalPages}">
 			        <a href="activityList?page=${currentPage + 1}&search=${param.search}&type=${param.type}&level=${param.level}">Next</a>
 			    </c:if>
@@ -393,13 +422,14 @@
 	                    <th>Organizer</th>
 	                    <th>Type</th>
 	                    <th>Level</th>
+	                    <th>Participant</th>
 	                    <th>Action</th>
 	                </tr>
 	            </thead>
 	            <tbody>
 	                <c:if test="${empty activities}">
 	                    <tr>
-	                        <td colspan="6" style="text-align: center;">No data available</td>
+	                        <td colspan="7" style="text-align: center;">No data available</td>
 	                    </tr>
 	                </c:if>
         
@@ -410,8 +440,25 @@
 	                        <td>${activity.organizer}</td>
 	                        <td>${activity.activityType}</td>
 	                        <td>${activity.activityLevel}</td>
+	                        <td>${activity.currentParticipant} / ${activity.limitation}</td>
 	                        <td>
-	                            <a href="registerParticipant?id=${activity.activity_id}" class="btn btn-success btn-sm me-2 view-data">Register</a>
+	                        	<button 
+					                onclick="openModal(this)" 
+					                class="btn btn-success btn-sm me-2" 
+					                data-activity-name="${activity.activityName}" 
+					                data-organizer="${activity.organizer}" 
+					                data-start-date="${activity.startDate}" 
+					                data-end-date="${activity.endDate}" 
+					                data-pic="${activity.pic}" 
+					                data-phone="${activity.phone}" 
+					                data-location="${activity.location}" 
+					                data-description="${activity.description}" 
+					                data-activity-type="${activity.activityType}" 
+					                data-activity-level="${activity.activityLevel}" 
+					                data-limitation="${activity.limitation}">
+					                View
+					            </button>
+	                            <a href="${pageContext.request.contextPath}/student/activity/register?id=${activity.id}" class="btn btn-primary btn-sm me-2">Register</a>
 	                        </td>
 	                    </tr>
 	                    
@@ -429,9 +476,112 @@
 					</c:if>
 	            </tbody>
 	        </table>
+	  
+	        <div id="activityDetailsModal" class="modal" style="display: none;">
+			    <div class="modal-content">
+			        <span class="close-btn" onclick="closeModal()">&times;</span>
+			        <h2>Activity Details</h2>
+			        <div class="information">
+	                	<div class="label"><strong>Activity:</strong></div>
+			            <div><span class="colon">:</span></div>
+			            <div><span id="activityName"></span></div>
+	                </div>
+	                
+	                <div class="information">
+	                	<div class="label"><strong>Organizer:</strong></div>
+			            <div><span class="colon">:</span></div>
+			            <div><span id="organizer"></span></div>
+	                </div>
+	                
+	                <div class="information">
+	                	<div class="label"><strong>Start Date:</strong> </div>
+			            <div><span class="colon">:</span></div>
+			            <div><span id="startDate"></span></div>
+	                </div>
+	                
+	                <div class="information">
+	                	<div class="label"><strong>End Date:</strong></div>
+			            <div><span class="colon">:</span></div>
+			            <div><span id="endDate"></span></div>
+	                </div>
+	                
+	                <div class="information">
+	                	<div class="label"><strong>Person in Charge:</strong></div>
+			            <div><span class="colon">:</span></div>
+			            <div><span id="pic"></span></div>
+	                </div>
+	                
+	                <div class="information">
+	                	<div class="label"><strong>Phone:</strong></div>
+			            <div><span class="colon">:</span></div>
+			            <div><span id="phone"></span></div>
+	                </div>
+	                
+	                <div class="information">
+	                	<div class="label"><strong>Location:</strong></div>
+			            <div><span class="colon">:</span></div>
+			            <div><span id="location"></span></div>
+	                </div>
+	                
+	                <div class="information">
+	                	<div class="label"><strong>Description:</strong></div>
+			            <div><span class="colon">:</span></div>
+			            <div><span id="description"></span></div>
+	                </div>
+	                
+	                <div class="information">
+	                	<div class="label"><strong>Activity Type:</strong></div>
+			            <div><span class="colon">:</span></div>
+			            <div><span id="activityType"></span></div>
+	                </div>
+	                
+	                <div class="information">
+	                	<div class="label"><strong>Activity Level:</strong></div>
+			            <div><span class="colon">:</span></div>
+			            <div><span id="activityLevel"></span></div>
+	                </div>
+	                
+	                <div class="information">
+	                	<div class="label"><strong>Limitation:</strong></div>
+			            <div><span class="colon">:</span></div>
+			            <div><span id="limitation"></span></div>
+	                </div>
+			    </div>
+			 </div>
 	    </div>
-	</div>
-		    
-</body>
 
+</div>
+</body>
 </html>
+
+<script>
+	function openModal(button) {
+	    // Populate modal data
+	    document.getElementById('activityName').innerText = button.getAttribute('data-activity-name') || "N/A";
+	    document.getElementById('organizer').innerText = button.getAttribute('data-organizer') || "N/A";
+	    document.getElementById('startDate').innerText = formatDate(button.getAttribute('data-start-date')) || "N/A";
+	    document.getElementById('endDate').innerText = formatDate(button.getAttribute('data-end-date')) || "N/A";
+	    document.getElementById('pic').innerText = button.getAttribute('data-pic') || "N/A";
+	    document.getElementById('phone').innerText = button.getAttribute('data-phone') || "N/A";
+	    document.getElementById('location').innerText = button.getAttribute('data-location') || "N/A";
+	    document.getElementById('description').innerText = button.getAttribute('data-description') || "N/A";
+	    document.getElementById('activityType').innerText = button.getAttribute('data-activity-type') || "N/A";
+	    document.getElementById('activityLevel').innerText = button.getAttribute('data-activity-level') || "N/A";
+	    document.getElementById('limitation').innerText = button.getAttribute('data-limitation') || "N/A";
+	
+	    // Show the modal
+	    document.getElementById('activityDetailsModal').style.display = 'block';
+	}
+	
+	function closeModal() {
+	    document.getElementById('activityDetailsModal').style.display = 'none';
+	}
+	
+	function formatDate(dateTime) {
+	    if (!dateTime) return "--"; 
+	    const dateParts = dateTime.split(' ')[0]; 
+	    return dateParts; 
+	}
+
+
+</script>

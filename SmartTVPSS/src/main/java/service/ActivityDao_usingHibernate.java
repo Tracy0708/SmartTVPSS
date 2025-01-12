@@ -74,7 +74,7 @@ public class ActivityDao_usingHibernate {
 	@Transactional
 	public List<Activity> findAll() {
 		Session currentSession = sessionFactory.getCurrentSession();
-		return currentSession.createQuery("from Activity").getResultList();
+		return currentSession.createQuery("from Activity", Activity.class).getResultList();
 	}
 	
 	@Transactional

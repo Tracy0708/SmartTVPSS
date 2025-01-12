@@ -42,6 +42,8 @@ public class Activity {
 	private String activityLevel;
 	@Column(name = "limitation")
 	private int limitation;
+	@Column(name = "currentParticipant", nullable = false)
+    private Integer currentParticipant = 0;
 
 	// Default constructor
 	public Activity() {
@@ -161,6 +163,14 @@ public class Activity {
 
 	public void setLimitation(int limitation) {
 		this.limitation = limitation;
+	}
+
+	public Integer getCurrentParticipant() {
+		return currentParticipant;
+	}
+
+	public void setCurrentParticipant(Integer currentParticipant) {
+		this.currentParticipant = currentParticipant;
 	}
 
 	@Override

@@ -93,26 +93,12 @@ body {
 
 	<div class="container">
 		<div class="sidebar">
-<<<<<<< HEAD
 			<h3>School Administrator</h3>
 			<ul>
 				<li><a href="schooladminDashboard.jsp">Dashboard</a></li>
 				<li><a href="programstatus.jsp">Program Status</a></li>
 				<li><a href="talentList">Talent Management</a></li>
-				<li><a href="viewActivity.jsp">View Activity</a></li>
-=======
-			<h3>School Admin</h3>
-			<ul>
-				<li><a href="schooladminDashboard.jsp">Dashboard</a></li>
-				<li><a href="programstatus.jsp">Program Status</a></li>
-				<li class="toggle"><a href="javascript:void(0);">Talent
-						Management</a>
-					<ul class="sub-menu">
-						<li><a href="ApplyAsCandidate.jsp">Manage interview session</a></li>
-						<li><a href="viewApplicationStatus.jsp">Update application status</a></li>
-					</ul></li>
 				<li><a href="activityList">View Activity</a></li>
->>>>>>> 6abf668b1427ad4ab6fac9313992c770fbde2e51
 			</ul>
 		</div>
 

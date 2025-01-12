@@ -140,7 +140,7 @@ to {
 				<div style="text-align: right; margin-bottom: 20px;">
 
 					<form action="${pageContext.request.contextPath}/talent/edit"
-						method="get" class="d-inline">
+						method="get" class="d-inline"></form>
 						<input type="hidden" name="email" value="${talent.email}">
 						<button type="submit"
 							style="background-color: #003d73; border: none; color: white; padding: 6px 12px; font-size: 12px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: all 0.3s;">

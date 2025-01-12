@@ -9,7 +9,7 @@ import entity.School;
 import java.util.List;
 
 @Service
-public class SchoolDao_usingHibernate {
+public class ProgramDao_usingHibernate {
     @Autowired
     private SessionFactory sessionFactory;
     

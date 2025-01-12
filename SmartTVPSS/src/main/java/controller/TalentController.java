@@ -2,6 +2,9 @@ package controller;
 
 import java.security.Principal;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,62 +39,44 @@ public class TalentController {
 		model.addAttribute("talentList", talentList);
 		return "talentList";
 	}
-	
-	@PostMapping("/admin/talentList")
-    @ResponseBody
-    public ResponseEntity<?> scheduleInterview(@RequestBody Map<String, Object> interviewData) {
-        try {
-            // Safe type conversion
-            Integer id = null;
-            if (interviewData.get("id") instanceof Number) {
-                id = ((Number) interviewData.get("id")).intValue();
-            } else if (interviewData.get("id") instanceof String) {
-                id = Integer.parseInt((String) interviewData.get("id"));
-            }
 
-            String interviewDate = (String) interviewData.get("interviewDate");
-            String interviewTime = (String) interviewData.get("interviewTime");
+	 @PostMapping(value = "/admin/talentList", 
+             consumes = MediaType.APPLICATION_JSON_VALUE, 
+             produces = MediaType.APPLICATION_JSON_VALUE)
+ @ResponseBody
+ public ResponseEntity<?> scheduleInterview(@RequestBody Map<String, Object> interviewData) {
+     try {
+         // Extract data from the request
+         int id = ((Number) interviewData.get("id")).intValue();
+         String interviewDate = (String) interviewData.get("interviewDate");
+         String interviewTime = (String) interviewData.get("interviewTime");
 
-            // Validate input
-            if (id == null || id <= 0 || interviewDate == null || interviewTime == null) {
-                return ResponseEntity.badRequest()
-                    .body(Map.of("success", false, 
-                                "message", "Invalid input data. Please check all fields."));
-            }
+         // Parse the date
+         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+         Date parsedDate = dateFormat.parse(interviewDate);
 
-            // Retrieve the Talent record
-            Talent talent = tDao_usingHibernate.findById(id);
-            if (talent == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(Map.of("success", false, 
-                                "message", "Talent record not found"));
-            }
+         // Get the talent by ID
+         Talent talent = tDao_usingHibernate.findById(id);
+         if (talent == null) {
+             return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                 .body(Map.of("success", false, "message", "Talent not found"));
+         }
 
-            // Update interview details
-            try {
-                talent.setInterviewDate(new SimpleDateFormat("dd-MM-yyyy").parse(interviewDate));
-                talent.setInterviewTime(interviewTime);
-                talent.setApplicationStatus("SCHEDULED"); // Update status
-                tDao_usingHibernate.save(talent);
-            } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(Map.of("success", false, 
-                                "message", "Invalid date format"));
-            }
+         // Update interview details
+         talent.setInterviewDate(parsedDate);
+         talent.setInterviewTime(interviewTime);
+         talent.setApplicationStatus("SCHEDULED");
 
-            return ResponseEntity.ok(Map.of(
-                "success", true,
-                "message", "Interview scheduled successfully"
-            ));
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of("success", false, 
-                            "message", "Server error while scheduling interview"));
-        }
-    }
+         // Save the updated talent
+         tDao_usingHibernate.update(talent);
 
+         return ResponseEntity.ok(Map.of("success", true));
+     } catch (Exception e) {
+         e.printStackTrace();
+         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+             .body(Map.of("success", false, "message", e.getMessage()));
+     }
+ }
 
 	@GetMapping("/add")
 	public String add() {

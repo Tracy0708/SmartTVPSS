@@ -42,26 +42,24 @@ public class TalentDao_usingHibernate {
 
 	@Transactional
 	public void update(Talent talent) {
-		Session currentSession = sessionFactory.getCurrentSession();
-
-		// Retrieve the persistent Talent from the database using the provided id
-		Talent existingTalent = currentSession.get(Talent.class, talent.getId());
-
-		// Check if the Talent exists before updating
-		if (existingTalent != null) {
-			// Update the properties of the existing Talent with the new values
-			existingTalent.setSchoolCode(talent.getSchoolCode());
-			existingTalent.setSchoolName(talent.getSchoolName());
-			existingTalent.setName(talent.getName());
-			existingTalent.setGender(talent.getGender());
-			existingTalent.setContact(talent.getContact());
-			existingTalent.setEmail(talent.getEmail());
-			existingTalent.setReason(talent.getReason());
-
-			// No need to explicitly call save or merge, as Hibernate will track changes
-		} else {
-			throw new EntityNotFoundException("Talent with ID " + talent.getId() + " not found");
-		}
+	    Session currentSession = sessionFactory.getCurrentSession();
+	    Talent existingTalent = currentSession.get(Talent.class, talent.getId());
+	    
+	    if (existingTalent != null) {
+	        existingTalent.setSchoolCode(talent.getSchoolCode());
+	        existingTalent.setSchoolName(talent.getSchoolName());
+	        existingTalent.setName(talent.getName());
+	        existingTalent.setGender(talent.getGender());
+	        existingTalent.setContact(talent.getContact());
+	        existingTalent.setEmail(talent.getEmail());
+	        existingTalent.setReason(talent.getReason());
+	        // Add these lines to update interview details
+	        existingTalent.setInterviewDate(talent.getInterviewDate());
+	        existingTalent.setInterviewTime(talent.getInterviewTime());
+	        existingTalent.setApplicationStatus(talent.getApplicationStatus());
+	    } else {
+	        throw new EntityNotFoundException("Talent with ID " + talent.getId() + " not found");
+	    }
 	}
 
 	@Transactional
@@ -105,6 +103,25 @@ public class TalentDao_usingHibernate {
 	public boolean emailExists(String email) {
 		Talent talent = findByEmail(email);
 		return talent != null;
+	}
+	
+	@Transactional
+	public void updateInterviewDetails(int id, Date interviewDate, String interviewTime) {
+	    try {
+	        Session currentSession = sessionFactory.getCurrentSession();
+	        Talent talent = currentSession.get(Talent.class, id);
+	        
+	        if (talent != null) {
+	            talent.setInterviewDate(interviewDate);
+	            talent.setInterviewTime(interviewTime);
+	            talent.setApplicationStatus("SCHEDULED");
+	            currentSession.update(talent);
+	        } else {
+	            throw new EntityNotFoundException("Talent with ID " + id + " not found");
+	        }
+	    } catch (Exception e) {
+	        throw new RuntimeException("Error updating interview details: " + e.getMessage(), e);
+	    }
 	}
 
 }

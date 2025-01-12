@@ -203,31 +203,48 @@ to {
 	<%@ include file="studentnavbar.jsp"%>
 
 	<div class="main-content">
-		<div class="form-container">
-			<h2>Edit Application</h2>
-			<form action="${pageContext.request.contextPath}/talent/save"
-				method="post">
-				<input type="hidden" name="email" value="${talent.email}"> <label
-					for="name">Name:</label> <input type="text" id="name" name="name"
-					value="${talent.name}" required> <label for="schoolCode">School
-					Code:</label> <input type="text" id="schoolCode" name="schoolCode"
-					value="${talent.schoolCode}" required> <label for="contact">Contact
-					No.:</label> <input type="text" id="contact" name="contact"
-					value="${talent.contact}" pattern="[0-9]{10,15}" required>
+    <div class="form-container">
+        <h2>Edit Application</h2>
+        <form action="${pageContext.request.contextPath}/talent/save" method="post">
+            <h3>School Information</h3>
+            <label for="schoolCode">School Code:</label>
+            <input type="text" id="schoolCode" name="schoolCode" value="${talent.schoolCode}" required>
+            
+            <label for="schoolName">School Name:</label>
+            <input type="text" id="schoolName" name="schoolName" value="${talent.schoolName}" required>
+            
+            <br><br><br>
+            
+            <h3>Personal Information</h3>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" value="${talent.name}" required>
+            
+            <label for="gender">Gender:</label>
+            <select id="gender" name="gender" required>
+                <option value="">Select</option>
+                <option value="Male" <c:if test="${talent.gender == 'Male'}">selected</c:if>>Male</option>
+                <option value="Female" <c:if test="${talent.gender == 'Female'}">selected</c:if>>Female</option>
+            </select>
+            
+            <label for="contact">Contact No.:</label>
+            <input type="text" id="contact" name="contact" value="${talent.contact}" pattern="[0-9]{10,15}" required>
+            
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" value="${talent.email}" readonly>
+            
+            <label for="reason">Why do you wish to join as part of TVPSS crew?:</label>
+            <textarea id="reason" name="reason" rows="4" required>${talent.reason}</textarea>
+            
+            <button type="submit">Save Changes</button>
+        </form>
+    </div>
+</div>
 
-				<label for="reason">Reason:</label>
-				<textarea id="reason" name="reason" rows="4" required>${talent.reason}</textarea>
-
-				<button type="submit" class="btn btn-success">Save Changes</button>
-			</form>
-		</div>
-
-	</div>
 	<!-- Modal -->
 	<div id="modal" class="modal">
 		<div class="modal-content">
 			<h2>SUCCESSFULLY</h2>
-			<p>The information has been successfully added.</p>
+			<p>The information has been successfully edited.</p>
 			<button class="close-button" onclick="closeModal()">Close</button>
 		</div>
 	</div>

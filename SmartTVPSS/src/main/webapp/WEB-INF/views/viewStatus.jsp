@@ -169,7 +169,7 @@ to {
 						${talent.applicationStatus}</div>
 					<c:if test="${talent.applicationStatus eq 'SCHEDULED'}">
 						<div class="alert alert-info mt-3">
-							<h6>Interview Details</h6>
+							<h3>Interview Details</h3>
 							<p>
 								<strong>Date:</strong>
 								<fmt:formatDate value="${talent.interviewDate}"

@@ -110,6 +110,10 @@
             width: 50%;
         }
         
+        span{
+            color:red;
+        }
+        
         /* Sub-menu Style */
 		.sub-menu {
 			display: none;
@@ -144,7 +148,7 @@
         <div class="content">
             <div class="form-container">
                 <div class="form-header" style="display: flex;">
-                    <a href="activityList.html"><svg xmlns="http://www.w3.org/2000/svg" height="26px"
+                    <a href="${pageContext.request.contextPath}/TVPSS/activity/activityList"><svg xmlns="http://www.w3.org/2000/svg" height="26px"
                             viewBox="0 -960 960 960" width="26px" fill="black">
                             <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z" />
                         </svg></a>
@@ -152,36 +156,36 @@
                 </div>
 
                 <form action="add" method="post">
-                    <label for="activityName">Activity Name:</label>
+                    <label for="activityName"><span>*</span>Activity Name:</label>
                     <input type="text" id="activityName" name="activityName" required>
 
-                    <label for="organizer">Organizer:</label>
-                    <input type="text" id="organizer" name="organizer" required>
+                    <label for="organizer"><span>*</span>Organizer:</label>
+                    <input type="text" id="organizer" name="organizer" placeholder="TVPSS" required>
 
                     <div class="row">
                         <div class="column">
-                            <label for="startDate">Start Date:</label>
-                            <input type="date" id="startDate" name="startDate" placeholder="startDate">
+                            <label for="startDate"><span>*</span>Start Date:</label>
+                            <input type="date" id="startDate" name="startDate" required>
                         </div>
                         <div class="column">
-                            <label for="endDate">End Date:</label>
-                            <input type="date" id="endDate" name="endDate">
+                            <label for="endDate"><span>*</span>End Date:</label>
+                            <input type="date" id="endDate" name="endDate" required>
                         </div>
                     </div>
 
-                    <label for="pic">PIC:</label>
-                    <input type="text" id="pic" name="pic">
+                    <label for="pic"><span>*</span>PIC:</label>
+                    <input type="text" id="pic" name="pic" placeholder="Tan Yi Yi" required>
 
-                    <label for="phone">Phone:</label>
-                    <input type="tel" id="phone" name="phone">
+                    <label for="phone"><span>*</span>Phone:</label>
+                    <input type="tel" id="phone" name="phone" placeholder="01212345678" required>
 
-                    <label>Location: </label>
-                    <input type="text" id="location" name="location">
+                    <label><span>*</span>Location: </label>
+                    <input type="text" id="location" name="location" placeholder="SMK a, Johor" required>
 
-                    <label for="description">Description:</label>
-                    <textarea id="description" name="description" rows="4" style="padding-top:10px;"></textarea>
+                    <label for="description"><span>*</span>Description:</label>
+                    <textarea id="description" name="description" rows="4" style="padding-top:10px;" placeholder="Please describe the activity.." required></textarea>
 
-                    <label for="activityType">Activity Type:</label>
+                    <label for="activityType"><span>*</span>Activity Type:</label>
                     <select id="activityType" name="activityType" required>
                         <option value="" disabled selected>Select a type</option>
                         <option value="Award">Award</option>
@@ -189,7 +193,7 @@
                         <option value="Talk">Talk</option>
                     </select>
 
-                    <label for="activityLevel">Activity Level:</label>
+                    <label for="activityLevel"><span>*</span>Activity Level:</label>
                     <select id="activityLevel" name="activityLevel" required>
                         <option value="" disabled selected>Select level</option>
                         <option value="School">School</option>
@@ -197,7 +201,7 @@
                         <option value="District">District</option>
                     </select>
 
-                    <label for="limitation">Limitations:</label>
+                    <label for="limitation"><span>*</span>Limitations:</label>
                     <input type="number" id="limitation" name="limitation" min="0" value="0">
 
                     <button type="submit" class="submit-button">SUBMIT</button>

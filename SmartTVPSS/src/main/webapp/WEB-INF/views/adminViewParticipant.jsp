@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Activity Management</title>
+    <title>Participant List</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
@@ -240,8 +240,8 @@
 		 
 		 .btn-primary {
 		    color: #fff;
-		    background-color: #007bff;
-		    border-color: #007bff;
+		    background-color: #FBAF3C;
+		    border-color: #FBAF3C
 		 }
 		 
 		 .btn-success {
@@ -288,6 +288,37 @@
 			transition: background-color 0.3s, color 0.3s; /* Smooth transition */
 		}
 		
+		/* pop up details*/
+		.popup {
+		    position: fixed;
+		    top: 50%;
+		    left: 50%;
+		    transform: translate(-50%, -50%);
+		    background-color: white;
+		    padding: 20px;
+		    border-radius: 10px;
+		    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		    z-index: 1000;
+		}
+		
+		.popup.hide {
+		    display: none;
+		}
+		
+		.popup-content h3 {
+		    margin-bottom: 20px;
+		}
+		
+		#close-popup {
+		    margin-top: 10px;
+		    padding: 5px 10px;
+		    background-color: red;
+		    color: white;
+		    border: none;
+		    cursor: pointer;
+		    border-radius: 5px;
+		}
+		
 		/* Hover effect for sub-menu items */
 		.sub-menu li a:hover {
 			background-color: #FBAF3C; /* Highlight color */
@@ -305,9 +336,9 @@
     <%@ include file="adminnavbar.jsp"%>
 
 	<div class="content">	
-	    <h2>Activity List</h2>
+	    <h2>Participant List</h2>
 	    
-	    <form method="GET" action="activityList">
+	    <form method="GET" action="participant">
 		    <div class="search-filter">
 		        <input style="width: 50%;" type="text" name="search" placeholder="Search" value="${search}">
 		        
@@ -326,12 +357,9 @@
 			    </select>
 			    
 		        <button type="submit" class="filter-button" style="width: 16%;">Filter</button>
+		        
 		    </div>
 		</form>
-	    
-	    <div class="addUser">
-	        <button class="add-button" style="width: 15%;"><a href="${pageContext.request.contextPath}/TVPSS/activity/add">Add Activity</a></button>
-	    </div>
 	
 	    <div class="table-container">
 	        <table>
@@ -339,18 +367,18 @@
 	        <!-- Pagination Controls -->
 			<div class="pagination">
 			    <c:if test="${currentPage > 1}">
-			        <a href="activityList?page=${currentPage - 1}&search=${param.search}&type=${param.type}&level=${param.level}">Previous</a>
+			        <a href="participant?page=${currentPage - 1}&search=${param.search}&type=${param.type}&level=${param.level}">Previous</a>
 			    </c:if>
 			
 			    <c:forEach begin="1" end="${totalPages}" var="pageNo">
-			        <a href="activityList?page=${pageNo}&search=${param.search}&type=${param.type}&level=${param.level}" 
+			        <a href="participant?page=${pageNo}&search=${param.search}&type=${param.type}&level=${param.level}" 
 					   style="${pageNo == currentPage ? 'font-weight: bold; color: red;' : ''}">
 					   ${pageNo}
 					</a>
 			    </c:forEach>
 			
 			    <c:if test="${currentPage < totalPages}">
-			        <a href="activityList?page=${currentPage + 1}&search=${param.search}&type=${param.type}&level=${param.level}">Next</a>
+			        <a href="participant?page=${currentPage + 1}&search=${param.search}&type=${param.type}&level=${param.level}">Next</a>
 			    </c:if>
 			</div>
 
@@ -361,13 +389,14 @@
 	                    <th>Organizer</th>
 	                    <th>Type</th>
 	                    <th>Level</th>
+	                    <th>Total Participant</th>
 	                    <th>Action</th>
 	                </tr>
 	            </thead>
 	            <tbody>
 	                <c:if test="${empty activities}">
 	                    <tr>
-	                        <td colspan="6" style="text-align: center;">No data available</td>
+	                        <td colspan="7" style="text-align: center;">No data available</td>
 	                    </tr>
 	                </c:if>
         
@@ -378,10 +407,9 @@
 	                        <td>${activity.organizer}</td>
 	                        <td>${activity.activityType}</td>
 	                        <td>${activity.activityLevel}</td>
+	                        <td>${activity.currentParticipant} / ${activity.limitation}</td>
 	                        <td>
-	                        	<a href="${pageContext.request.contextPath}/TVPSS/activity/view?id=${activity.id}" class="btn btn-success btn-sm me-2 view-data" data-activity-id="${activity.id}">View</a>
-								<a href='${pageContext.request.contextPath}/TVPSS/activity/edit?id=${activity.id}' class='btn btn-primary btn-sm me-2'>Edit</a>
-								<a href="#" onclick="confirmDelete(${activity.id})" class='btn btn-danger btn-sm'>Delete</a>
+								<a href="${pageContext.request.contextPath}/TVPSS/activity/viewParticipant?id=${activity.id}" class="btn btn-primary btn-sm me-2">View</a>
 	                        </td>
 	                    </tr>
 	                    
@@ -401,24 +429,6 @@
 	        </table>
 	    </div>
 	</div>
-	
-	<script>	
-	    function confirmDelete(activityId) {
-	        Swal.fire({
-	            title: 'Are you sure?',
-	            text: "You won't be able to revert this!",
-	            icon: 'warning',
-	            showCancelButton: true,
-	            confirmButtonColor: '#3085d6',
-	            cancelButtonColor: '#d33',
-	            confirmButtonText: 'Yes, delete it!'
-	        }).then((result) => {
-	            if (result.isConfirmed) {
-	                window.location.href = 'delete?id=' + activityId;
-	            }
-	        });
-	    }
-	</script>    
 </body>
 
 </html>

@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Activity Management</title>
+    <title>Participant List</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
@@ -240,20 +240,34 @@
 		 
 		 .btn-primary {
 		    color: #fff;
-		    background-color: #007bff;
-		    border-color: #007bff;
+		    background-color: #FBAF3C;
+		    border-color: #FBAF3C
 		 }
 		 
-		 .btn-success {
+		 .btn-edit {
 		    color: #fff;
-		    background-color: #28a745;
-		    border-color: #28a745;
+		    background-color: #007bff;
+		    border-color: #007bff;
 		 }
 		 
 		 .btn-danger {
 		    color: #fff;
 		    background-color: #dc3545;
 		    border-color: #dc3545;
+		}
+		
+		.btn-reset{
+			color:blue;
+			text-decoration:none;
+		}
+		
+		.activityInfo{
+			margin-left:20px;
+			font-size: 20px;
+		}
+		
+		.activityInfo p{
+			margin-bottom:10px;
 		}
         
         /* Pagination style */
@@ -305,33 +319,34 @@
     <%@ include file="adminnavbar.jsp"%>
 
 	<div class="content">	
-	    <h2>Activity List</h2>
-	    
-	    <form method="GET" action="activityList">
+	
+		<div class="detail-header" style="display:flex;">
+              <a href='participant'><svg xmlns="http://www.w3.org/2000/svg" height="26px"
+                      viewBox="0 -960 960 960" width="26px" fill="black">
+                      <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z" />
+                  </svg></a>
+              <h2 style="padding-left: 20px;">Participant List</h2>
+        </div>
+                	    
+	    <form method="GET" action="viewParticipant">
+		    <input type="hidden" name="id" value="${activity.id}" />
 		    <div class="search-filter">
-		        <input style="width: 50%;" type="text" name="search" placeholder="Search" value="${search}">
-		        
-		        <select style="width: 17%;" name="type">
-			        <option value="" disabled selected>Type</option>
-			        <option value="Competition" ${type == 'competition' ? 'selected' : ''}>Competition</option>
-			        <option value="Award" ${type == 'award' ? 'selected' : ''}>Award</option>
-			        <option value="Talk" ${type == 'talk' ? 'selected' : ''}>Talk</option>
-			    </select>
-		        
-		        <select style="width: 17%;" name="level">
-			        <option value="" disabled selected>Level</option>
-			        <option value="State" ${level == 'state' ? 'selected' : ''}>State</option>
-			        <option value="School" ${level == 'school' ? 'selected' : ''}>School</option>
-			        <option value="District" ${level == 'school' ? 'selected' : ''}>District</option>
-			    </select>
-			    
-		        <button type="submit" class="filter-button" style="width: 16%;">Filter</button>
+		        <input style="width: 60%;" type="text" name="search" placeholder="Search" value="${search}">
+		        <select style="width: 20%;" name="gender">
+		            <option value="" disabled selected>Gender</option>
+		            <option value="Male" ${gender == 'Male' ? 'selected' : ''}>Male</option>
+		            <option value="Female" ${gender == 'Female' ? 'selected' : ''}>Female</option>
+		        </select>
+		        <button type="submit" class="filter-button" style="width: 20%;">Filter</button>
+		        <a href="${pageContext.request.contextPath}/TVPSS/activity/viewParticipant?id=${activity.id}" class="btn-reset">Reset</a>
 		    </div>
 		</form>
-	    
-	    <div class="addUser">
-	        <button class="add-button" style="width: 15%;"><a href="${pageContext.request.contextPath}/TVPSS/activity/add">Add Activity</a></button>
-	    </div>
+
+		
+		<div class="activityInfo">
+			<p><strong>Activity : </strong> ${activity.activityName}</p>
+			<p><strong>Organizer : </strong> ${activity.organizer}</p>
+		</div>
 	
 	    <div class="table-container">
 	        <table>
@@ -339,49 +354,47 @@
 	        <!-- Pagination Controls -->
 			<div class="pagination">
 			    <c:if test="${currentPage > 1}">
-			        <a href="activityList?page=${currentPage - 1}&search=${param.search}&type=${param.type}&level=${param.level}">Previous</a>
+			        <a href="viewParticipant?id=${activity.id}&page=${currentPage - 1}&search=${search}&gender=${gender}">Previous</a>
 			    </c:if>
 			
 			    <c:forEach begin="1" end="${totalPages}" var="pageNo">
-			        <a href="activityList?page=${pageNo}&search=${param.search}&type=${param.type}&level=${param.level}" 
-					   style="${pageNo == currentPage ? 'font-weight: bold; color: red;' : ''}">
-					   ${pageNo}
-					</a>
+			        <a href="viewParticipant?id=${activity.id}&page=${pageNo}&search=${search}&gender=${gender}" 
+			           style="${pageNo == currentPage ? 'font-weight: bold; color: red;' : ''}">
+			           ${pageNo}
+			        </a>
 			    </c:forEach>
 			
 			    <c:if test="${currentPage < totalPages}">
-			        <a href="activityList?page=${currentPage + 1}&search=${param.search}&type=${param.type}&level=${param.level}">Next</a>
+			        <a href="viewParticipant?id=${activity.id}&page=${currentPage + 1}&search=${search}&gender=${gender}">Next</a>
 			    </c:if>
 			</div>
 
 	            <thead>
 	                <tr>
 	                    <th>No</th>
-	                    <th>Activity</th>
-	                    <th>Organizer</th>
-	                    <th>Type</th>
-	                    <th>Level</th>
+	                    <th>Student Name</th>
+	                    <th>School</th>
+	                    <th>Gender</th>
+	                    <th>Email</th>
 	                    <th>Action</th>
 	                </tr>
 	            </thead>
 	            <tbody>
-	                <c:if test="${empty activities}">
+	                <c:if test="${empty participants}">
 	                    <tr>
 	                        <td colspan="6" style="text-align: center;">No data available</td>
 	                    </tr>
 	                </c:if>
         
-	                <c:forEach var="activity" items="${activities}" varStatus="status">
+	                <c:forEach var="participant" items="${participants}" varStatus="status">
 	                    <tr>
 	                        <td>${(currentPage - 1) * 5 + status.index + 1}</td>
-	                        <td>${activity.activityName}</td>
-	                        <td>${activity.organizer}</td>
-	                        <td>${activity.activityType}</td>
-	                        <td>${activity.activityLevel}</td>
+	                        <td>${participant.name}</td>
+	                        <td>${participant.school}</td>
+	                        <td>${participant.gender}</td>
+	                        <td>${participant.email}</td>
 	                        <td>
-	                        	<a href="${pageContext.request.contextPath}/TVPSS/activity/view?id=${activity.id}" class="btn btn-success btn-sm me-2 view-data" data-activity-id="${activity.id}">View</a>
-								<a href='${pageContext.request.contextPath}/TVPSS/activity/edit?id=${activity.id}' class='btn btn-primary btn-sm me-2'>Edit</a>
-								<a href="#" onclick="confirmDelete(${activity.id})" class='btn btn-danger btn-sm'>Delete</a>
+								<a href='${pageContext.request.contextPath}/TVPSS/activity/viewParticipantDetails?id=${participant.participant_id}' class='btn btn-primary btn-sm me-2'>View</a>
 	                        </td>
 	                    </tr>
 	                    
@@ -401,24 +414,6 @@
 	        </table>
 	    </div>
 	</div>
-	
-	<script>	
-	    function confirmDelete(activityId) {
-	        Swal.fire({
-	            title: 'Are you sure?',
-	            text: "You won't be able to revert this!",
-	            icon: 'warning',
-	            showCancelButton: true,
-	            confirmButtonColor: '#3085d6',
-	            cancelButtonColor: '#d33',
-	            confirmButtonText: 'Yes, delete it!'
-	        }).then((result) => {
-	            if (result.isConfirmed) {
-	                window.location.href = 'delete?id=' + activityId;
-	            }
-	        });
-	    }
-	</script>    
 </body>
 
 </html>

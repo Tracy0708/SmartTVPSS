@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Activity</title>
+    <title>Participant Details</title>
 
     <style>
         * {
@@ -18,6 +18,7 @@
 
         .container {
             display: flex;
+            height:100vh;
         }
         
         .sidebar {
@@ -138,76 +139,64 @@
         <div class="content">
             <div class="detail-container">
                 <div class="detail-header">
-                    <a href="${pageContext.request.contextPath}/TVPSS/activity/activityList"><svg xmlns="http://www.w3.org/2000/svg" height="26px"
+                    <a href='${pageContext.request.contextPath}/TVPSS/activity/viewParticipant?id=${participant.participant_id}'><svg xmlns="http://www.w3.org/2000/svg" height="26px"
                             viewBox="0 -960 960 960" width="26px" fill="black">
                             <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z" />
                         </svg></a>
-                    <h2 style="padding-left: 20px;">Activity Details</h2>
+                    <h2 style="padding-left: 20px;">Participant Details</h2>
                 </div>
                 
                 <div class="details-grid">
+			        <div class="information">
+		             	<div class="label">Student ID</div>
+				        <div><span class="colon">:</span></div>
+				        <div>${participant.studentID}</div>
+		            </div>
+
 	                <div class="information">
-	                	<div class="label">Activity</div>
+	                	<div class="label">Participant Name</div>
 			            <div><span class="colon">:</span></div>
-			            <div>${activity.activityName}</div>
+			            <div>${participant.name}</div>
 	                </div>
 		            
-		            <div class="information">
-	                	<div class="label">Organizer</div>
-			            <div><span class="colon">:</span></div>
-			            <div>${activity.organizer}</div>
-	                </div>
 	                		
 		           	<div class="information">
-	                	<div class="label">Date</div>
+	                	<div class="label">Gender</div>
 			            <div><span class="colon">:</span></div>
-			            <div>${startDateFormatted} to ${endDateFormatted}</div>
+			            <div>${participant.gender}</div>
 	                </div>
 		
 		            <div class="information">
-	                	<div class="label">Person in Charge</div>
+	                	<div class="label">Age</div>
 			            <div><span class="colon">:</span></div>
-			            <div>${activity.pic}</div>
+			            <div>${participant.age}</div>
+	                </div>
+	                
+	                <div class="information">
+	                	<div class="label">School</div>
+			            <div><span class="colon">:</span></div>
+			            <div>${participant.school}</div>
+	                </div>
+	                
+	                <div class="information">
+	                	<div class="label">Email</div>
+			            <div><span class="colon">:</span></div>
+			            <div>${participant.email}</div>
 	                </div>
 	                
 	                <div class="information">
 	                	<div class="label">Phone</div>
 			            <div><span class="colon">:</span></div>
-			            <div>${activity.phone}</div>
+			            <div>${participant.phone}</div>
 	                </div>
 	                
 	                <div class="information">
-	                	<div class="label">Location</div>
+	                	<div class="label">Address</div>
 			            <div><span class="colon">:</span></div>
-			            <div>${activity.location}</div>
+			            <div>${participant.address}</div>
 	                </div>
-	                
-	                <div class="information">
-	                	<div class="label">Description</div>
-			            <div><span class="colon">:</span></div>
-			            <div>${activity.description}</div>
-	                </div>
-	                
-	                <div class="information">
-	                	<div class="label">Activity Type</div>
-			            <div><span class="colon">:</span></div>
-			            <div>${activity.activityType}</div>
-	                </div>
-	                
-	                <div class="information">
-	                	<div class="label">Activity Level</div>
-			            <div><span class="colon">:</span></div>
-			            <div>${activity.activityLevel}</div>
-	                </div>
-	                
-					<div class="information">
-				        <div class="label">Limited of Participant</div>
-						<div><span class="colon">:</span></div>
-						<div>${activity.limitation}</div>
-				    </div>
+
 		        </div>
-		
-		        <a href='${pageContext.request.contextPath}/TVPSS/activity/edit?id=${activity.id}' class='edit-button'>Edit</a>
         </div>
     </div>
 </body>

@@ -16,14 +16,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import entity.Activity;
+import entity.Participant;
 import service.ActivityDao_usingHibernate;
+import service.StudentActivityDao_usingHibernate;
 
 @Controller
-@RequestMapping("/activity")
+@RequestMapping("/TVPSS/activity")
 public class ActivityController {
 	@Autowired // spring dependency injection
 	private ActivityDao_usingHibernate aDao_usingHibernate;
 	
+	@Autowired
+	private StudentActivityDao_usingHibernate sDao_usingHibernate;
 
 	@RequestMapping(value = "/activityList", method = RequestMethod.GET)
 	public String listActivities(
@@ -48,7 +52,7 @@ public class ActivityController {
 	    model.addAttribute("currentPage", page);
 	    model.addAttribute("totalPages", totalPages);
 
-	    return "activityList";
+	    return "adminActivityList";
 	}
 
 	@RequestMapping("/add1")
@@ -60,7 +64,7 @@ public class ActivityController {
 
 	@GetMapping("/add")
 	public String add() {
-		return "addActivity";
+		return "adminAddActivity";
 	}
 
 	@PostMapping("/add")
@@ -68,7 +72,7 @@ public class ActivityController {
 		aDao_usingHibernate.save(activity);
 		model.addAttribute("activity", activity);
     	redirectAttributes.addFlashAttribute("message", "Activity added successfully!");
-	    return "redirect:/activity/activityList";
+	    return "redirect:/TVPSS/activity/activityList";
 	}
 	
 	@GetMapping("/edit")
@@ -76,12 +80,12 @@ public class ActivityController {
 	    Activity activity = aDao_usingHibernate.findById(id);
 	    if (activity == null) {
 	        redirectAttributes.addFlashAttribute("error", "Activity not found!");
-	        return "redirect:/activity/activityList";
+	        return "redirect:/TVPSS/activity/activityList";
 	    }
 	    model.addAttribute("startDateFormatted", new SimpleDateFormat("yyyy-MM-dd").format(activity.getStartDate()));
 	    model.addAttribute("endDateFormatted", new SimpleDateFormat("yyyy-MM-dd").format(activity.getEndDate()));
 	    model.addAttribute("activity", activity);
-	    return "editActivityForm";
+	    return "adminEditActivityForm";
 	}
 	
 	@GetMapping("/view")
@@ -89,12 +93,12 @@ public class ActivityController {
 	    Activity activity = aDao_usingHibernate.findById(id);
 	    if (activity == null) {
 	        redirectAttributes.addFlashAttribute("error", "Activity not found!");
-	        return "redirect:/activity/activityList";
+	        return "redirect:/TVPSS/activity/activityList";
 	    }
 	    model.addAttribute("startDateFormatted", new SimpleDateFormat("yyyy-MM-dd").format(activity.getStartDate()));
 	    model.addAttribute("endDateFormatted", new SimpleDateFormat("yyyy-MM-dd").format(activity.getEndDate()));
 	    model.addAttribute("activity", activity);
-	    return "viewDetails";
+	    return "adminActivityDetails";
 	}
 
 	
@@ -109,18 +113,110 @@ public class ActivityController {
 	        // Add new record
 	    	aDao_usingHibernate.save(activity);
 	    }
-	    return "redirect:/activity/activityList";
+	    return "redirect:/TVPSS/activity/activityList";
 	}
 
 	@GetMapping("/delete")
 	public String deleteActivity(@RequestParam("id") Integer id, RedirectAttributes redirectAttributes) {
-	    if (aDao_usingHibernate.findById(id) == null) {
-	        redirectAttributes.addFlashAttribute("error", "Activity not found!");
-	    } else {
-	        aDao_usingHibernate.delete(id);
-	        redirectAttributes.addFlashAttribute("message", "Activity deleted successfully!");
+	    try {
+	        // Check if the activity exists
+	        if (aDao_usingHibernate.findById(id) == null) {
+	            redirectAttributes.addFlashAttribute("error", "Activity not found!");
+	        } else {
+	            // Attempt to delete the activity
+	            aDao_usingHibernate.delete(id);
+	            redirectAttributes.addFlashAttribute("message", "Activity deleted successfully!");
+	        }
+	    } catch (IllegalStateException e) {
+	        // Handle the case where the activity has related records
+	        redirectAttributes.addFlashAttribute("error", e.getMessage());
+	    } catch (Exception e) {
+	        // Handle other unexpected exceptions
+	        redirectAttributes.addFlashAttribute("error", "An error occurred while deleting the activity.");
 	    }
-	    return "redirect:/activity/activityList";
+
+	    return "redirect:/TVPSS/activity/activityList";
+	}
+
+
+	@RequestMapping(value = "/participant", method = RequestMethod.GET)
+	public String viewParticipant(
+	    @RequestParam(value = "search", required = false) String search,
+	    @RequestParam(value = "type", required = false) String type,
+	    @RequestParam(value = "level", required = false) String level,
+	    @RequestParam(value = "page", defaultValue = "1") int page,
+	    Model model) {
+
+	    // Set default values for filters if null
+	    if (search == null) search = "";
+	    if (type == null) type = "";
+	    if (level == null) level = "";
+
+	    int pageSize = 10;
+	    List<Activity> activities = aDao_usingHibernate.getFilteredActivities(search, type, level, page, pageSize);
+	    int totalActivities = aDao_usingHibernate.getFilteredActivitiesCount(search, type, level);
+
+	    int totalPages = (int) Math.ceil((double) totalActivities / pageSize);
+
+	    model.addAttribute("activities", activities);
+	    model.addAttribute("currentPage", page);
+	    model.addAttribute("totalPages", totalPages);
+
+	    return "adminViewParticipant";
+	}
+	
+	@GetMapping("/viewParticipant")
+	public String viewParticipants(
+	    @RequestParam("id") Integer activityId,
+	    @RequestParam(value = "search", defaultValue = "") String search,
+	    @RequestParam(value = "gender", defaultValue = "") String gender,
+	    @RequestParam(value = "page", defaultValue = "1") int page,
+	    @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+	    Model model,
+	    RedirectAttributes redirectAttributes
+	) {
+	    // Retrieve the activity
+	    Activity activity = aDao_usingHibernate.findById(activityId);
+	    if (activity == null) {
+	        redirectAttributes.addFlashAttribute("error", "Activity not found!");
+	        return "redirect:/TVPSS/activity/participant";
+	    }
+
+	    // Check if any filters are applied
+	    boolean isFilterApplied = !(search.isEmpty() && gender.isEmpty());
+
+	    List<Participant> participants;
+	    int totalParticipants;
+
+	    if (isFilterApplied) {
+	        // Retrieve filtered participants
+	        participants = sDao_usingHibernate.getFilteredParticipant(activityId, search, gender, page, pageSize);
+	        totalParticipants = sDao_usingHibernate.getFilteredParticipantCount(activityId, search, gender);
+	    } else {
+	        // Retrieve all participants for the activity
+	        participants = sDao_usingHibernate.findParticipantsByActivityId(activityId);
+	        totalParticipants = participants.size();
+	    }
+
+	    int totalPages = (int) Math.ceil((double) totalParticipants / pageSize);
+
+	    // Add data to the model
+	    model.addAttribute("activity", activity);
+	    model.addAttribute("participants", participants);
+	    model.addAttribute("currentPage", page);
+	    model.addAttribute("totalPages", totalPages);
+	    model.addAttribute("search", search);
+	    model.addAttribute("gender", gender);
+
+	    return "adminParticipantList"; 
+	}
+
+
+	@GetMapping("/viewParticipantDetails")
+	public String viewParticipantDetails(@RequestParam("id") Integer participantId, Model model) {
+	    Participant participant = sDao_usingHibernate.findById(participantId);
+	    model.addAttribute("participant", participant);
+	    return "adminParticipantDetails"; 
 	}
 
 }

@@ -63,7 +63,6 @@
 
         .container {
             display: flex;
-            height: 100vh;
         }
 
         .sidebar ul {
@@ -288,6 +287,37 @@
 			transition: background-color 0.3s, color 0.3s; /* Smooth transition */
 		}
 		
+		/* pop up details*/
+		.popup {
+		    position: fixed;
+		    top: 50%;
+		    left: 50%;
+		    transform: translate(-50%, -50%);
+		    background-color: white;
+		    padding: 20px;
+		    border-radius: 10px;
+		    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		    z-index: 1000;
+		}
+		
+		.popup.hide {
+		    display: none;
+		}
+		
+		.popup-content h3 {
+		    margin-bottom: 20px;
+		}
+		
+		#close-popup {
+		    margin-top: 10px;
+		    padding: 5px 10px;
+		    background-color: red;
+		    color: white;
+		    border: none;
+		    cursor: pointer;
+		    border-radius: 5px;
+		}
+		
 		/* Hover effect for sub-menu items */
 		.sub-menu li a:hover {
 			background-color: #FBAF3C; /* Highlight color */
@@ -396,6 +426,17 @@
 					            confirmButtonText: 'OK'
 					        });
 					    </script>
+					</c:if>
+					
+					<c:if test="${not empty error}">
+						<script>
+						        Swal.fire({
+						            title: 'Error!',
+						            text: '${error}',
+						            icon: 'error',
+						            confirmButtonText: 'OK'
+						        });
+						</script>
 					</c:if>
 	            </tbody>
 	        </table>

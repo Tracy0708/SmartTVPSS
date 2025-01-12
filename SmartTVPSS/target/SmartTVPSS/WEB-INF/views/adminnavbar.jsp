@@ -93,9 +93,9 @@ body {
 
 	<div class="container">
 		<div class="sidebar">
-			<h3>Student</h3>
+			<h3>TVPSS</h3>
 			<ul>
-				<li><a href="studentDashboard.jsp">Dashboard</a></li>
+				<li><a href="TVPSSDashboard.jsp">Dashboard</a></li>
 				<li class="toggle"><a href="javascript:void(0);">Activity</a>
 					<ul class="sub-menu">
 						<li><a href="ApplyAsCandidate.jsp">Manage activity</a></li>
@@ -105,6 +105,7 @@ body {
 				<li><a href="viewActivity.jsp">User List</a></li>
 			</ul>
 		</div>
+	</div>
 
 		<script>
 			// JavaScript for toggling the Talent Application submenu

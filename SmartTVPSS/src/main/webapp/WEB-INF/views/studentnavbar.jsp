@@ -99,11 +99,11 @@ body {
 				<li class="toggle"><a href="javascript:void(0);">Talent
 						Application</a>
 					<ul class="sub-menu">
-						<li><a href="ApplyAsCandidate.jsp">Apply as Candidate</a></li>
-						<li><a href="viewApplicationStatus.jsp">View Application
+						<li><a href="add">Apply as Candidate</a></li>
+						<li><a href="viewStatus">View Application
 								Status</a></li>
 					</ul></li>
-				<li><a href="viewActivity.jsp">View Activity</a></li>
+				<li><a href="activityList">View Activity</a></li>
 			</ul>
 		</div>
 

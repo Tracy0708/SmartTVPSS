@@ -16,6 +16,8 @@ public class Participant {
 	private Integer participant_id ;
 	@Column(name = "name")
 	private String name;
+	@Column(name = "studentID")
+	private String studentID;
 	@Column(name = "gender")
 	private String gender;
 	@Column(name = "age")
@@ -28,28 +30,26 @@ public class Participant {
 	private String phone;
 	@Column(name = "address")
 	private String address;
-	@Column(name = "profile_picture_path")
-	private String profile_picture_path;
-	@Column(name = "activity_id")
-	private Integer activity_id;
+	@Column(name = "activityId")
+	private Integer activityId;
 
 	// Default constructor
 	public Participant() {
 	}
 
-	public Participant(Integer participant_id, String name, String gender, int age, String school, String email,
-			String phone, String address, String profile_picture_path, Integer activity_id) {
+	public Participant(Integer participant_id, String name, String studentID, String gender, int age, String school, String email,
+			String phone, String address, String ProfilePicturePath, Integer activityId) {
 		super();
 		this.participant_id = participant_id;
 		this.name = name;
+		this.studentID = studentID;
 		this.gender = gender;
 		this.age = age;
 		this.school = school;
 		this.email = email;
 		this.phone = phone;
 		this.address = address;
-		this.profile_picture_path = profile_picture_path;
-		this.activity_id = activity_id;
+		this.activityId = activityId;
 	}
 
 	public Integer getParticipant_id() {
@@ -62,6 +62,14 @@ public class Participant {
 
 	public String getName() {
 		return name;
+	}
+
+	public void setStudentID(String studentID) {
+		this.studentID = studentID;
+	}
+	
+	public String getStudentID() {
+		return studentID;
 	}
 
 	public void setName(String name) {
@@ -116,27 +124,12 @@ public class Participant {
 		this.address = address;
 	}
 
-	public String getProfile_picture_path() {
-		return profile_picture_path;
+	public Integer getActivityId() {
+		return activityId;
 	}
 
-	public void setProfile_picture_path(String profile_picture_path) {
-		this.profile_picture_path = profile_picture_path;
-	}
-
-	public Integer getActivity_id() {
-		return activity_id;
-	}
-
-	public void setActivity_id(Integer activity_id) {
-		this.activity_id = activity_id;
-	}
-
-	@Override
-	public String toString() {
-		return "Participant [participant_id=" + participant_id + ", name=" + name + ", gender=" + gender + ", age="
-				+ age + ", school=" + school + ", email=" + email + ", phone=" + phone + ", address=" + address
-				+ ", profile_picture_path=" + profile_picture_path + ", activity_id=" + activity_id + "]";
+	public void setActivityId(Integer activityId) {
+		this.activityId = activityId;
 	}
 	
 }

@@ -93,7 +93,7 @@ body {
 
 	<div class="container">
 		<div class="sidebar">
-			<h3>Student</h3>
+			<h3>School Admin</h3>
 			<ul>
 				<li><a href="schooladminDashboard.jsp">Dashboard</a></li>
 				<li><a href="programstatus.jsp">Program Status</a></li>
@@ -103,7 +103,7 @@ body {
 						<li><a href="ApplyAsCandidate.jsp">Manage interview session</a></li>
 						<li><a href="viewApplicationStatus.jsp">Update application status</a></li>
 					</ul></li>
-				<li><a href="viewActivity.jsp">View Activity</a></li>
+				<li><a href="activityList">View Activity</a></li>
 			</ul>
 		</div>
 

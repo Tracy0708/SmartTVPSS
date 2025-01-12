@@ -128,7 +128,7 @@ body {
 						<li><a href="viewStatus">View Application
 								Status</a></li>
 					</ul></li>
-				<li><a href="viewActivity.jsp">View Activity</a></li>
+				<li><a href="activityList">View Activity</a></li>
 			</ul>
 		</div>
 

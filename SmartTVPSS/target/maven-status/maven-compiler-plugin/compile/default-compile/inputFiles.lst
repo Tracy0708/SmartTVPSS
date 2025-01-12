@@ -1,6 +1,20 @@
+<<<<<<< HEAD
 C:\Users\tracy\git\SmartTVPSS\SmartTVPSS\src\main\java\controller\HomeController.java
 C:\Users\tracy\git\SmartTVPSS\SmartTVPSS\src\main\java\config\HibernateConfig.java
 C:\Users\tracy\git\SmartTVPSS\SmartTVPSS\src\main\java\controller\TalentController.java
 C:\Users\tracy\git\SmartTVPSS\SmartTVPSS\src\main\java\entity\Talent.java
 C:\Users\tracy\git\SmartTVPSS\SmartTVPSS\src\main\java\entity\Activity.java
 C:\Users\tracy\git\SmartTVPSS\SmartTVPSS\src\main\java\service\TalentDao_usingHibernate.java
+=======
+C:\Users\yee\git\SmartTVPSS\SmartTVPSS\src\main\java\service\StudentActivityDao_usingHibernate.java
+C:\Users\yee\git\SmartTVPSS\SmartTVPSS\src\main\java\controller\HomeController.java
+C:\Users\yee\git\SmartTVPSS\SmartTVPSS\src\main\java\controller\StudentActivityController.java
+C:\Users\yee\git\SmartTVPSS\SmartTVPSS\src\main\java\entity\Participant.java
+C:\Users\yee\git\SmartTVPSS\SmartTVPSS\src\main\java\entity\Activity.java
+C:\Users\yee\git\SmartTVPSS\SmartTVPSS\src\main\java\config\HibernateConfig.java
+C:\Users\yee\git\SmartTVPSS\SmartTVPSS\src\main\java\controller\TalentController.java
+C:\Users\yee\git\SmartTVPSS\SmartTVPSS\src\main\java\entity\Talent.java
+C:\Users\yee\git\SmartTVPSS\SmartTVPSS\src\main\java\service\TalentDao_usingHibernate.java
+C:\Users\yee\git\SmartTVPSS\SmartTVPSS\src\main\java\service\ActivityDao_usingHibernate.java
+C:\Users\yee\git\SmartTVPSS\SmartTVPSS\src\main\java\controller\ActivityController.java
+>>>>>>> 6abf668b1427ad4ab6fac9313992c770fbde2e51

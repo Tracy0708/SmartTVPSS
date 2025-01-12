@@ -9,20 +9,24 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 @Entity
 @Table(name = "activity")
 public class Activity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private int id;
+	private Integer id;
 	@Column(name = "activityName")
 	private String activityName;
 	@Column(name = "organizer")
 	private String organizer;
 	@Column(name = "startDate")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date startDate;
 	@Column(name = "endDate")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date endDate;
 	@Column(name = "pic")
 	private String pic;
@@ -38,12 +42,14 @@ public class Activity {
 	private String activityLevel;
 	@Column(name = "limitation")
 	private int limitation;
+	@Column(name = "currentParticipant", nullable = false)
+    private Integer currentParticipant = 0;
 
 	// Default constructor
 	public Activity() {
 	}
 	
-	public Activity(int id, String activityName, String organizer, Date startDate, Date endDate, String pic,
+	public Activity(Integer id, String activityName, String organizer, Date startDate, Date endDate, String pic,
 			String phone, String location, String description, String activityType, String activityLevel,
 			int limitation) {
 		super();
@@ -60,12 +66,14 @@ public class Activity {
 		this.activityLevel = activityLevel;
 		this.limitation = limitation;
 	}
+	
+	
 
-	public int getId() {
+	public Integer getid() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setid(Integer id) {
 		this.id = id;
 	}
 
@@ -155,6 +163,14 @@ public class Activity {
 
 	public void setLimitation(int limitation) {
 		this.limitation = limitation;
+	}
+
+	public Integer getCurrentParticipant() {
+		return currentParticipant;
+	}
+
+	public void setCurrentParticipant(Integer currentParticipant) {
+		this.currentParticipant = currentParticipant;
 	}
 
 	@Override

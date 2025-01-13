@@ -45,6 +45,23 @@ public class School {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+    
+    @Column(name = "timeline_start")
+    private LocalDateTime timelineStart;
+    
+    @Column(name = "timeline_end")
+    private LocalDateTime timelineEnd;
+    
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private TimelineStatus status;
+    
+    public enum TimelineStatus {
+        ONGOING,
+        EXTENDED,
+        COMPLETED,
+        NOT_ASSIGNED
+    }
 
     // Default constructor
     public School() {
@@ -153,6 +170,29 @@ public class School {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+    public LocalDateTime getTimelineStart() {
+        return timelineStart;
+    }
+    
+    public void setTimelineStart(LocalDateTime timelineStart) {
+        this.timelineStart = timelineStart;
+    }
+    
+    public LocalDateTime getTimelineEnd() {
+        return timelineEnd;
+    }
+    
+    public void setTimelineEnd(LocalDateTime timelineEnd) {
+        this.timelineEnd = timelineEnd;
+    }
+    
+    public TimelineStatus getStatus() {
+        return status;
+    }
+    
+    public void setStatus(TimelineStatus status) {
+        this.status = status;
     }
 
     // Lifecycle callbacks

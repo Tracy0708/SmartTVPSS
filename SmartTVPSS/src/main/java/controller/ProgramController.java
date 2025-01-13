@@ -29,7 +29,19 @@ public class ProgramController {
         model.addAttribute("schoolList", schools);  // Changed to match pattern
         return "schoolList";  // Make sure this JSP exists
     }
+    @GetMapping("/tvpssteam/timeline")
+    public String showTimeline(Model model) {
+        List<School> schools = schoolDao.findAll();
+        model.addAttribute("schoolList", schools);
+        return "timeline"; 
+    }
 
+    @RequestMapping("/tvpssteam/timeline")  // Changed to match pattern
+    public String listTimeline(Model model) {
+        // Changed to match pattern
+        return "timeline";  // Make sure this JSP exists
+    }
+    
     @GetMapping("/tvpssteam/add")
     public String showAddForm(Model model) {
         model.addAttribute("school", new School());

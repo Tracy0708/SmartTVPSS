@@ -131,6 +131,7 @@
         <div class="header">
             <h2>All School Information</h2>
             <a href="${pageContext.request.contextPath}/program/tvpssteam/add" class="btn btn-primary">Add Information</a>
+             <a href="${pageContext.request.contextPath}/program/tvpssteam/timeline" class="btn btn-primary">Set Timeline</a>
         </div>
 
         <div class="table-container">

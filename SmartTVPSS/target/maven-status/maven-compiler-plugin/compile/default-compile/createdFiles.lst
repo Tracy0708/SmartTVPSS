@@ -1,0 +1,9 @@
+<<<<<<< HEAD
+config\HibernateConfig.class
+controller\TalentController.class
+service\TalentDao_usingHibernate.class
+controller\HomeController.class
+entity\Activity.class
+entity\Talent.class
+=======
+>>>>>>> 6abf668b1427ad4ab6fac9313992c770fbde2e51

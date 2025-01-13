@@ -139,48 +139,54 @@ to {
 				<!-- Edit Button -->
 				<div style="text-align: right; margin-bottom: 20px;">
 
-					<form action="${pageContext.request.contextPath}/talent/edit"
-						method="get" class="d-inline">
-						<input type="hidden" name="email" value="${talent.email}">
-						<button type="submit"
-							style="background-color: #003d73; border: none; color: white; padding: 6px 12px; font-size: 12px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: all 0.3s;">
-							Edit Application</button>
-					</form>
+					<div style="text-align: right; margin-bottom: 20px;">
+						<form action="${pageContext.request.contextPath}/talent/edit"
+							method="get" class="d-inline">
+							<input type="hidden" name="email" value="${talent.email}">
+							<button type="submit"
+								style="background-color: #003d73; border: none; color: white; padding: 6px 12px; font-size: 12px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: all 0.3s;">
+								Edit Application</button>
+						</form>
+					</div>
+
 				</div>
 
-					<h3>Application Details</h3>
-					<p>
-						<strong>School Code:</strong> ${talent.schoolCode}
-					</p>
-					<p>
-						<strong>Name:</strong> ${talent.name}
-					</p>
-					<p>
-						<strong>Email:</strong> ${talent.email}
-					</p>
-					<p>
-						<strong>Application Status:</strong>
-					</p>
-					<div
-						style="padding: 10px; border-radius: 10px; text-align: center; 
-        font-size: 1.2rem; font-weight: bold; color: white; 
-        background-color: ${talent.applicationStatus eq 'SCHEDULED' ? '#28a745' : 
-                           talent.applicationStatus eq 'PENDING' ? '#ffc107' : '#007bff'};">
-						${talent.applicationStatus}</div>
-					<c:if test="${talent.applicationStatus eq 'SCHEDULED'}">
-						<div class="alert alert-info mt-3">
-							<h6>Interview Details</h6>
-							<p>
-								<strong>Date:</strong>
-								<fmt:formatDate value="${talent.interviewDate}"
-									pattern="dd-MM-yyyy" />
-							</p>
-							<p>
-								<strong>Time:</strong> ${talent.interviewTime}
-							</p>
-						</div>
-					</c:if>
-				</div>
+				<h3>Application Details</h3>
+				<p>
+					<strong>School Code:</strong> ${talent.schoolCode}
+				</p>
+				<p>
+					<strong>Name:</strong> ${talent.name}
+				</p>
+				<p>
+					<strong>Email:</strong> ${talent.email}
+				</p>
+				<p>
+					<strong>Application Status:</strong>
+				</p>
+				<div
+					style="padding: 10px; border-radius: 10px; text-align: center; 
+    font-size: 1.2rem; font-weight: bold; color: white; 
+    background-color: ${talent.applicationStatus eq 'SCHEDULED' ? '#007bff' : 
+                       talent.applicationStatus eq 'PENDING' ? '#ffc107' : 
+                       talent.applicationStatus eq 'QUALIFIED' ? '#28a745' : 
+                       talent.applicationStatus eq 'DISQUALIFIED' ? '#dc3545' : '#007bff'};">
+					${talent.applicationStatus}</div>
+
+				<c:if test="${talent.applicationStatus eq 'SCHEDULED'}">
+					<div class="alert alert-info mt-3">
+						<h3>Interview Details</h3>
+						<p>
+							<strong>Date:</strong>
+							<fmt:formatDate value="${talent.interviewDate}"
+								pattern="dd-MM-yyyy" />
+						</p>
+						<p>
+							<strong>Time:</strong> ${talent.interviewTime}
+						</p>
+					</div>
+				</c:if>
+			</div>
 		</c:if>
 
 	</div>

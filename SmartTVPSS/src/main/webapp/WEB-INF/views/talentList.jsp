@@ -183,28 +183,126 @@ table tr:hover {
 	background-color: #fbd23c;
 }
 
-/* Sub-menu Style */
-.sub-menu {
-	display: none;
-	list-style-type: none;
-	padding-left: 20px;
+/* Dropdown Menu Styling */
+#newStatus {
+	width: 100%;
+	padding: 12px;
+	font-size: 16px;
+	border: 1px solid #ddd;
+	border-radius: 6px;
+	background-color: #fff;
+	color: #333;
+	appearance: none; /* Removes the default browser arrow for dropdown */
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	background-image:
+		url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 5"><path fill="%23333" d="M2 0L0 2h4z"/></svg>');
+	/* Custom arrow */
+	background-repeat: no-repeat;
+	background-position: right 12px center;
+	background-size: 12px;
+	transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
-.sub-menu li a {
-	text-decoration: none;
-	font-weight: normal;
+#newStatus:focus {
+	outline: none;
+	border-color: #FBAF3C;
+	box-shadow: 0 0 5px rgba(251, 175, 60, 0.3);
+}
+
+#newStatus:hover {
+	border-color: #FBAF3C;
+}
+
+.search-container {
+	margin: 20px 0;
+	display: flex;
+	justify-content: flex-end;
+}
+
+.search-input {
+	padding: 10px 15px;
+	border: 2px solid #003d73;
+	border-radius: 6px;
+	font-size: 14px;
+	width: 250px;
+	transition: all 0.3s ease;
+}
+
+.search-input:focus {
+	outline: none;
+	border-color: #FBAF3C;
+	box-shadow: 0 0 5px rgba(251, 175, 60, 0.3);
+	width: 300px;
+}
+
+.search-input::placeholder {
+	color: #666;
+}
+
+.pagination-container {
+	margin-top: 20px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px 0;
+}
+
+.items-per-page {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.items-per-page select {
 	padding: 5px 10px;
-	border-radius: 5px;
-	transition: background-color 0.3s, color 0.3s;
+	border: 1px solid #003d73;
+	border-radius: 4px;
+	background-color: white;
 }
 
-.sub-menu li a:hover {
+.pagination-controls {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.pagination-button {
+	background-color: #003d73;
+	color: white;
+	border: none;
+	padding: 8px 16px;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+}
+
+.pagination-button:disabled {
+	background-color: #cccccc;
+	cursor: not-allowed;
+}
+
+.pagination-button:hover:not(:disabled) {
+	background-color: #FBAF3C;
+}
+
+.page-numbers {
+	display: flex;
+	gap: 5px;
+}
+
+.page-number {
+	padding: 8px 12px;
+	border: 1px solid #003d73;
+	border-radius: 4px;
+	cursor: pointer;
+	background-color: white;
+}
+
+.page-number.active {
 	background-color: #FBAF3C;
 	color: white;
-}
-
-.active .sub-menu {
-	display: block;
+	border-color: #FBAF3C;
 }
 </style>
 </head>
@@ -214,6 +312,13 @@ table tr:hover {
 	<div class="main-content">
 		<div class="table-container">
 			<h2>Application Status</h2>
+
+			<div class="search-container">
+				<input type="text" id="schoolCodeSearch" class="search-input"
+					placeholder="Search by School Code...">
+			</div>
+			
+			
 			<script>
     // Check if a success message is passed
     <c:if test="${not empty message}">
@@ -224,6 +329,134 @@ table tr:hover {
             confirmButtonColor: '#3085d6'
         });
     </c:if>
+    
+    
+ // Pagination
+    // Global variables for pagination state
+let currentPage = 1;
+let rowsPerPage = 10;
+let searchValue = '';
+
+// Initialize table functionality
+function initializeTable() {
+    const tableBody = document.querySelector('table tbody');
+    const rows = Array.from(tableBody.querySelectorAll('tr'));
+    
+    // Filter rows based on search
+    const filteredRows = filterRows(rows);
+    
+    // Calculate pagination
+    const totalPages = Math.ceil(filteredRows.length / rowsPerPage);
+    const startIndex = (currentPage - 1) * rowsPerPage;
+    const endIndex = Math.min(startIndex + rowsPerPage, filteredRows.length);
+    
+    // Hide all rows first
+    rows.forEach(row => row.style.display = 'none');
+    
+    // Show only rows for current page
+    filteredRows.slice(startIndex, endIndex).forEach(row => row.style.display = '');
+    
+    // Update pagination UI
+    updatePaginationUI(totalPages);
+}
+
+// Filter rows based on search value
+function filterRows(rows) {
+    if (!searchValue) return rows;
+    
+    return rows.filter(row => {
+        const schoolCode = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+        return schoolCode.includes(searchValue.toLowerCase());
+    });
+}
+
+// Update pagination UI elements
+function updatePaginationUI(totalPages) {
+    const pageNumbers = document.getElementById('pageNumbers');
+    pageNumbers.innerHTML = '';
+    
+    // Add first page if not in range
+    if (currentPage > 3) {
+        addPageButton(1, pageNumbers);
+        if (currentPage > 4) addEllipsis(pageNumbers);
+    }
+    
+    // Add page numbers around current page
+    for (let i = Math.max(1, currentPage - 2); i <= Math.min(totalPages, currentPage + 2); i++) {
+        addPageButton(i, pageNumbers);
+    }
+    
+    // Add last page if not in range
+    if (currentPage < totalPages - 2) {
+        if (currentPage < totalPages - 3) addEllipsis(pageNumbers);
+        addPageButton(totalPages, pageNumbers);
+    }
+    
+    // Update navigation buttons
+    document.getElementById('prevPage').disabled = currentPage === 1;
+    document.getElementById('nextPage').disabled = currentPage === totalPages;
+}
+
+// Add page number button
+function addPageButton(pageNum, container) {
+    const button = document.createElement('div');
+    button.classList.add('page-number');
+    if (pageNum === currentPage) button.classList.add('active');
+    button.textContent = pageNum;
+    button.addEventListener('click', () => {
+        currentPage = pageNum;
+        initializeTable();
+    });
+    container.appendChild(button);
+}
+
+// Add ellipsis
+function addEllipsis(container) {
+    const ellipsis = document.createElement('div');
+    ellipsis.classList.add('page-number');
+    ellipsis.textContent = '...';
+    ellipsis.style.cursor = 'default';
+    container.appendChild(ellipsis);
+}
+
+// Event Listeners
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize table
+    initializeTable();
+    
+    // Search input listener
+    document.getElementById('schoolCodeSearch').addEventListener('input', (e) => {
+        searchValue = e.target.value;
+        currentPage = 1; // Reset to first page when searching
+        initializeTable();
+    });
+    
+    // Rows per page listener
+    document.getElementById('rowsPerPage').addEventListener('change', (e) => {
+        rowsPerPage = parseInt(e.target.value);
+        currentPage = 1; // Reset to first page when changing rows per page
+        initializeTable();
+    });
+    
+    // Navigation button listeners
+    document.getElementById('prevPage').addEventListener('click', () => {
+        if (currentPage > 1) {
+            currentPage--;
+            initializeTable();
+        }
+    });
+    
+    document.getElementById('nextPage').addEventListener('click', () => {
+        const tableRows = document.querySelectorAll('table tbody tr');
+        const filteredRows = filterRows(Array.from(tableRows));
+        const totalPages = Math.ceil(filteredRows.length / rowsPerPage);
+        
+        if (currentPage < totalPages) {
+            currentPage++;
+            initializeTable();
+        }
+    });
+});
 </script>
 			<table>
 				<thead>
@@ -284,6 +517,26 @@ table tr:hover {
 					</c:forEach>
 				</tbody>
 			</table>
+
+			<div class="pagination-container">
+				<div class="items-per-page">
+					<label for="rowsPerPage">Rows per page:</label> <select
+						id="rowsPerPage">
+						<option value="5">5</option>
+						<option value="10" selected>10</option>
+						<option value="15">15</option>
+						<option value="20">20</option>
+					</select>
+				</div>
+				<div class="pagination-controls">
+					<button id="prevPage" class="pagination-button">&lt;
+						Previous</button>
+					<div id="pageNumbers" class="page-numbers"></div>
+					<button id="nextPage" class="pagination-button">Next &gt;</button>
+				</div>
+			</div>
+
+
 		</div>
 	</div>
 
@@ -341,8 +594,8 @@ table tr:hover {
 					class="form-control" required>
 					<option value="PENDING">PENDING</option>
 					<option value="SCHEDULED">SCHEDULED</option>
-					<option value="QUALIFIED">QUALIFIED/option>
-					<option value="DISQUALIFIED">DISQUALIFIED/option>
+					<option value="QUALIFIED">QUALIFIED</option>
+					<option value="DISQUALIFIED">DISQUALIFIED</option>
 				</select>
 			</div>
 

@@ -5,6 +5,9 @@
 <html>
 <head>
 <title>View Application Status</title>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<meta name="_csrf" content="${_csrf.token}" />
+<meta name="_csrf_header" content="${_csrf.headerName}" />
 <style>
 /* Main Content Section */
 .main-content {
@@ -211,6 +214,17 @@ table tr:hover {
 	<div class="main-content">
 		<div class="table-container">
 			<h2>Application Status</h2>
+			<script>
+    // Check if a success message is passed
+    <c:if test="${not empty message}">
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: '${message}',
+            confirmButtonColor: '#3085d6'
+        });
+    </c:if>
+</script>
 			<table>
 				<thead>
 					<tr>
@@ -238,15 +252,24 @@ table tr:hover {
 							<td>${talent.email}</td>
 							<td>${talent.reason}</td>
 							<td
-								style=" font-weight: bold; color: white; 
-        background-color: ${talent.applicationStatus eq 'SCHEDULED' ? '#28a745' : 
-                           talent.applicationStatus eq 'PENDING' ? '#ffc107' : '#007bff'};">
-								${talent.applicationStatus}<br>
-							<fmt:formatDate value="${talent.interviewDate}"
-									pattern="dd-MM-yyyy" /><br>${talent.interviewTime}</div>
+								style="font-weight: bold; color: white; 
+    background-color: ${talent.applicationStatus eq 'SCHEDULED' ? '#007bff' : 
+                       talent.applicationStatus eq 'PENDING' ? '#ffc107' : 
+                       talent.applicationStatus eq 'QUALIFIED' ? '#28a745' : 
+                       talent.applicationStatus eq 'DISQUALIFIED' ? '#dc3545' : '#007bff'};">
+								${talent.applicationStatus}<br> <c:if
+									test="${talent.applicationStatus != 'PENDING' && talent.applicationStatus != 'QUALIFIED' && talent.applicationStatus != 'DISQUALIFIED'}">
+									<fmt:formatDate value="${talent.interviewDate}"
+										pattern="dd-MM-yyyy" />
+									<br>
+        ${talent.interviewTime}
+    </c:if>
 							</td>
+
+
 							<td>
-								<button class="delete-button" onclick="">Delete</button>
+								<button class="delete-button"
+									onclick="deleteTalent(${talent.id})">Delete</button>
 								<button class="action-button"
 									onclick="openInterviewModal('${talent.id}', 
                                                                   '${talent.name}', 
@@ -307,6 +330,28 @@ table tr:hover {
 		</div>
 	</div>
 
+	<!-- Update Status Modal -->
+	<div id="updateStatusModal" class="modal">
+		<div class="modal-content">
+			<span class="close" onclick="closeStatusModal()">&times;</span>
+			<h2>Update Application Status</h2>
+
+			<div class="form-group">
+				<label for="newStatus">Select Status:</label> <select id="newStatus"
+					class="form-control" required>
+					<option value="PENDING">PENDING</option>
+					<option value="SCHEDULED">SCHEDULED</option>
+					<option value="QUALIFIED">QUALIFIED/option>
+					<option value="DISQUALIFIED">DISQUALIFIED/option>
+				</select>
+			</div>
+
+			<button class="schedule-btn" onclick="submitStatusUpdate()">Update
+				Status</button>
+		</div>
+	</div>
+
+
 	<script>
         const modal = document.getElementById('interviewModal');
         
@@ -339,48 +384,183 @@ table tr:hover {
         
         function submitInterview(event) {
             event.preventDefault();
-            
-            const interviewData = {
-                id: parseInt(document.getElementById('studentId').value),
-                interviewDate: document.getElementById('interviewDate').value,
-                interviewTime: document.getElementById('interviewTime').value
-            };
-            
-            fetch('/SmartTVPSS/talent/admin/talentList', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify(interviewData)
-            })
-            .then(response => {
-                if (!response.ok) {
-                    return response.text().then(text => {
-                        throw new Error(`HTTP error! status: ${response.status}, body: ${text}`);
+
+            const interviewDate = document.getElementById('interviewDate').value;
+            const interviewTime = document.getElementById('interviewTime').value;
+            const id = parseInt(document.getElementById('studentId').value);
+
+            if (!interviewDate || !interviewTime) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Please select both an interview date and time.',
+                });
+                return;
+            }
+
+            Swal.fire({
+                title: 'Confirm Schedule',
+                html: `<p>Are you sure you want to schedule the interview?</p>`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, schedule it!',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const interviewData = {
+                        id: id,
+                        interviewDate: interviewDate,
+                        interviewTime: interviewTime,
+                    };
+
+                    fetch('/SmartTVPSS/talent/admin/talentList', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                        },
+                        body: JSON.stringify(interviewData),
+                    })
+                    .then((response) => {
+                        if (!response.ok) {
+                            return response.text().then((text) => {
+                                throw new Error(`HTTP error! status: ${response.status}, body: ${text}`);
+                            });
+                        }
+                        return response.json();
+                    })
+                    .then((data) => {
+                        if (data.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: 'Interview scheduled successfully!',
+                            }).then(() => {
+                                window.location.reload();
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: data.message || 'Failed to schedule the interview. Please try again.',
+                            });
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: `An error occurred while scheduling the interview: ${error.message}`,
+                        });
                     });
                 }
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    alert('Interview scheduled successfully!');
-                    window.location.reload();
-                } else {
-                    alert(data.message || 'Failed to schedule interview. Please try again.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred while scheduling the interview: ' + error.message);
             });
         }
+
         
         window.onclick = function(event) {
             if (event.target == modal) {
                 closeModal();
             }
         }
+        
+        
+        function deleteTalent(id) {
+	        Swal.fire({
+	            title: 'Are you sure?',
+	            text: "You won't be able to revert this!",
+	            icon: 'warning',
+	            showCancelButton: true,
+	            confirmButtonColor: '#3085d6',
+	            cancelButtonColor: '#d33',
+	            confirmButtonText: 'Yes, delete it!'
+	        }).then((result) => {
+	            if (result.isConfirmed) {
+	                window.location.href = 'delete?id=' + id;
+	            }
+	        });
+	    }
+        
+        
+        
+        
+        const statusModal = document.getElementById('updateStatusModal');
+        let updateTalentId = null;
+
+        function updateStatus(id) {
+            updateTalentId = id;
+            statusModal.style.display = 'block';
+        }
+
+        function closeStatusModal() {
+            statusModal.style.display = 'none';
+        }
+
+        function submitStatusUpdate() {
+            const newStatus = document.getElementById('newStatus').value;
+
+            if (!newStatus) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Please select a status.',
+                });
+                return;
+            }
+
+            Swal.fire({
+                title: 'Confirm Status Update',
+                text: 'Are you sure you want to update the status?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, update it!',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/SmartTVPSS/talent/admin/updateStatus`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            id: updateTalentId,
+                            status: newStatus,
+                        }),
+                    })
+                        .then((response) => response.json())
+                        .then((data) => {
+                            if (data.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: 'Status updated successfully!',
+                                }).then(() => {
+                                    window.location.reload();
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: data.message || 'Failed to update the status. Please try again.',
+                                });
+                            }
+                        })
+                        .catch((error) => {
+                            console.error('Error:', error);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: `An error occurred while updating the status: ${error.message}`,
+                            });
+                        });
+                }
+            });
+        }
+
     </script>
 </body>
 </html>

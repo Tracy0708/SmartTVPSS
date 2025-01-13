@@ -6,6 +6,9 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import entity.Activity;
+import entity.Participant;
 import entity.Talent;
 import java.util.List;
 
@@ -63,18 +66,6 @@ public class TalentDao_usingHibernate {
 	}
 
 	@Transactional
-	public void delete(int id) {
-		Session currentSession = sessionFactory.getCurrentSession();
-		// Retrieve the persistent customer from the database using the provided id
-		Talent talentToDelete = currentSession.get(Talent.class, (int) id);
-		// Check if the customer exists before deleting
-		if (talentToDelete != null) {
-			// Delete the customer from the database
-			currentSession.delete(talentToDelete);
-		}
-	}
-
-	@Transactional
 	public List<Talent> findAll() {
 		Session currentSession = sessionFactory.getCurrentSession();
 		return currentSession.createQuery("from Talent", Talent.class).getResultList();
@@ -123,5 +114,37 @@ public class TalentDao_usingHibernate {
 	        throw new RuntimeException("Error updating interview details: " + e.getMessage(), e);
 	    }
 	}
+	
+	@Transactional
+	public void delete(Integer id) {
+		Session currentSession = sessionFactory.getCurrentSession();
+
+		// Retrieve the persistent activity from the database using the provided id
+		Talent talentToDelete = currentSession.get(Talent.class, id);
+
+		// Check if the activity exists before deleting
+		if (talentToDelete != null) {
+			// Delete the activity from the database
+			currentSession.delete(talentToDelete);
+		}
+	}
+	
+	@Transactional
+	public void updateTalentStatus(int id, String status) {
+	    try {
+	        Session currentSession = sessionFactory.getCurrentSession();
+	        Talent talent = currentSession.get(Talent.class, id);
+
+	        if (talent != null) {
+	            talent.setApplicationStatus(status);
+	            currentSession.update(talent);
+	        } else {
+	            throw new EntityNotFoundException("Talent with ID " + id + " not found");
+	        }
+	    } catch (Exception e) {
+	        throw new RuntimeException("Error updating talent status: " + e.getMessage(), e);
+	    }
+	}
+
 
 }

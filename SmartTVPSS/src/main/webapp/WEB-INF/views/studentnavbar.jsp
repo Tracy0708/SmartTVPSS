@@ -124,11 +124,11 @@ body {
 				<li class="toggle"><a href="javascript:void(0);">Talent
 						Application</a>
 					<ul class="sub-menu">
-						<li><a href="add">Apply as Candidate</a></li>
-						<li><a href="viewStatus">View Application
+						<li><a href="/SmartTVPSS/talent/add">Apply as Candidate</a></li>
+						<li><a href="/SmartTVPSS/talent/viewStatus">View Application
 								Status</a></li>
 					</ul></li>
-				<li><a href="activityList">View Activity</a></li>
+				<li><a href="/SmartTVPSS/TVPSS/activity/activityList">View Activity</a></li>
 			</ul>
 		</div>
 

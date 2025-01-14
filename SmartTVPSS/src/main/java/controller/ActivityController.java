@@ -43,8 +43,8 @@ public class ActivityController {
 	    if (level == null) level = "";
 
 	    int pageSize = 10;
-	    List<Activity> activities = aDao_usingHibernate.getFilteredActivities(search, type, level, page, pageSize);
-	    int totalActivities = aDao_usingHibernate.getFilteredActivitiesCount(search, type, level);
+	    List<Activity> activities = aDao_usingHibernate.getOngoingActivities(search, type, level, page, pageSize);
+	    int totalActivities = aDao_usingHibernate.getOngoingActivitiesCount(search, type, level);
 
 	    int totalPages = (int) Math.ceil((double) totalActivities / pageSize);
 
@@ -217,6 +217,31 @@ public class ActivityController {
 	    Participant participant = sDao_usingHibernate.findById(participantId);
 	    model.addAttribute("participant", participant);
 	    return "adminParticipantDetails"; 
+	}
+	
+	@GetMapping("/history")
+	public String viewActivityHistory(
+	    @RequestParam(value = "search", required = false) String search,
+	    @RequestParam(value = "type", required = false) String type,
+	    @RequestParam(value = "level", required = false) String level,
+	    @RequestParam(value = "page", defaultValue = "1") int page,
+	    Model model) {
+
+	    if (search == null) search = "";
+	    if (type == null) type = "";
+	    if (level == null) level = "";
+
+	    int pageSize = 10;
+	    List<Activity> endedActivities = aDao_usingHibernate.getEndedActivities(search, type, level, page, pageSize);
+	    int totalEndedActivities = aDao_usingHibernate.getEndedActivitiesCount(search, type, level);
+
+	    int totalPages = (int) Math.ceil((double) totalEndedActivities / pageSize);
+
+	    model.addAttribute("activities", endedActivities);
+	    model.addAttribute("currentPage", page);
+	    model.addAttribute("totalPages", totalPages);
+
+	    return "activityHistory";
 	}
 
 }

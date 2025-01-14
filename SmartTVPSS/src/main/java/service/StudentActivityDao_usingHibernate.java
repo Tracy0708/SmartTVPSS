@@ -191,5 +191,4 @@ public class StudentActivityDao_usingHibernate {
         Session currentSession = sessionFactory.getCurrentSession();
         currentSession.saveOrUpdate(activity);
     }
-
 }

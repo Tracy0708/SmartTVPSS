@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Activity Management</title>
+    <title>Activity List</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
@@ -480,7 +480,7 @@
 	        <div id="activityDetailsModal" class="modal" style="display: none;">
 			    <div class="modal-content">
 			        <span class="close-btn" onclick="closeModal()">&times;</span>
-			        <h2>Activity Details</h2>
+			        <h2 style="border-bottom: 1px solid black;">Activity Details</h2>
 			        <div class="information">
 	                	<div class="label"><strong>Activity</strong></div>
 			            <div><span class="colon">:</span></div>

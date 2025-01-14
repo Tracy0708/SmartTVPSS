@@ -480,69 +480,69 @@
 	        <div id="activityDetailsModal" class="modal" style="display: none;">
 			    <div class="modal-content">
 			        <span class="close-btn" onclick="closeModal()">&times;</span>
-			        <h2>Activity Details</h2>
+			        <h2 style="border-bottom: 1px solid black;">Activity Details</h2>
 			        <div class="information">
-	                	<div class="label"><strong>Activity:</strong></div>
+	                	<div class="label"><strong>Activity</strong></div>
 			            <div><span class="colon">:</span></div>
 			            <div><span id="activityName"></span></div>
 	                </div>
 	                
 	                <div class="information">
-	                	<div class="label"><strong>Organizer:</strong></div>
+	                	<div class="label"><strong>Organizer</strong></div>
 			            <div><span class="colon">:</span></div>
 			            <div><span id="organizer"></span></div>
 	                </div>
 	                
 	                <div class="information">
-	                	<div class="label"><strong>Start Date:</strong> </div>
+	                	<div class="label"><strong>Start Date</strong> </div>
 			            <div><span class="colon">:</span></div>
 			            <div><span id="startDate"></span></div>
 	                </div>
 	                
 	                <div class="information">
-	                	<div class="label"><strong>End Date:</strong></div>
+	                	<div class="label"><strong>End Date</strong></div>
 			            <div><span class="colon">:</span></div>
 			            <div><span id="endDate"></span></div>
 	                </div>
 	                
 	                <div class="information">
-	                	<div class="label"><strong>Person in Charge:</strong></div>
+	                	<div class="label"><strong>Person in Charge</strong></div>
 			            <div><span class="colon">:</span></div>
 			            <div><span id="pic"></span></div>
 	                </div>
 	                
 	                <div class="information">
-	                	<div class="label"><strong>Phone:</strong></div>
+	                	<div class="label"><strong>Phone</strong></div>
 			            <div><span class="colon">:</span></div>
 			            <div><span id="phone"></span></div>
 	                </div>
 	                
 	                <div class="information">
-	                	<div class="label"><strong>Location:</strong></div>
+	                	<div class="label"><strong>Location</strong></div>
 			            <div><span class="colon">:</span></div>
 			            <div><span id="location"></span></div>
 	                </div>
 	                
 	                <div class="information">
-	                	<div class="label"><strong>Description:</strong></div>
+	                	<div class="label"><strong>Description</strong></div>
 			            <div><span class="colon">:</span></div>
 			            <div><span id="description"></span></div>
 	                </div>
 	                
 	                <div class="information">
-	                	<div class="label"><strong>Activity Type:</strong></div>
+	                	<div class="label"><strong>Activity Type</strong></div>
 			            <div><span class="colon">:</span></div>
 			            <div><span id="activityType"></span></div>
 	                </div>
 	                
 	                <div class="information">
-	                	<div class="label"><strong>Activity Level:</strong></div>
+	                	<div class="label"><strong>Activity Level</strong></div>
 			            <div><span class="colon">:</span></div>
 			            <div><span id="activityLevel"></span></div>
 	                </div>
 	                
 	                <div class="information">
-	                	<div class="label"><strong>Limitation:</strong></div>
+	                	<div class="label"><strong>Limitation</strong></div>
 			            <div><span class="colon">:</span></div>
 			            <div><span id="limitation"></span></div>
 	                </div>

@@ -42,8 +42,8 @@ public class AdminActivityController {
 	    if (level == null) level = "";
 
 	    int pageSize = 10;
-	    List<Activity> activities = aDao_usingHibernate.getFilteredActivities(search, type, level, page, pageSize);
-	    int totalActivities = aDao_usingHibernate.getFilteredActivitiesCount(search, type, level);
+	    List<Activity> activities = aDao_usingHibernate.getOngoingActivities(search, type, level, page, pageSize);
+	    int totalActivities = aDao_usingHibernate.getOngoingActivitiesCount(search, type, level);
 
 	    int totalPages = (int) Math.ceil((double) totalActivities / pageSize);
 

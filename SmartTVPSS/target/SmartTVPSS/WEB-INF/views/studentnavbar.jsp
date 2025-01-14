@@ -84,7 +84,6 @@ body {
 .sidebar ul li a:hover {
 	background-color: #FBAF3C; /* Highlight color */
 }
-<<<<<<< HEAD
 
 /* Sub-menu Style */
 .sub-menu {
@@ -110,8 +109,6 @@ body {
 /* When the parent item has the 'active' class, show the sub-menu */
 .active .sub-menu {
 	display: block;
-=======
->>>>>>> 6abf668b1427ad4ab6fac9313992c770fbde2e51
 </style>
 <body>
 	<div class="header">
@@ -127,16 +124,11 @@ body {
 				<li class="toggle"><a href="javascript:void(0);">Talent
 						Application</a>
 					<ul class="sub-menu">
-<<<<<<< HEAD
-						<li><a href="add">Apply as Candidate</a></li>
-						<li><a href="viewStatus">View Application
-=======
-						<li><a href="ApplyAsCandidate.jsp">Apply as Candidate</a></li>
-						<li><a href="viewApplicationStatus.jsp">View Application
->>>>>>> 6abf668b1427ad4ab6fac9313992c770fbde2e51
+						<li><a href="/SmartTVPSS/talent/add">Apply as Candidate</a></li>
+						<li><a href="/SmartTVPSS/talent/viewStatus">View Application
 								Status</a></li>
 					</ul></li>
-				<li><a href="viewActivity.jsp">View Activity</a></li>
+				<li><a href="/SmartTVPSS/student/activity/activityList">View Activity</a></li>
 			</ul>
 		</div>
 

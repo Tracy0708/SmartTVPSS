@@ -142,6 +142,7 @@
                             <th>No</th>
                             <th>School Code</th>
                             <th>School Name</th>
+                            <th>Version</th>
                             <th>Logo</th>
                             <th>Studio School PSS</th>
                             <th>In-school recording</th>
@@ -161,6 +162,7 @@
                                 <td>${status.count}</td>
                                 <td>${school.schoolCode}</td>
                                 <td>${school.schoolName}</td>
+                                <td>${school.version}</td>
                                 <td>${school.hasLogo ? 'Yes' : 'No'}</td>
                                 <td>${school.hasStudioPss ? 'Yes' : 'No'}</td>
                                 <td>${school.hasInSchoolRecording ? 'Yes' : 'No'}</td>

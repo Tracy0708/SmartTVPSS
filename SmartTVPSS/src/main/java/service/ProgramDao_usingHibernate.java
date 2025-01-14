@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import entity.School;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -35,7 +37,7 @@ public class ProgramDao_usingHibernate {
     public void update(int id, School school) {
         Session currentSession = sessionFactory.getCurrentSession();
         // Retrieve the persistent school from the database using the provided id
-        School existingSchool = currentSession.get(School.class, (long) id);
+        School existingSchool = currentSession.get(School.class,  id);
         
         // Check if the school exists before updating
         if (existingSchool != null) {
@@ -71,7 +73,39 @@ public class ProgramDao_usingHibernate {
     
     @Transactional
     public List<School> findAll() {
-        Session currentSession = sessionFactory.getCurrentSession();
-        return currentSession.createQuery("from School", School.class).getResultList();
+        return findAllWithUpdatedStatus();
     }
+    
+    @Transactional
+    private void updateSchoolStatus(School school) {
+        LocalDateTime now = LocalDateTime.now();
+        if (school.getStatus() == School.TimelineStatus.EXTENDED || 
+            school.getStatus() == School.TimelineStatus.COMPLETE) {
+            return;
+        }
+        
+        if (school.getTimelineStart() == null || school.getTimelineEnd() == null) {
+            school.setStatus(School.TimelineStatus.NOT_ASSIGNED);
+        } else if (now.isBefore(school.getTimelineEnd())) {
+            school.setStatus(School.TimelineStatus.ONGOING);
+        } else if (now.isAfter(school.getTimelineEnd())) {
+            school.setStatus(School.TimelineStatus.EXCEEDED);
+        }
+    }
+
+    @Transactional
+    public List<School> findAllWithUpdatedStatus() {
+        Session currentSession = sessionFactory.getCurrentSession();
+        List<School> schools = currentSession.createQuery("from School", School.class).getResultList();
+        
+        // Update status for each school
+        for (School school : schools) {
+            updateSchoolStatus(school);
+            currentSession.update(school);
+        }
+        
+        return schools;
+    }
+    
+    
 }

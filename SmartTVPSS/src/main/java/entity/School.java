@@ -16,6 +16,9 @@ public class School {
     @Column(name = "school_name", nullable = false)
     private String schoolName;
 
+    @Column(name = "version")
+    private int version;
+    
     @Column(name = "has_logo")
     private boolean hasLogo;
 
@@ -57,15 +60,60 @@ public class School {
     private TimelineStatus status;
     
     public enum TimelineStatus {
-        ONGOING,
+    	ONGOING,
+        ASSIGNED,
         EXTENDED,
-        COMPLETED,
+        EXCEEDED,
+        COMPLETE,
         NOT_ASSIGNED
     }
 
     // Default constructor
     public School() {
     }
+    @PrePersist
+    @PreUpdate
+    protected void calculateVersion() {
+        if (hasGreenScreen && hasExternalCollaboration && hasExternalRecording && 
+            hasLogo && hasStudioPss && hasYoutubeUpload && hasInSchoolRecording) {
+            this.version = 4;
+        } else if (hasExternalCollaboration && hasExternalRecording && 
+                   hasLogo && hasStudioPss && hasYoutubeUpload && hasInSchoolRecording) {
+            this.version = 3;
+        } else if (hasLogo && hasStudioPss && hasYoutubeUpload && hasInSchoolRecording) {
+            this.version = 2;
+        } else if (hasLogo && hasStudioPss) {
+            this.version = 1;
+        } else {
+            this.version = 0;
+        }
+    }
+
+    // Getter and setter for version
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
+
+    // [Previous getters and setters remain the same...]
+
+    // Lifecycle callbacks
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+        calculateVersion();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+        calculateVersion();
+    }
+
 
     // Getters and Setters
     public int getId() {
@@ -195,17 +243,7 @@ public class School {
         this.status = status;
     }
 
-    // Lifecycle callbacks
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
-    }
+  
 
     // toString method for debugging
     @Override
@@ -222,6 +260,7 @@ public class School {
                 ", hasExternalRecording=" + hasExternalRecording +
                 ", hasExternalCollaboration=" + hasExternalCollaboration +
                 ", hasGreenScreen=" + hasGreenScreen +
+                ", version=" + version +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';

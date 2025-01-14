@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,6 +10,42 @@
     <title>Every Schools' Timeline</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+<style>
+    .status-chip {
+        border-radius: 16px;
+        padding: 4px 12px;
+        display: inline-block;
+        text-align: center;
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+    
+    .status-not_assigned { 
+        background-color: #f8f9fa !important;
+        color: #666;
+    }
+    .status-ongoing { 
+        background-color: #d4edda !important;
+        color: #155724;
+    }
+    .status-assigned { 
+        background-color: #fff3cd !important;
+        color: #856404;
+    }
+    .status-extended { 
+        background-color: #e2e3e5 !important;
+        color: #383d41;
+    }
+    .status-exceeded { 
+        background-color: #f8d7da !important;
+        color: #721c24;
+    }
+    .status-complete { 
+        background-color: #cce5ff !important;
+        color: #004085;
+    }
+</style>
 </head>
 <body>
     <div class="container mt-5">
@@ -18,6 +55,7 @@
             <table class="table table-hover">
                 <thead class="table-light">
                     <tr>
+                    	<th>Status</th>
                         <th>No</th>
                         <th>School Code</th>
                         <th>School Name</th>
@@ -26,21 +64,29 @@
                 </thead>
                 <tbody id="schoolTableBody">
                     <c:forEach items="${schoolList}" var="school" varStatus="status">
+                    
                         <tr data-school-id="${school.id}">
+						   <td>
+							        <span class="status-chip status-${fn:toLowerCase(school.status)}">
+								        ${school.status}
+								    </span>
+							</td>
                             <td>${status.count}</td>
                             <td>${school.schoolCode}</td>
                             <td>${school.schoolName}</td>
                             <td>
-                                <span class="timeline-text" id="timeline-display-${school.id}">
-                                    <c:choose>
-                                        <c:when test="${not empty school.timelineStart and not empty school.timelineEnd}">
-                                            <fmt:formatDate pattern="d MMM yyyy" value="${school.timelineStart}"/> - 
-                                            <fmt:formatDate pattern="d MMM yyyy" value="${school.timelineEnd}"/>
-                                        </c:when>
-                                        <c:otherwise>Not Set</c:otherwise>
-                                    </c:choose>
-                                </span>
-                                <button class="btn btn-sm btn-primary edit-timeline" data-school-id="${school.id}">Set Timeline</button>
+                              <button class="btn btn-sm btn-primary edit-timeline" data-school-id="${school.id}"><i class="bi bi-calendar3"></i></button>
+							<span class="timeline-text" id="timeline-display-${school.id}">
+							    <c:choose>
+							        <c:when test="${not empty school.timelineStart and not empty school.timelineEnd}">
+							            ${fn:split(school.timelineStart, 'T')[0]} - 
+							            ${fn:split(school.timelineEnd, 'T')[0]}
+							        </c:when>
+							        <c:otherwise>
+							            No timeline set
+							        </c:otherwise>
+							    </c:choose>
+							</span>
                             </td>
                         </tr>
                     </c:forEach>
@@ -72,51 +118,51 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-<script>
-    $(document).ready(function() {
-        // Initialize daterangepicker
-        $('#timelineRange').daterangepicker({
-            locale: {
-                format: 'DD MMM YYYY'
-            }
-        });
-
-        // Handle edit button click
-        $('.edit-timeline').click(function() {
-            selectedSchoolId = $(this).data('school-id');
-            $('#timeline-modal').modal('show');
-        });
-
-        // Handle save button click
-        $('#saveTimeline').click(function() {
-            const dateRange = $('#timelineRange').val();
-            const [start, end] = dateRange.split(' - ');
-            
-            // Debug logs
-            console.log('Selected School ID:', selectedSchoolId);
-            console.log('Date Range:', dateRange);
-
-            // AJAX call to save
-            $.ajax({
-                url: '${pageContext.request.contextPath}/school/saveTimeline',
-                method: 'POST',
-                data: {
-                    schoolId: selectedSchoolId,
-                    timelineStart: start,
-                    timelineEnd: end
-                },
-                success: function(response) {
-                    console.log('Save successful:', response);
-                    $('#timeline-modal').modal('hide');
-                    location.reload();
-                },
-                error: function(xhr, status, error) {
-                    console.error('Save failed:', error);
-                    alert('Failed to save timeline: ' + error);
+    <script>
+        $(document).ready(function() {
+            // Initialize daterangepicker
+            $('#timelineRange').daterangepicker({
+                locale: {
+                    format: 'DD MMM YYYY'
                 }
             });
+
+            // Handle edit button click
+            $('.edit-timeline').click(function() {
+                selectedSchoolId = $(this).data('school-id');
+                $('#timeline-modal').modal('show');
+            });
+
+            // Handle save button click
+            $('#saveTimeline').click(function() {
+                const dateRange = $('#timelineRange').val();
+                const [start, end] = dateRange.split(' - ');
+                
+                // Debug logs
+                console.log('Selected School ID:', selectedSchoolId);
+                console.log('Date Range:', dateRange);
+
+                // AJAX call to save
+                $.ajax({
+                    url: '${pageContext.request.contextPath}/program/tvpssteam/saveTimeline',
+                    method: 'POST',
+                    data: {
+                        schoolId: selectedSchoolId,
+                        timelineStart: start,
+                        timelineEnd: end
+                    },
+                    success: function(response) {
+                        console.log('Save successful:', response);
+                        $('#timeline-modal').modal('hide');
+                        location.reload();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Save failed:', error);
+                        alert('Failed to save timeline: ' + error);
+                    }
+                });
+            });
         });
-    });
-</script>
+    </script>
 </body>
 </html>

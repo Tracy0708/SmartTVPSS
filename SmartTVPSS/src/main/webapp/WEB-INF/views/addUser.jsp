@@ -4,18 +4,13 @@
 <head>
     <title>Add User</title>
     <link rel="stylesheet" href="styles.css">
-    <script>
-        function confirmSubmit() {
-            return confirm("Are you sure you want to add this user?");
-        }
-    </script>
 </head>
 <body>
     <%@ include file="menu.jsp" %>
 
     <div class="container">
         <h1>Add User</h1>
-        <form action="addUser" method="post" onsubmit="return confirmSubmit();">
+        <form action="addUser" method="post">
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" required><br>
 

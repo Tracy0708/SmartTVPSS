@@ -1,8 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <title>School List</title>
     <style>
         * {
@@ -65,6 +67,7 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             overflow: auto;
             position: relative;
+            margin-top:20px;
         }
 
         .table-wrapper {
@@ -120,6 +123,28 @@
                 gap: 10px;
             }
         }
+        .button-group{
+        justify-content:end;
+        display:flex;
+        gap:10px;
+        }
+            .search-container {
+    margin-bottom: 20px;
+}
+
+.search-input {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 300px;
+    font-size: 14px;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 2px rgba(52,152,219,0.2);
+}
     </style>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
@@ -129,11 +154,19 @@
     <jsp:include page="sidebar.jsp" />    
     <div class="container">
         <div class="header">
-            <h2>All School Information</h2>
-            <a href="${pageContext.request.contextPath}/program/tvpssteam/add" class="btn btn-primary">Add Information</a>
-             <a href="${pageContext.request.contextPath}/program/tvpssteam/timeline" class="btn btn-primary">Set Timeline</a>
+            <h2>Schools' Program Status</h2>
+            
         </div>
-
+         <div class="search-container">
+    <input type="text" 
+           id="searchInput" 
+           class="search-input" 
+           placeholder="Search school name or code...">
+</div>
+        <div class="button-group">
+<a href="${pageContext.request.contextPath}/program/tvpssteam/add" class="btn btn-primary">Add School</a>
+             <a href="${pageContext.request.contextPath}/program/tvpssteam/timeline" class="btn btn-primary">Set Timeline</a>
+             </div>
         <div class="table-container">
             <div class="table-wrapper">
                 <table class="table">
@@ -151,12 +184,12 @@
                             <th>Recording in and out</th>
                             <th>Collaboration with external agencies</th>
                             <th>Use green screen technology</th>
-                            <th>Date created</th>
-                            <th>Date updated</th>
+                            <th>Date</th>
+                            
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="schoolTableBody">
                         <c:forEach items="${schoolList}" var="school" varStatus="status">
                             <tr>
                                 <td>${status.count}</td>
@@ -171,11 +204,11 @@
                                 <td>${school.hasExternalRecording ? 'Yes' : 'No'}</td>
                                  <td>${school.hasExternalCollaboration ? 'Yes' : 'No'}</td>
                                 <td>${school.hasGreenScreen ? 'Yes' : 'No'}</td>
-                                <td>${school.createdAt}</td>
-                                <td>${school.updatedAt}</td>
+                                <td> ${fn:split(school.updatedAt, 'T')[0]}</td>
                                 <td class="action-buttons">
-    <a href="${pageContext.request.contextPath}/program/tvpssteam/edit/${school.id}" class="btn btn-warning">Edit</a>
-    <a href="#" onclick="confirmDelete(${school.id})" class="btn btn-danger">Delete</a>
+                                
+    <a href="${pageContext.request.contextPath}/program/tvpssteam/edit/${school.id}" class="btn btn-warning"><i class="bi bi-pencil-square"></i></a>
+    <a href="#" onclick="confirmDelete(${school.id})" class="btn btn-danger"><i class="bi bi-trash-fill"></i></a>
 </td>
                             </tr>
                         </c:forEach>
@@ -216,5 +249,24 @@
         }
        
     </script>
+      <script>
+document.getElementById('searchInput').addEventListener('keyup', function() {
+    // Get first word only from search input
+    const searchValue = this.value.trim().split(' ')[0].toLowerCase();
+    const tableRows = document.querySelectorAll('#schoolTableBody tr');
+    
+    tableRows.forEach(row => {
+        const schoolCode = row.querySelector('td:nth-child(3)').textContent.toLowerCase().split(' ')[0];
+        const schoolName = row.querySelector('td:nth-child(4)').textContent.toLowerCase().split(' ')[0];
+        
+        if (schoolCode.includes(searchValue) || schoolName.includes(searchValue)) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+});
+</script>
+    
 </body>
 </html>

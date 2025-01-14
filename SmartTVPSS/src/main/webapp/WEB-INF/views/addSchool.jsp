@@ -199,7 +199,7 @@
     <div class="container">
         <div class="back-title">
             <a href="${pageContext.request.contextPath}/program/tvpssteam/schoolList">←</a>
-            <h2>Add Information</h2>
+            <h2>Add School</h2>
         </div>
 
         <div class="form-container">
@@ -299,7 +299,7 @@
                 </div>
 
                 <div class="submit-button">
-                    <button type="submit" class="btn-submit">Add Status</button>
+                    <button type="submit" class="btn-submit">Save</button>
                 </div>
             </form>
         </div>

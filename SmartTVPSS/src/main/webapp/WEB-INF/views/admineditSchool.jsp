@@ -1,8 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html>
 <html>
 <head>
     <title>Edit School</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.7.32/sweetalert2.min.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.7.32/sweetalert2.min.js"></script>
   <style>
@@ -91,7 +94,7 @@
             display: flex;
             align-items: center;
             gap: 20px;
-            margin-bottom: 20px;
+            
         }
 
         .back-title a {
@@ -173,6 +176,18 @@
             transform: translateX(20px);
         }
 
+    .version-badge {
+        margin-left: 30px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+        background-color: #e2e8f0;
+        color: #4a5568;
+        padding: 5px 10px;
+        border-radius: 9999px;
+        font-size: 0.875rem;
+       
+        display: inline-block;
+    }
         /* YouTube URL input */
         .youtube-url {
             display:none;
@@ -181,9 +196,70 @@
    			gap: 10px;
         }
         
+.extend-timeline-link {
+    color: #007bff;
+    text-decoration: underline;
+    cursor: pointer;
+    margin-top: 10px;
+    display: inline-block;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    animation: fadeIn 0.3s;
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 24px;
+    border-radius: 8px;
+    width: 400px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.modal-title {
+    font-size: 1.25rem;
+    color: #2d3748;
+    margin-bottom: 16px;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
 
         /* Button styles */
         .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            justify-content:center;
+        }
+        .btn:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+   .btnModal {
             padding: 8px 16px;
             border: none;
             border-radius: 4px;
@@ -215,7 +291,26 @@
         .btn-secondary:hover {
             background-color: #7f8c8d;
         }
+            .btn1{
+            background-color: #3498db;
+            color: white;
+            width:80px;
+        }
 
+        .btn2 {
+            background-color: #95a5a6;
+            color: white;
+            margin-left: 15px;
+            width:80px;
+        }
+        
+   .btn1:hover {
+            background-color: #2980b9;
+        }
+
+        .btn2:hover {
+            background-color: #7f8c8d;
+        }
         @media (max-width: 768px) {
             .container {
                 padding: 10px;
@@ -225,6 +320,21 @@
                 padding: 15px;
             }
         }
+
+.exceeded-warning p {
+    color: red;
+    text-align: end;
+    margin: 10px 0;
+}
+.exceeded-warning{
+display: flex;
+justify-content:end;
+align-items: center;
+gap: 10px
+}
+
+
+        
     </style>
     <script>
 function toggleYoutubeUrlRequired() {
@@ -283,6 +393,40 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 }); */
+
+function showExtendModal() {
+    document.getElementById('extendModal').style.display = 'block';
+}
+
+function hideExtendModal() {
+    document.getElementById('extendModal').style.display = 'none';
+}
+
+$(document).ready(function() {
+    $('#extendForm').on('submit', function(e) {
+        e.preventDefault();
+        $.ajax({
+            url: '${pageContext.request.contextPath}/program/admin/requestExtension',
+            type: 'POST',
+            data: $(this).serialize(),
+            success: function(response) {
+                hideExtendModal();
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Extension request submitted successfully',
+                    icon: 'success'
+                });
+            },
+            error: function(xhr) {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Failed to submit extension request',
+                    icon: 'error'
+                });
+            }
+        });
+    });
+});
 </script>
 </head>
 <body>
@@ -290,10 +434,19 @@ document.addEventListener("DOMContentLoaded", function () {
 <div class="main-container" style="display:flex">
     <jsp:include page="sidebar.jsp" />   
     <div class="container">
+   
         <div class="back-title">
             <a href="${pageContext.request.contextPath}/program/tvpssteam/schoolList">←</a>
-            <h2>Edit Information</h2>
+            <h2>Edit Information
+            </h2>
         </div>
+        <span class="version-badge">Version ${school.version}</span>
+            <c:if test="${school.status == 'EXCEEDED'}">
+        <div class="exceeded-warning">
+        <i class="bi bi-hourglass-bottom" style="color: red"]></i>
+    <p>The timeline for this school has been exceeded.</p>
+</div>
+    </c:if>
         <div class="form-container">
            <form id="updateForm" method="post" action="${pageContext.request.contextPath}/program/admin/updateSchool" >
     <input type="hidden" name="id" value="${school.id}"/>
@@ -383,14 +536,54 @@ document.addEventListener("DOMContentLoaded", function () {
                 </div>
 
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Update</button>
+                    <button type="submit" class="btn btn-primary" ${school.status == 'EXCEEDED' ? 'disabled' : ''}>Update</button>
                     <a href="${pageContext.request.contextPath}/program/tvpssteam/schoolList" class="btn btn-secondary">Back</a>
                 </div>
+                <c:if test="${school.status == 'EXCEEDED'}">
+                    <a class="extend-timeline-link" onclick="showExtendModal()">Request to extend timeline</a>
+                </c:if>
             </form>
         </div>
     </div>
 </div>
 
-
+<!-- Add Modal -->
+<div id="extendModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-title">Request Timeline Extension?</div>
+        <p>Do you want to request a timeline extension for this school?</p>
+        <div class="modal-actions">
+            <button type="button" class="btnModal btn2" onclick="hideExtendModal()">Cancel</button>
+            <button type="button" class="btnModal btn1" onclick="submitExtensionRequest()">Submit Request</button>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+function submitExtensionRequest() {
+    $.ajax({
+        url: '${pageContext.request.contextPath}/program/admin/requestExtension',
+        type: 'POST',
+        data: { schoolId: ${school.id} },
+        success: function(response) {
+            hideExtendModal();
+            Swal.fire({
+                title: 'Success!',
+                text: 'Extension request submitted successfully',
+                icon: 'success'
+            }).then(() => {
+                location.reload();
+            });
+        },
+        error: function(xhr) {
+            Swal.fire({
+                title: 'Error!',
+                text: xhr.responseText,
+                icon: 'error'
+            });
+        }
+    });
+}
+</script>
 </body>
 </html>

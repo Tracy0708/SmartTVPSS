@@ -45,12 +45,53 @@
         background-color: #cce5ff !important;
         color: #004085;
     }
+    .inbox{
+ 
+    display: flex;
+    justify-content: end;
+    }
+    .main-container{
+    max-width: 1400px;
+    margin-left:20px;
+    }
+    .search-container {
+    margin-bottom: 20px;
+}
+
+.search-input {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 300px;
+    font-size: 14px;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 2px rgba(52,152,219,0.2);
+}
 </style>
 </head>
 <body>
+<jsp:include page="header.jsp" />
+<div class="main-container" style="display:flex">
+    <jsp:include page="sidebar.jsp" />
     <div class="container mt-5">
+ 
+    
         <h2 class="mb-4">Every Schools' Timeline</h2>
-        <input type="text" class="form-control mb-3" id="searchInput" placeholder="Search school name or code">
+        
+           <div class="search-container">
+    <input type="text" 
+           id="searchInput" 
+           class="search-input" 
+           placeholder="Search school name or code...">
+</div>
+        <a href="${pageContext.request.contextPath}/program/admin/requestTimeline" >
+        <div class="inbox">
+        <i class="bi bi-inbox-fill" style="font-size:1.8rem;color:black"></i>
+        </div></a>
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead class="table-light">
@@ -113,7 +154,7 @@
             </div>
         </div>
     </div>
-
+</div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
@@ -164,5 +205,24 @@
             });
         });
     </script>
+  <script>
+document.getElementById('searchInput').addEventListener('keyup', function() {
+    // Get first word only from search input
+    const searchValue = this.value.trim().split(' ')[0].toLowerCase();
+    const tableRows = document.querySelectorAll('#schoolTableBody tr');
+    
+    tableRows.forEach(row => {
+        const schoolCode = row.querySelector('td:nth-child(3)').textContent.toLowerCase().split(' ')[0];
+        const schoolName = row.querySelector('td:nth-child(4)').textContent.toLowerCase().split(' ')[0];
+        
+        if (schoolCode.includes(searchValue) || schoolName.includes(searchValue)) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+});
+</script>
+
 </body>
 </html>

@@ -144,4 +144,34 @@ public class ProgramController {
             return "redirect:/program/admin/edit/" + id;
         }
     }
+    @PostMapping("/admin/requestExtension")
+    @ResponseBody
+    public ResponseEntity<?> requestExtension(@RequestParam Integer schoolId) {
+        try {
+            School school = schoolDao.findById(schoolId);
+            school.setExtensionRequested(true);
+            schoolDao.save(school);
+            return ResponseEntity.ok("Extension requested successfully");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    @GetMapping("/admin/requestTimeline")
+    public String showRequestTimeline(Model model) {
+        List<School> requestedSchools = schoolDao.findByExtensionRequested(true);
+        model.addAttribute("schools", requestedSchools);
+        return "requestTimeline";
+    }
+    @PostMapping("/admin/cancelExtension/{schoolId}")
+    @ResponseBody
+    public ResponseEntity<?> cancelExtension(@PathVariable Integer schoolId) {
+        try {
+            School school = schoolDao.findById(schoolId);
+            school.setExtensionRequested(false);
+            schoolDao.save(school);
+            return ResponseEntity.ok().body("Extension request cancelled");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

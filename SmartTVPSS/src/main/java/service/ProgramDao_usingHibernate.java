@@ -106,6 +106,13 @@ public class ProgramDao_usingHibernate {
         
         return schools;
     }
+    @Transactional
+    public List<School> findByExtensionRequested(boolean requested) {
+        Session currentSession = sessionFactory.getCurrentSession();
+        return currentSession.createQuery("from School where extensionRequested = :requested", School.class)
+                .setParameter("requested", requested)
+                .getResultList();
+    }
     
     
 }

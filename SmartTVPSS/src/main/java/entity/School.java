@@ -59,6 +59,11 @@ public class School {
     @Enumerated(EnumType.STRING)
     private TimelineStatus status;
     
+    @Column(name = "extension_requested")
+    private boolean extensionRequested = false;
+
+
+    
     public enum TimelineStatus {
     	ONGOING,
         ASSIGNED,
@@ -71,8 +76,7 @@ public class School {
     // Default constructor
     public School() {
     }
-    @PrePersist
-    @PreUpdate
+
     protected void calculateVersion() {
         if (hasGreenScreen && hasExternalCollaboration && hasExternalRecording && 
             hasLogo && hasStudioPss && hasYoutubeUpload && hasInSchoolRecording) {
@@ -89,7 +93,6 @@ public class School {
         }
     }
 
-    // Getter and setter for version
     public int getVersion() {
         return version;
     }
@@ -97,10 +100,14 @@ public class School {
     public void setVersion(int version) {
         this.version = version;
     }
+  
+    public boolean isExtensionRequested() {
+        return extensionRequested;
+    }
 
-    // [Previous getters and setters remain the same...]
-
-    // Lifecycle callbacks
+    public void setExtensionRequested(boolean extensionRequested) {
+        this.extensionRequested = extensionRequested;
+    }
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();

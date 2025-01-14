@@ -43,7 +43,7 @@
 	}
 	
 	/* Sidebar Section */
-	.container {
+	.admin-nav-container {
 		display: flex;
 	}
 	
@@ -117,17 +117,17 @@
 		<a href="login.jsp">Login</a>
 	</div>
 
-	<div class="container">
+	<div class="admin-nav-container">
 		<div class="sidebar">
 			<h3>TVPSS</h3>
 			<ul>
 				<li><a href="TVPSSDashboard.jsp">Dashboard</a></li>
 				<li class="toggle"><a href="javascript:void(0);">Activity</a>
 					<ul class="sub-menu">
-						<li><a href="activityList">Manage activity</a></li>
-						<li><a href="participant">View Participant</a></li>
+						<li><a href="/SmartTVPSS/TVPSS/activity/activityList">Manage activity</a></li>
+						<li><a href="/SmartTVPSS/TVPSS/activity/participant">View Participant</a></li>
 					</ul></li>
-				<li><a href="viewActivity.jsp">Program Status</a></li>
+				<li><a href="/SmartTVPSS/program/tvpssteam/schoolList">Program Status</a></li>
 				<li><a href="viewActivity.jsp">User List</a></li>
 			</ul>
 	</div>

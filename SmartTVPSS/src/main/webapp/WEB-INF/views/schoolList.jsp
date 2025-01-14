@@ -19,13 +19,13 @@
             color: #333;
         }
 
-        .container {
+        .school-list-container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
 
-        .header {
+        .school-list-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -149,11 +149,10 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
-<jsp:include page="header.jsp" />
+<%@ include file="adminnavbar.jsp"%>
 <div class="main-container" style="display:flex">
-    <jsp:include page="sidebar.jsp" />    
-    <div class="container">
-        <div class="header">
+    <div class="school-list-container">
+        <div class="school-list-header">
             <h2>Schools' Program Status</h2>
             
         </div>

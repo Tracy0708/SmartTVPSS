@@ -124,8 +124,11 @@ public class ProgramController {
         return "confirmdeletedschool";  // Changed to match naming pattern
     }
     
-    @GetMapping("/admin/edit/{id}")
-    public String showAdminEditForm(@PathVariable("id") int id, Model model) {
+    @GetMapping("/admin/edit")
+    public String showAdminEditForm(Model model) {
+		/* Hardcoded user id until user session can be utilised */
+    	int id = 2;
+
         School school = schoolDao.findById(id);
         model.addAttribute("school", school);
         return "admineditSchool";

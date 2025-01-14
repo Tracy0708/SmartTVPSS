@@ -19,7 +19,7 @@
             color: #333;
         }
 
-        .container {
+        .edit-school-container {
              max-width: 2000px;
             margin: 0 auto;
             padding: 20px;
@@ -227,10 +227,9 @@
     </style>
 </head>
 <body>
-<jsp:include page="header.jsp" />
-<div class="main-container" style="display:flex">
-    <jsp:include page="sidebar.jsp" />   
-    <div class="container">
+<%@ include file="adminnavbar.jsp"%>
+<div class="main-container" style="display:flex">  
+    <div class="edit-school-container">
         <div class="back-title">
             <a href="${pageContext.request.contextPath}/program/tvpssteam/schoolList">←</a>
             <h2>Edit Information</h2>

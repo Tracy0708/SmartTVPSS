@@ -51,7 +51,7 @@
     justify-content: end;
     }
     .main-container{
-    max-width: 1400px;
+    width: 75%;
     margin-left:20px;
     }
     .search-container {
@@ -74,10 +74,9 @@
 </style>
 </head>
 <body>
-<jsp:include page="header.jsp" />
-<div class="main-container" style="display:flex">
-    <jsp:include page="sidebar.jsp" />
-    <div class="container mt-5">
+<%@ include file="adminnavbar.jsp"%>
+<div class="main-container" >
+    <div class="mt-5">
  
     
         <h2 class="mb-4">Every Schools' Timeline</h2>

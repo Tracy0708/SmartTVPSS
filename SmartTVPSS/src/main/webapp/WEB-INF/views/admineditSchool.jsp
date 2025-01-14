@@ -23,7 +23,7 @@
             color: #333;
         }
 
-        .container {
+        .admin-program-container {
              max-width: 2000px;
             margin: 0 auto;
             padding: 20px;
@@ -430,10 +430,9 @@ $(document).ready(function() {
 </script>
 </head>
 <body>
-<jsp:include page="header.jsp" />
+    <%@ include file="schooladminnavbar.jsp"%> 
 <div class="main-container" style="display:flex">
-    <jsp:include page="sidebar.jsp" />   
-    <div class="container">
+    <div class="admin-program-container">
    
         <div class="back-title">
             <a href="${pageContext.request.contextPath}/program/tvpssteam/schoolList">←</a>

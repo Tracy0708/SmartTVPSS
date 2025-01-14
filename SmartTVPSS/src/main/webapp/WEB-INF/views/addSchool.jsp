@@ -18,7 +18,7 @@
             color: #333;
         }
 
-        .container {
+        .add-school-container {
             max-width: 2000px;
             margin: 0 auto;
             padding: 20px;
@@ -193,10 +193,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.7.32/sweetalert2.min.css">
 </head>
 <body>
-<jsp:include page="header.jsp" />
-<div class="main-container" style="display:flex">
-    <jsp:include page="sidebar.jsp" />    
-    <div class="container">
+<%@ include file="adminnavbar.jsp"%>
+<div class="main-container" style="display:flex">   
+    <div class="add-school-container">
         <div class="back-title">
             <a href="${pageContext.request.contextPath}/program/tvpssteam/schoolList">←</a>
             <h2>Add School</h2>

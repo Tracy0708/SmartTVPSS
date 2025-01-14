@@ -51,6 +51,7 @@
 </style>
 </head>
 <body>
+<%@ include file="adminnavbar.jsp"%>
     <div class="container mt-5">
         <h2 class="mb-4">Requests Extending Timeline</h2>
         <div class="table-responsive">

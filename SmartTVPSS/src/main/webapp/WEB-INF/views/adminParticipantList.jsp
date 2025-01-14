@@ -321,7 +321,7 @@
 	<div class="content">	
 	
 		<div class="detail-header" style="display:flex;">
-              <a href='participant'><svg xmlns="http://www.w3.org/2000/svg" height="26px"
+              <a href='javascript:history.back();'><svg xmlns="http://www.w3.org/2000/svg" height="26px"
                       viewBox="0 -960 960 960" width="26px" fill="black">
                       <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z" />
                   </svg></a>

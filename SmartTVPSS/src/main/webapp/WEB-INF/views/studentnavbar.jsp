@@ -128,7 +128,7 @@ body {
 						<li><a href="/SmartTVPSS/talent/viewStatus">View Application
 								Status</a></li>
 					</ul></li>
-				<li><a href="/SmartTVPSS/TVPSS/activity/activityList">View Activity</a></li>
+				<li><a href="/SmartTVPSS/student/activity/activityList">View Activity</a></li>
 			</ul>
 		</div>
 

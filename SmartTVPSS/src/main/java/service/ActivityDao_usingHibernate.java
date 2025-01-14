@@ -148,5 +148,120 @@ public class ActivityDao_usingHibernate {
 
         return ((Long) query.uniqueResult()).intValue();
     }
+    
+    @Transactional
+    public List<Activity> getEndedActivities(String search, String type, String level, int page, int pageSize) {
+        String hql = "FROM Activity WHERE endDate < CURRENT_DATE";
+        if (!search.isEmpty()) {
+            hql += " AND activityName LIKE :search";
+        }
+        if (!type.isEmpty()) {
+            hql += " AND activityType = :type";
+        }
+        if (!level.isEmpty()) {
+            hql += " AND activityLevel = :level";
+        }
+
+        Query query = sessionFactory.getCurrentSession().createQuery(hql);
+        if (!search.isEmpty()) {
+            query.setParameter("search", "%" + search + "%");
+        }
+        if (!type.isEmpty()) {
+            query.setParameter("type", type);
+        }
+        if (!level.isEmpty()) {
+            query.setParameter("level", level);
+        }
+
+        query.setFirstResult((page - 1) * pageSize);
+        query.setMaxResults(pageSize);
+
+        return query.list();
+    }
+
+    @Transactional
+    public int getEndedActivitiesCount(String search, String type, String level) {
+        String hql = "SELECT count(*) FROM Activity WHERE endDate < CURRENT_DATE";
+        if (!search.isEmpty()) {
+            hql += " AND activityName LIKE :search";
+        }
+        if (!type.isEmpty()) {
+            hql += " AND activityType = :type";
+        }
+        if (!level.isEmpty()) {
+            hql += " AND activityLevel = :level";
+        }
+
+        Query query = sessionFactory.getCurrentSession().createQuery(hql);
+        if (!search.isEmpty()) {
+            query.setParameter("search", "%" + search + "%");
+        }
+        if (!type.isEmpty()) {
+            query.setParameter("type", type);
+        }
+        if (!level.isEmpty()) {
+            query.setParameter("level", level);
+        }
+
+        return ((Long) query.uniqueResult()).intValue();
+    }
+
+    @Transactional
+    public List<Activity> getOngoingActivities(String search, String type, String level, int page, int pageSize) {
+        String hql = "FROM Activity WHERE endDate >= current_date";
+        if (!search.isEmpty()) {
+            hql += " AND activityName LIKE :search";
+        }
+        if (!type.isEmpty()) {
+            hql += " AND activityType = :type";
+        }
+        if (!level.isEmpty()) {
+            hql += " AND activityLevel = :level";
+        }
+
+        Query query = sessionFactory.getCurrentSession().createQuery(hql);
+        if (!search.isEmpty()) {
+            query.setParameter("search", "%" + search + "%");
+        }
+        if (!type.isEmpty()) {
+            query.setParameter("type", type);
+        }
+        if (!level.isEmpty()) {
+            query.setParameter("level", level);
+        }
+
+        query.setFirstResult((page - 1) * pageSize);
+        query.setMaxResults(pageSize);
+
+        return query.list();
+    }
+
+    @Transactional
+    public int getOngoingActivitiesCount(String search, String type, String level) {
+        String hql = "SELECT count(*) FROM Activity WHERE endDate >= current_date";
+        if (!search.isEmpty()) {
+            hql += " AND activityName LIKE :search";
+        }
+        if (!type.isEmpty()) {
+            hql += " AND activityType = :type";
+        }
+        if (!level.isEmpty()) {
+            hql += " AND activityLevel = :level";
+        }
+
+        Query query = sessionFactory.getCurrentSession().createQuery(hql);
+        if (!search.isEmpty()) {
+            query.setParameter("search", "%" + search + "%");
+        }
+        if (!type.isEmpty()) {
+            query.setParameter("type", type);
+        }
+        if (!level.isEmpty()) {
+            query.setParameter("level", level);
+        }
+
+        return ((Long) query.uniqueResult()).intValue();
+    }
+
 
 }

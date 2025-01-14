@@ -382,7 +382,7 @@
 </head>
 
 <body>
-    <%@ include file="adminnavbar.jsp"%>
+    <%@ include file="schooladminnavbar.jsp"%>
 
 	<div class="content">	
 	

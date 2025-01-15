@@ -43,9 +43,7 @@
 	}
 	
 	/* Sidebar Section */
-
-	.admin-nav-container {
-
+	.container {
 		display: flex;
 	}
 	
@@ -119,21 +117,18 @@
 		<a href="/SmartTVPSS/home/login">Logout</a>
 	</div>
 
-	<div class="admin-nav-container">
+	<div class="container">
 		<div class="sidebar">
 			<h3>TVPSS</h3>
 			<ul>
-
 				<li><a href="/SmartTVPSS/home/TVPSS/dashboard">Dashboard</a></li>
-
 				<li class="toggle"><a href="javascript:void(0);">Activity</a>
 					<ul class="sub-menu">
 						<li><a href="/SmartTVPSS/TVPSS/activity/activityList">Manage activity</a></li>
 						<li><a href="/SmartTVPSS/TVPSS/activity/participant">View Participant</a></li>
 					</ul></li>
-<li><a href="/SmartTVPSS/program/tvpssteam/schoolList">Program Status</a></li>
+				<li><a href="viewActivity.jsp">Program Status</a></li>
 				<li><a href="/SmartTVPSS/TVPSS/user/userList">User List</a></li>
-
 			</ul>
 	</div>
 

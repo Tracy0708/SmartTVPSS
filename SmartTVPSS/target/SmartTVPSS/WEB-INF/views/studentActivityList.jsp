@@ -1,6 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page isELIgnored="false" %>
 
+
 <html lang="en">
 
 <head>
@@ -240,8 +241,8 @@
 		 
 		 .btn-primary {
 		    color: #fff;
-		    background-color: #007bff;
-		    border-color: #007bff;
+		    background-color: #FBAF3C;
+		    border-color: #FBAF3C;
 		 }
 		 
 		 .btn-success {
@@ -273,6 +274,70 @@
 		    color: #0C3182;
         }
         
+        .modal {
+		    position: fixed;
+		    z-index: 1;
+		    left: 0;
+		    top: 0;
+		    width: 100%;
+		    height: 100%;
+		    overflow: auto;
+		    background-color: rgba(0, 0, 0, 0.5);
+		}
+		
+		.modal-content {
+		    background-color: #f5c687;
+		    margin: 10% auto;
+		    padding: 30px;
+		    border: 1px solid #888;
+		    width: 50%;
+		    border-radius: 10px;
+		}
+        
+        .modal-content h2{
+        	padding-bottom: 20px;
+        	display:flex;
+        }
+        
+        .details-grid {
+            display: flex;
+            flex-direction:column;
+            gap: 15px;
+        }
+
+        .label {
+            font-weight: bold;
+            min-width: 160px;
+        }
+
+        .colon {
+            margin-right: 8px;
+        }
+
+        .description {
+            margin-top: 5px;
+            line-height: 1.5;
+        }
+        
+        .modal-content .information{
+        	display:flex;
+        	margin-bottom:10px;
+        }
+		
+		.close-btn {
+		    color: #aaa;
+		    float: right;
+		    font-size: 28px;
+		    font-weight: bold;
+		    cursor: pointer;
+		}
+		
+		.close-btn:hover,
+		.close-btn:focus {
+		    color: black;
+		    text-decoration: none;
+		}
+		          
         /* Sub-menu Style */
 		.sub-menu {
 			display: none;
@@ -302,7 +367,7 @@
 </head>
 
 <body>
-    <%@ include file="adminnavbar.jsp"%>
+    <%@ include file="studentnavbar.jsp"%>
 
 	<div class="content">	
 	    <h2>Activity List</h2>
@@ -318,7 +383,7 @@
 			        <option value="talk" ${type == 'talk' ? 'selected' : ''}>Talk</option>
 			    </select>
 		        
-		        <select style="width: 15%;" name="level">
+		        <select style="width: 17%;" name="level">
 			        <option value="" disabled selected>Level</option>
 			        <option value="state" ${level == 'state' ? 'selected' : ''}>State</option>
 			        <option value="school" ${level == 'school' ? 'selected' : ''}>School</option>
@@ -329,10 +394,6 @@
 		    </div>
 		</form>
 	    
-	    <div class="addUser">
-	        <button class="add-button" style="width: 15%;"><a href="${pageContext.request.contextPath}/activity/add">Add Activity</a></button>
-	    </div>
-	
 	    <div class="table-container">
 	        <table>
 	        
@@ -343,12 +404,12 @@
 			    </c:if>
 			
 			    <c:forEach begin="1" end="${totalPages}" var="pageNo">
-			        <a href="activityList?page=${pageNo}&search=${param.search}&type=${param.type}&level=${param.level}" 
-			           style="${pageNo == currentPage ? 'font-weight: bold; color: red;' : ''}">
-			           ${pageNo}
-			        </a>
-			    </c:forEach>
-			
+				    <a href="activityList?page=${pageNo}&search=${param.search}&type=${param.type}&level=${param.level}" 
+				       style="${pageNo == currentPage ? 'font-weight: bold; color: red;' : ''}">
+				       ${pageNo}
+				    </a>
+				</c:forEach>
+
 			    <c:if test="${currentPage < totalPages}">
 			        <a href="activityList?page=${currentPage + 1}&search=${param.search}&type=${param.type}&level=${param.level}">Next</a>
 			    </c:if>
@@ -361,13 +422,14 @@
 	                    <th>Organizer</th>
 	                    <th>Type</th>
 	                    <th>Level</th>
+	                    <th>Participant</th>
 	                    <th>Action</th>
 	                </tr>
 	            </thead>
 	            <tbody>
 	                <c:if test="${empty activities}">
 	                    <tr>
-	                        <td colspan="6" style="text-align: center;">No data available</td>
+	                        <td colspan="7" style="text-align: center;">No data available</td>
 	                    </tr>
 	                </c:if>
         
@@ -378,10 +440,25 @@
 	                        <td>${activity.organizer}</td>
 	                        <td>${activity.activityType}</td>
 	                        <td>${activity.activityLevel}</td>
+	                        <td>${activity.currentParticipant} / ${activity.limitation}</td>
 	                        <td>
-	                        	<a href='${pageContext.request.contextPath}/activity/edit?id=${activity.id}' class='btn btn-success btn-sm me-2 view-data'>View</a>
-	                            <a href='${pageContext.request.contextPath}/activity/edit?id=${activity.id}' class='btn btn-primary btn-sm me-2'>Edit</a>
-	                            <a href="#" onclick="confirmDelete(${activity.id})" class='btn btn-danger btn-sm'>Delete</a>
+	                        	<button 
+					                onclick="openModal(this)" 
+					                class="btn btn-success btn-sm me-2" 
+					                data-activity-name="${activity.activityName}" 
+					                data-organizer="${activity.organizer}" 
+					                data-start-date="${activity.startDate}" 
+					                data-end-date="${activity.endDate}" 
+					                data-pic="${activity.pic}" 
+					                data-phone="${activity.phone}" 
+					                data-location="${activity.location}" 
+					                data-description="${activity.description}" 
+					                data-activity-type="${activity.activityType}" 
+					                data-activity-level="${activity.activityLevel}" 
+					                data-limitation="${activity.limitation}">
+					                View
+					            </button>
+	                            <a href="${pageContext.request.contextPath}/student/activity/register?id=${activity.id}" class="btn btn-primary btn-sm me-2">Register</a>
 	                        </td>
 	                    </tr>
 	                    
@@ -399,28 +476,112 @@
 					</c:if>
 	            </tbody>
 	        </table>
+	  
+	        <div id="activityDetailsModal" class="modal" style="display: none;">
+			    <div class="modal-content">
+			        <span class="close-btn" onclick="closeModal()">&times;</span>
+			        <h2 style="border-bottom: 1px solid black;">Activity Details</h2>
+			        <div class="information">
+	                	<div class="label"><strong>Activity</strong></div>
+			            <div><span class="colon">:</span></div>
+			            <div><span id="activityName"></span></div>
+	                </div>
+	                
+	                <div class="information">
+	                	<div class="label"><strong>Organizer</strong></div>
+			            <div><span class="colon">:</span></div>
+			            <div><span id="organizer"></span></div>
+	                </div>
+	                
+	                <div class="information">
+	                	<div class="label"><strong>Start Date</strong> </div>
+			            <div><span class="colon">:</span></div>
+			            <div><span id="startDate"></span></div>
+	                </div>
+	                
+	                <div class="information">
+	                	<div class="label"><strong>End Date</strong></div>
+			            <div><span class="colon">:</span></div>
+			            <div><span id="endDate"></span></div>
+	                </div>
+	                
+	                <div class="information">
+	                	<div class="label"><strong>Person in Charge</strong></div>
+			            <div><span class="colon">:</span></div>
+			            <div><span id="pic"></span></div>
+	                </div>
+	                
+	                <div class="information">
+	                	<div class="label"><strong>Phone</strong></div>
+			            <div><span class="colon">:</span></div>
+			            <div><span id="phone"></span></div>
+	                </div>
+	                
+	                <div class="information">
+	                	<div class="label"><strong>Location</strong></div>
+			            <div><span class="colon">:</span></div>
+			            <div><span id="location"></span></div>
+	                </div>
+	                
+	                <div class="information">
+	                	<div class="label"><strong>Description</strong></div>
+			            <div><span class="colon">:</span></div>
+			            <div><span id="description"></span></div>
+	                </div>
+	                
+	                <div class="information">
+	                	<div class="label"><strong>Activity Type</strong></div>
+			            <div><span class="colon">:</span></div>
+			            <div><span id="activityType"></span></div>
+	                </div>
+	                
+	                <div class="information">
+	                	<div class="label"><strong>Activity Level</strong></div>
+			            <div><span class="colon">:</span></div>
+			            <div><span id="activityLevel"></span></div>
+	                </div>
+	                
+	                <div class="information">
+	                	<div class="label"><strong>Limitation</strong></div>
+			            <div><span class="colon">:</span></div>
+			            <div><span id="limitation"></span></div>
+	                </div>
+			    </div>
+			 </div>
 	    </div>
-	</div>
-	
-	<script>
-        function confirmDelete(activityId) {
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = 'delete?id=' + activityId;
-                }
-            });
-        }
-    </script>
-	
-    	    
-</body>
 
+</div>
+</body>
 </html>
+
+<script>
+	function openModal(button) {
+	    // Populate modal data
+	    document.getElementById('activityName').innerText = button.getAttribute('data-activity-name') || "N/A";
+	    document.getElementById('organizer').innerText = button.getAttribute('data-organizer') || "N/A";
+	    document.getElementById('startDate').innerText = formatDate(button.getAttribute('data-start-date')) || "N/A";
+	    document.getElementById('endDate').innerText = formatDate(button.getAttribute('data-end-date')) || "N/A";
+	    document.getElementById('pic').innerText = button.getAttribute('data-pic') || "N/A";
+	    document.getElementById('phone').innerText = button.getAttribute('data-phone') || "N/A";
+	    document.getElementById('location').innerText = button.getAttribute('data-location') || "N/A";
+	    document.getElementById('description').innerText = button.getAttribute('data-description') || "N/A";
+	    document.getElementById('activityType').innerText = button.getAttribute('data-activity-type') || "N/A";
+	    document.getElementById('activityLevel').innerText = button.getAttribute('data-activity-level') || "N/A";
+	    document.getElementById('limitation').innerText = button.getAttribute('data-limitation') || "N/A";
+	
+	    // Show the modal
+	    document.getElementById('activityDetailsModal').style.display = 'block';
+	}
+	
+	function closeModal() {
+	    document.getElementById('activityDetailsModal').style.display = 'none';
+	}
+	
+	function formatDate(dateTime) {
+	    if (!dateTime) return "--"; 
+	    const dateParts = dateTime.split(' ')[0]; 
+	    return dateParts; 
+	}
+
+
+</script>

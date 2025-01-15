@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <html lang="en">
 
 <head>
@@ -106,6 +107,8 @@
             font-size: 14px;
             border: 1px solid #ddd;
             border-radius: 5px;
+            padding-left: 10px;
+            
         }
 
         .form-container input[type="number"] {
@@ -142,96 +145,98 @@
         .column{
             width: 50%;
         }
+        
+        /* Sub-menu Style */
+		.sub-menu {
+			display: none;
+			list-style-type: none;
+			padding-left: 20px;
+		}
+		
+		.sub-menu li a {
+			text-decoration: none;
+			font-weight: normal !important; /* Regular font weight */
+			padding: 5px 10px; /* Add padding for spacing */
+			border-radius: 5px; /* Optional: Rounded edges */
+			transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+		}
+		
+		/* Hover effect for sub-menu items */
+		.sub-menu li a:hover {
+			background-color: #FBAF3C; /* Highlight color */
+			color: white; /* Change text color when hovered */
+		}
+		
+		/* When the parent item has the 'active' class, show the sub-menu */
+		.active .sub-menu {
+			display: block;
+		}
     </style>
 </head>
 
 <body>
-    <nav>
-        <ul style="justify-content: flex-start;">
-            <li><a style="color: #FBAF3C;" href="#">SCHOOL RESOURCE CENTRE TV</a></li>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Program Status</a></li>
-            <li><a href="#">Activity</a></li>
-            <li><a href="#" style="float: right;">Logout</a>
-        </ul>
-    </nav>
-    <div class="container">
-        <div class="sidebar">
-            <h2 style="text-align: center; margin-bottom: 15px;">Activity</h2>
-            <ul>
-                <li style="font-weight: bold;">Manage Activity</li>
-                <li><a href="#">Activity List</a></li>
-
-                <li style="font-weight: bold;">Activity Participant</li>
-                <li><a href="#">Participant List</a></li>
-            </ul>
-        </div>
+    <%@ include file="adminnavbar.jsp"%>
 
         <div class="content">
             <div class="form-container">
-                <div class="header" style="display: flex;">
-                    <a href="activityList.html"><svg xmlns="http://www.w3.org/2000/svg" height="26px"
+                <div class="form-header" style="display: flex;">
+                    <a href="${pageContext.request.contextPath}/TVPSS/activity/activityList"><svg xmlns="http://www.w3.org/2000/svg" height="26px"
                             viewBox="0 -960 960 960" width="26px" fill="black">
                             <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z" />
                         </svg></a>
-                    <h2 style="padding-left: 20px;">New Activity</h2>
+                    <h2 style="padding-left: 20px;">Edit Activity</h2>
                 </div>
 
-                <form>
-                    <label for="activity-name">Activity Name:</label>
-                    <input type="text" id="activity-name" name="activity-name" required>
+                <form action="${pageContext.request.contextPath}/TVPSS/activity/save" method="post">
+                	<input type="hidden" id="id" name="id" value="${activity.id}">
+                	
+                    <label for="activityName">Activity Name:</label>
+                    <input type="text" id="activityName" name="activityName" value="${activity.activityName}" required>
 
                     <label for="organizer">Organizer:</label>
-                    <input type="text" id="organizer" name="organizer" required>
+                    <input type="text" id="organizer" name="organizer" value="${activity.organizer}" required>
 
                     <div class="row">
                         <div class="column">
                             <label for="startDate">Start Date:</label>
-                            <input type="date" id="start-date" name="start-date" placeholder="start-date">
+                            <input type="date" id="startDate" name="startDate" value="${startDateFormatted}" required>
                         </div>
                         <div class="column">
                             <label for="endDate">End Date:</label>
-                            <input type="date" id="end-date" name="end-date">
+							<input type="date" id="endDate" name="endDate" value="${endDateFormatted}" required>
                         </div>
                     </div>
 
-
                     <label for="pic">PIC:</label>
-                    <input type="text" id="pic" name="pic">
+                    <input type="text" id="pic" name="pic" value="${activity.pic}" required>
 
                     <label for="phone">Phone:</label>
-                    <input type="tel" id="phone" name="phone">
+                    <input type="tel" id="phone" name="phone" value="${activity.phone}" required>
 
                     <label>Location: </label>
-                    <input type="text" id="location" name="location">
-
-                    <!-- <label>Who can participate:</label>
-                    <input type="checkbox" id="students" name="participants" value="students">
-                    <label for="students" style="display: inline;">Students</label>
-                    <input type="checkbox" id="teachers" name="participants" value="teachers">
-                    <label for="teachers" style="display: inline;">Teacher</label> -->
+                    <input type="text" id="location" name="location" value="${activity.location}" required>
 
                     <label for="description">Description:</label>
-                    <textarea id="description" name="description" rows="4"></textarea>
+                    <textarea id="description" name="description" rows="4" style="padding-top:10px;" >${activity.description}</textarea>
 
-                    <label for="activity-type">Activity Type:</label>
-                    <select id="activity-type" name="activity-type" required>
-                        <option value="" disabled selected>Select a type</option>
-                        <option value="award">Award</option>
-                        <option value="competition">Competition</option>
-                        <option value="talk">Talk</option>
+                    <label for="activityType">Activity Type:</label>
+                    <select id="activityType" name="activityType" required>
+                        <option value="" disabled>Select a type</option>
+                        <option value="award" ${activity.activityType == 'Award' ? 'selected' : ''}>Award</option>
+                        <option value="competition" ${activity.activityType == 'Competition' ? 'selected' : ''}>Competition</option>
+                        <option value="talk" ${activity.activityType == 'Talk' ? 'selected' : ''}>Talk</option>
                     </select>
 
-                    <label for="activity-level">Activity Level:</label>
-                    <select id="activity-level" name="activity-level" required>
-                        <option value="" disabled selected>Select level</option>
-                        <option value="school">School</option>
-                        <option value="state">State</option>
-                        <option value="district">District</option>
+                    <label for="activityLevel">Activity Level:</label>
+                    <select id="activityLevel" name="activityLevel" required>
+                        <option value="" disabled>Select level</option>
+                        <option value="school" ${activity.activityLevel == 'School' ? 'selected' : ''}>School</option>
+                        <option value="state" ${activity.activityLevel == 'State' ? 'selected' : ''}>State</option>
+                        <option value="district" ${activity.activityLevel == 'District' ? 'selected' : ''}>District</option>
                     </select>
 
-                    <label for="limitations">Limitations:</label>
-                    <input type="number" id="limitations" name="limitations" min="0" value="0">
+                    <label for="limitation">Limitations:</label>
+                    <input type="number" id="limitation" name="limitation" min="0" value="${activity.limitation}" required>
 
                     <button type="submit" class="submit-button">SUBMIT</button>
                 </form>

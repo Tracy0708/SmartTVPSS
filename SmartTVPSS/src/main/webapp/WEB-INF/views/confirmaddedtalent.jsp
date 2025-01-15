@@ -72,8 +72,7 @@
     </style>
     <script>
         function closeModal() {
-            document.querySelector(".modal").style.display = "none";
-            document.querySelector(".blur-background").classList.remove("blur-background");
+        	window.location.href = "viewStatus";
         }
     </script>
 </head>

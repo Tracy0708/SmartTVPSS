@@ -33,14 +33,10 @@ public class Talent {
 	private String reason;
 
 	@Column(name = "interviewDate")
-	@Temporal(TemporalType.DATE)
 	private Date interviewDate;
 
 	@Column(name = "interviewTime")
 	private String interviewTime;
-
-	@Column(name = "interviewResult")
-	private String interviewResult;
 
 	@Column(name = "applicationStatus")
 	private String applicationStatus = "PENDING";
@@ -51,8 +47,7 @@ public class Talent {
 
 	// Parameterized constructor
 	public Talent(int id, String schoolCode, String schoolName, String name, String gender, String contact,
-			String email, String reason, Date interviewDate, String interviewTime, String interviewResult,
-			String applicationStatus) {
+			String email, String reason, Date interviewDate, String interviewTime, String applicationStatus) {
 		this.id = id;
 		this.schoolCode = schoolCode;
 		this.schoolName = schoolName;
@@ -63,7 +58,6 @@ public class Talent {
 		this.reason = reason;
 		this.interviewDate = interviewDate;
 		this.interviewTime = interviewTime;
-		this.interviewResult = interviewResult;
 		this.applicationStatus = applicationStatus;
 	}
 
@@ -148,14 +142,6 @@ public class Talent {
 		this.interviewTime = interviewTime;
 	}
 
-	public String getInterviewResult() {
-		return interviewResult;
-	}
-
-	public void setInterviewResult(String interviewResult) {
-		this.interviewResult = interviewResult;
-	}
-
 	public String getApplicationStatus() {
 		return applicationStatus;
 	}
@@ -169,8 +155,7 @@ public class Talent {
 	public String toString() {
 		return "Talent [id=" + id + ", schoolCode=" + schoolCode + ", schoolName=" + schoolName + ", name=" + name
 				+ ", gender=" + gender + ", contact=" + contact + ", email=" + email + ", reason=" + reason
-				+ ", interviewDate=" + interviewDate + ", interviewTime=" + interviewTime + ", interviewResult="
-				+ interviewResult + ", applicationStatus=" + applicationStatus + "]";
+				+ ", interviewDate=" + interviewDate + ", interviewTime=" + interviewTime + ", applicationStatus=" + applicationStatus + "]";
 	}
 
 }

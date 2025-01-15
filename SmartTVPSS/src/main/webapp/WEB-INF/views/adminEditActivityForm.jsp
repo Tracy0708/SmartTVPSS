@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Activity</title>
+    <title>Edit Activity</title>
 
     <style>
         * {
@@ -180,14 +180,14 @@
         <div class="content">
             <div class="form-container">
                 <div class="form-header" style="display: flex;">
-                    <a href="${pageContext.request.contextPath}/activity/activityList"><svg xmlns="http://www.w3.org/2000/svg" height="26px"
+                    <a href="${pageContext.request.contextPath}/TVPSS/activity/activityList"><svg xmlns="http://www.w3.org/2000/svg" height="26px"
                             viewBox="0 -960 960 960" width="26px" fill="black">
                             <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z" />
                         </svg></a>
                     <h2 style="padding-left: 20px;">Edit Activity</h2>
                 </div>
 
-                <form action="${pageContext.request.contextPath}/activity/save" method="post">
+                <form action="${pageContext.request.contextPath}/TVPSS/activity/save" method="post">
                 	<input type="hidden" id="id" name="id" value="${activity.id}">
                 	
                     <label for="activityName">Activity Name:</label>
@@ -222,17 +222,17 @@
                     <label for="activityType">Activity Type:</label>
                     <select id="activityType" name="activityType" required>
                         <option value="" disabled>Select a type</option>
-                        <option value="award" ${activity.activityType == 'award' ? 'selected' : ''}>Award</option>
-                        <option value="competition" ${activity.activityType == 'competition' ? 'selected' : ''}>Competition</option>
-                        <option value="talk" ${activity.activityType == 'talk' ? 'selected' : ''}>Talk</option>
+                        <option value="award" ${activity.activityType == 'Award' ? 'selected' : ''}>Award</option>
+                        <option value="competition" ${activity.activityType == 'Competition' ? 'selected' : ''}>Competition</option>
+                        <option value="talk" ${activity.activityType == 'Talk' ? 'selected' : ''}>Talk</option>
                     </select>
 
                     <label for="activityLevel">Activity Level:</label>
                     <select id="activityLevel" name="activityLevel" required>
                         <option value="" disabled>Select level</option>
-                        <option value="school" ${activity.activityLevel == 'school' ? 'selected' : ''}>School</option>
-                        <option value="state" ${activity.activityLevel == 'state' ? 'selected' : ''}>State</option>
-                        <option value="district" ${activity.activityLevel == 'district' ? 'selected' : ''}>District</option>
+                        <option value="school" ${activity.activityLevel == 'School' ? 'selected' : ''}>School</option>
+                        <option value="state" ${activity.activityLevel == 'State' ? 'selected' : ''}>State</option>
+                        <option value="district" ${activity.activityLevel == 'District' ? 'selected' : ''}>District</option>
                     </select>
 
                     <label for="limitation">Limitations:</label>

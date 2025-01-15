@@ -15,9 +15,9 @@ public class ActivityDao_usingHibernate {
 	private SessionFactory sessionFactory;
 
 	@Transactional
-	public Activity findById(Integer id) {
+	public Activity findById(Integer activity_id) {
 		Session currentSession = sessionFactory.getCurrentSession();
-		return currentSession.get(Activity.class, id);
+		return currentSession.get(Activity.class, activity_id);
 	}
 
 	@Transactional
@@ -33,10 +33,10 @@ public class ActivityDao_usingHibernate {
 	}
 
 	@Transactional
-	public void update(Integer id, Activity activity) {
+	public void update(Integer activity_id, Activity activity) {
 		Session currentSession = sessionFactory.getCurrentSession();
 		// Retrieve the persistent activity from the database using the provided id
-		Activity existingActivity = currentSession.get(Activity.class, id);
+		Activity existingActivity = currentSession.get(Activity.class, activity_id);
 		// Check if the activity exists before updating
 		if (existingActivity != null) {
 			// Update the properties of the existing activity with the new values
@@ -58,11 +58,11 @@ public class ActivityDao_usingHibernate {
 	}
 
 	@Transactional
-	public void delete(Integer id) {
+	public void delete(Integer activity_id) {
 		Session currentSession = sessionFactory.getCurrentSession();
 
 		// Retrieve the persistent activity from the database using the provided id
-		Activity activityToDelete = currentSession.get(Activity.class, id);
+		Activity activityToDelete = currentSession.get(Activity.class, activity_id);
 
 		// Check if the activity exists before deleting
 		if (activityToDelete != null) {
@@ -74,7 +74,7 @@ public class ActivityDao_usingHibernate {
 	@Transactional
 	public List<Activity> findAll() {
 		Session currentSession = sessionFactory.getCurrentSession();
-		return currentSession.createQuery("from Activity").getResultList();
+		return currentSession.createQuery("from Activity", Activity.class).getResultList();
 	}
 	
 	@Transactional
@@ -148,5 +148,120 @@ public class ActivityDao_usingHibernate {
 
         return ((Long) query.uniqueResult()).intValue();
     }
+    
+    @Transactional
+    public List<Activity> getEndedActivities(String search, String type, String level, int page, int pageSize) {
+        String hql = "FROM Activity WHERE endDate < CURRENT_DATE";
+        if (!search.isEmpty()) {
+            hql += " AND activityName LIKE :search";
+        }
+        if (!type.isEmpty()) {
+            hql += " AND activityType = :type";
+        }
+        if (!level.isEmpty()) {
+            hql += " AND activityLevel = :level";
+        }
+
+        Query query = sessionFactory.getCurrentSession().createQuery(hql);
+        if (!search.isEmpty()) {
+            query.setParameter("search", "%" + search + "%");
+        }
+        if (!type.isEmpty()) {
+            query.setParameter("type", type);
+        }
+        if (!level.isEmpty()) {
+            query.setParameter("level", level);
+        }
+
+        query.setFirstResult((page - 1) * pageSize);
+        query.setMaxResults(pageSize);
+
+        return query.list();
+    }
+
+    @Transactional
+    public int getEndedActivitiesCount(String search, String type, String level) {
+        String hql = "SELECT count(*) FROM Activity WHERE endDate < CURRENT_DATE";
+        if (!search.isEmpty()) {
+            hql += " AND activityName LIKE :search";
+        }
+        if (!type.isEmpty()) {
+            hql += " AND activityType = :type";
+        }
+        if (!level.isEmpty()) {
+            hql += " AND activityLevel = :level";
+        }
+
+        Query query = sessionFactory.getCurrentSession().createQuery(hql);
+        if (!search.isEmpty()) {
+            query.setParameter("search", "%" + search + "%");
+        }
+        if (!type.isEmpty()) {
+            query.setParameter("type", type);
+        }
+        if (!level.isEmpty()) {
+            query.setParameter("level", level);
+        }
+
+        return ((Long) query.uniqueResult()).intValue();
+    }
+
+    @Transactional
+    public List<Activity> getOngoingActivities(String search, String type, String level, int page, int pageSize) {
+        String hql = "FROM Activity WHERE endDate >= current_date";
+        if (!search.isEmpty()) {
+            hql += " AND activityName LIKE :search";
+        }
+        if (!type.isEmpty()) {
+            hql += " AND activityType = :type";
+        }
+        if (!level.isEmpty()) {
+            hql += " AND activityLevel = :level";
+        }
+
+        Query query = sessionFactory.getCurrentSession().createQuery(hql);
+        if (!search.isEmpty()) {
+            query.setParameter("search", "%" + search + "%");
+        }
+        if (!type.isEmpty()) {
+            query.setParameter("type", type);
+        }
+        if (!level.isEmpty()) {
+            query.setParameter("level", level);
+        }
+
+        query.setFirstResult((page - 1) * pageSize);
+        query.setMaxResults(pageSize);
+
+        return query.list();
+    }
+
+    @Transactional
+    public int getOngoingActivitiesCount(String search, String type, String level) {
+        String hql = "SELECT count(*) FROM Activity WHERE endDate >= current_date";
+        if (!search.isEmpty()) {
+            hql += " AND activityName LIKE :search";
+        }
+        if (!type.isEmpty()) {
+            hql += " AND activityType = :type";
+        }
+        if (!level.isEmpty()) {
+            hql += " AND activityLevel = :level";
+        }
+
+        Query query = sessionFactory.getCurrentSession().createQuery(hql);
+        if (!search.isEmpty()) {
+            query.setParameter("search", "%" + search + "%");
+        }
+        if (!type.isEmpty()) {
+            query.setParameter("type", type);
+        }
+        if (!level.isEmpty()) {
+            query.setParameter("level", level);
+        }
+
+        return ((Long) query.uniqueResult()).intValue();
+    }
+
 
 }

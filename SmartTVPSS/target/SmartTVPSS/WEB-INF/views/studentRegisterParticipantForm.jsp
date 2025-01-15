@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Activity</title>
+    <title>Register</title>
 
     <style>
         * {
@@ -14,41 +14,6 @@
 
         body {
             min-height: 100vh;
-        }
-
-        nav {
-            background-color: #0C3182;
-            box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
-            padding-right: 2rem;
-        }
-
-        nav ul {
-            width: 100%;
-            list-style: none;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        nav li {
-            height: 70px;
-        }
-
-        nav a {
-            height: 100%;
-            padding: 0 30px;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            color: white;
-        }
-
-        nav a:hover {
-            background-color: #f0f0f0;
-        }
-
-        nav li:first-child {
-            margin-right: auto;
         }
 
         .sidebar {
@@ -79,13 +44,13 @@
 
         .content {
             padding: 20px;
-            width: 50vw;
+            width: 60vw;
             margin: auto;
         }
 
         .form-container {
             background-color: #f5c687;
-            padding: 20px;
+            padding: 30px;
             border-radius: 10px;
             margin: 0 auto;
             box-sizing: border-box;
@@ -119,9 +84,10 @@
         .form-container input[type="tel"],
         .form-container input[type="date"],
         .form-container input[type="number"],
+        .form-container input[type="email"],
         .form-container select {
             height: 35px;
-        }
+        }	
 
         .form-container .submit-button {
             background-color: #f57c00;
@@ -143,6 +109,20 @@
 
         .column{
             width: 50%;
+        }
+        
+        label{
+        	margin-bottom:10px;
+        }
+        
+        .gender-input input{
+        	width: 15px;
+    		margin-top: 0;
+    		margin-right:15px;
+        }
+        
+        span{
+            color:red;
         }
         
         /* Sub-menu Style */
@@ -174,72 +154,50 @@
 </head>
 
 <body>
-    <%@ include file="adminnavbar.jsp"%>
+    <%@ include file="studentnavbar.jsp"%>
 
         <div class="content">
             <div class="form-container">
                 <div class="form-header" style="display: flex;">
-                    <a href="activityList.html"><svg xmlns="http://www.w3.org/2000/svg" height="26px"
+                    <a href="${pageContext.request.contextPath}/student/activity/activityList"><svg xmlns="http://www.w3.org/2000/svg" height="26px"
                             viewBox="0 -960 960 960" width="26px" fill="black">
                             <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z" />
                         </svg></a>
-                    <h2 style="padding-left: 20px;">New Activity</h2>
+                    <h2 style="padding-left: 20px;">Participant Form</h2>
                 </div>
 
-                <form action="add" method="post">
-                    <label for="activityName">Activity Name:</label>
-                    <input type="text" id="activityName" name="activityName" required>
+                <form action="register" method="post">
+                    <input type="hidden" name="activityId" value="${activity.id}" />
+               
+                    <label><span>*</span>Participant Name:</label>
+                    <input type="text" id="name" name="name" required>
+                    
+                    <label><span>*</span>Student ID:</label>
+                    <input type="text" id="studentID" name="studentID" required>
 
-                    <label for="organizer">Organizer:</label>
-                    <input type="text" id="organizer" name="organizer" required>
-
-                    <div class="row">
-                        <div class="column">
-                            <label for="startDate">Start Date:</label>
-                            <input type="date" id="startDate" name="startDate" placeholder="startDate">
-                        </div>
-                        <div class="column">
-                            <label for="endDate">End Date:</label>
-                            <input type="date" id="endDate" name="endDate">
-                        </div>
+                    <label><span>*</span>Gender:</label>
+                    <div class="gender-input" style="display:flex;">
+                    	<input type="radio" name="gender" value="male"> Male
+						<input type="radio" name="gender" value="female" style="margin-left:20px"> Female
                     </div>
+					
+					<label><span>*</span>Age:</label>
+                    <input type="number" id="age" name="age" min="0" value="0" required>
 
-                    <label for="pic">PIC:</label>
-                    <input type="text" id="pic" name="pic">
+                    <label><span>*</span>School:</label>
+                    <input type="text" id="school" name="school" placeholder="SMK Example" required>
+                    
+                    <label><span>*</span>Email: </label>
+                    <input type="email" id="email" name="email" placeholder="xxx@gmail.com" required>
 
-                    <label for="phone">Phone:</label>
-                    <input type="tel" id="phone" name="phone">
+                    <label><span>*</span>Phone:</label>
+                    <input type="tel" id="phone" name="phone" placeholder="0121234568" required>
 
-                    <label>Location: </label>
-                    <input type="text" id="location" name="location">
-
-                    <label for="description">Description:</label>
-                    <textarea id="description" name="description" rows="4" style="padding-top:10px;"></textarea>
-
-                    <label for="activityType">Activity Type:</label>
-                    <select id="activityType" name="activityType" required>
-                        <option value="" disabled selected>Select a type</option>
-                        <option value="award">Award</option>
-                        <option value="competition">Competition</option>
-                        <option value="talk">Talk</option>
-                    </select>
-
-                    <label for="activityLevel">Activity Level:</label>
-                    <select id="activityLevel" name="activityLevel" required>
-                        <option value="" disabled selected>Select level</option>
-                        <option value="school">School</option>
-                        <option value="state">State</option>
-                        <option value="district">District</option>
-                    </select>
-
-                    <label for="limitation">Limitations:</label>
-                    <input type="number" id="limitation" name="limitation" min="0" value="0">
+                    <label><span>*</span>Address:</label>
+                    <input type="text" id="address" name="address" placeholder="No 5, Jalan a, Taman b, 80000, JB, Johor" required>
 
                     <button type="submit" class="submit-button">SUBMIT</button>
                 </form>
             </div>
-
         </div>
-    </div>
 </body>
-

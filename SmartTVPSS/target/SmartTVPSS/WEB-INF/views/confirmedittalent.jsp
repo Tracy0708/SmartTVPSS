@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Success Confirmation</title>
+    <title>Edit Confirmation</title>
     <style>
         body {
             font-family: times new roman;
@@ -72,9 +72,7 @@
     </style>
     <script>
         function closeModal() {
-            document.querySelector(".modal").style.display = "none";
-            document.querySelector(".blur-background").classList.remove("blur-background");
-            window.location.href = "/SmartTVPSS/activity/activityList";
+        	window.location.href = "viewStatus";
         }
     </script>
 </head>
@@ -90,7 +88,7 @@
     <div class="modal">
         <div class="modal-content">
             <h2>SUCCESSFULLY</h2>
-            <p>The information has been successfully added.</p>
+            <p>The information has been successfully edited.</p>
             <button class="close-button" onclick="closeModal()">Close</button>
         </div>
     </div>

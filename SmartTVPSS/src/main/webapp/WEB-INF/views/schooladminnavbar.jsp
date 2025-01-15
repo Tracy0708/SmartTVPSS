@@ -95,8 +95,10 @@ body {
 		<div class="sidebar">
 			<h3>School Administrator</h3>
 			<ul>
+
 				<li><a href="/SmartTVPSS/home/admin/dashboard">Dashboard</a></li>
-				<li><a href="programstatus.jsp">Program Status</a></li>
+				<li><a href="/SmartTVPSS/program/admin/edit">Program Status</a></li>
+
 				<li><a href="/SmartTVPSS/talent/admin/talentList">Talent Management</a></li>
 				<li><a href="/SmartTVPSS/admin/activity/activityList">View Activity</a></li>
 			</ul>

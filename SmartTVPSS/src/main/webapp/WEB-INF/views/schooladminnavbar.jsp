@@ -88,22 +88,17 @@ body {
 <body>
 	<div class="header">
 		<div>SCHOOL RESOURCE CENTRE TV</div>
-		<a href="login.jsp">Login</a>
+		<a href="/SmartTVPSS/home/login">Logout</a>
 	</div>
 
 	<div class="container">
 		<div class="sidebar">
-			<h3>Student</h3>
+			<h3>School Administrator</h3>
 			<ul>
-				<li><a href="schooladminDashboard.jsp">Dashboard</a></li>
+				<li><a href="/SmartTVPSS/home/admin/dashboard">Dashboard</a></li>
 				<li><a href="programstatus.jsp">Program Status</a></li>
-				<li class="toggle"><a href="javascript:void(0);">Talent
-						Management</a>
-					<ul class="sub-menu">
-						<li><a href="ApplyAsCandidate.jsp">Manage interview session</a></li>
-						<li><a href="viewApplicationStatus.jsp">Update application status</a></li>
-					</ul></li>
-				<li><a href="viewActivity.jsp">View Activity</a></li>
+				<li><a href="/SmartTVPSS/talent/admin/talentList">Talent Management</a></li>
+				<li><a href="/SmartTVPSS/admin/activity/activityList">View Activity</a></li>
 			</ul>
 		</div>
 

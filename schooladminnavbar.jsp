@@ -84,31 +84,6 @@ body {
 .sidebar ul li a:hover {
 	background-color: #FBAF3C; /* Highlight color */
 }
-
-/* Sub-menu Style */
-.sub-menu {
-	display: none;
-	list-style-type: none;
-	padding-left: 20px;
-}
-
-.sub-menu li a {
-	text-decoration: none;
-	font-weight: normal !important; /* Regular font weight */
-	padding: 5px 10px; /* Add padding for spacing */
-	border-radius: 5px; /* Optional: Rounded edges */
-	transition: background-color 0.3s, color 0.3s; /* Smooth transition */
-}
-
-/* Hover effect for sub-menu items */
-.sub-menu li a:hover {
-	background-color: #FBAF3C; /* Highlight color */
-	color: white; /* Change text color when hovered */
-}
-
-/* When the parent item has the 'active' class, show the sub-menu */
-.active .sub-menu {
-	display: block;
 </style>
 <body>
 	<div class="header">
@@ -118,17 +93,12 @@ body {
 
 	<div class="container">
 		<div class="sidebar">
-			<h3>Student</h3>
+			<h3>School Administrator</h3>
 			<ul>
-				<li><a href="/SmartTVPSS/home/student/dashboard">Dashboard</a></li>
-				<li class="toggle"><a href="javascript:void(0);">Talent
-						Application</a>
-					<ul class="sub-menu">
-						<li><a href="/SmartTVPSS/talent/add">Apply as Candidate</a></li>
-						<li><a href="/SmartTVPSS/talent/viewStatus">View Application
-								Status</a></li>
-					</ul></li>
-				<li><a href="/SmartTVPSS/student/activity/activityList">View Activity</a></li>
+				<li><a href="/SmartTVPSS/home/admin/dashboard">Dashboard</a></li>
+				<li><a href="programstatus.jsp">Program Status</a></li>
+				<li><a href="/SmartTVPSS/talent/admin/talentList">Talent Management</a></li>
+				<li><a href="/SmartTVPSS/admin/activity/activityList">View Activity</a></li>
 			</ul>
 		</div>
 
